@@ -59,7 +59,7 @@ try {
 
     $mergedPoints = $existing.Values | Sort-Object d
     $data.$key.points = @($mergedPoints)
-    $data.$key.updatedAt = $nowIso
+    if ($newCount -gt 0) { $data.$key.updatedAt = $nowIso }
     $totalAdded += $newCount
     Write-Log "$sym : $newCount session(s) added/updated, total $($mergedPoints.Count) points."
   }
@@ -70,14 +70,25 @@ try {
 
   Set-Location $root
   git add data.json
-  $commitMsg = "Update daily VN-Index/HNX-Index data ($latestDate)"
-  $commitOutput = git commit -m $commitMsg 2>&1
-  Write-Log "git commit: $commitOutput"
 
-  if ($LASTEXITCODE -eq 0) {
-    $pushOutput = git push 2>&1
-    Write-Log "git push: $pushOutput"
+  # git writes routine progress to stderr; capture without letting -ErrorAction Stop
+  # turn that into a terminating error (see PowerShell native-stderr caveat).
+  $prevEAP = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+
+  $commitMsg = "Update daily VN-Index/HNX-Index data ($latestDate)"
+  $commitOutput = (git commit -m $commitMsg 2>&1 | Out-String).Trim()
+  $commitExit = $LASTEXITCODE
+  Write-Log "git commit (exit $commitExit): $commitOutput"
+
+  if ($commitExit -eq 0) {
+    $pushOutput = (git push 2>&1 | Out-String).Trim()
+    $pushExit = $LASTEXITCODE
+    Write-Log "git push (exit $pushExit): $pushOutput"
+    $ErrorActionPreference = $prevEAP
+    if ($pushExit -ne 0) { throw "git push failed: $pushOutput" }
   } else {
+    $ErrorActionPreference = $prevEAP
     Write-Log "Nothing to commit, skip push."
   }
 
@@ -92,3 +103,7 @@ finally {
     Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-60) } |
     Remove-Item -Force -ErrorAction SilentlyContinue
 }
+
+# normalize exit code: git's own exit codes (e.g. 1 for "nothing to commit")
+# are informational above, not a script failure.
+exit 0
