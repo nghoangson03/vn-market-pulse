@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bộ Lọc Wyckoff</title>
-<meta name="description" content="Sàng lọc cổ phiếu toàn sàn HOSE/HNX/UPCOM theo các mẫu hình kiểu Wyckoff (Spring, Sign of Strength, Upthrust, Sign of Weakness), cập nhật tự động hằng ngày.">
+<meta name="description" content="Sàng lọc cổ phiếu HOSE (VN-Index) theo các mẫu hình kiểu Wyckoff (Spring, Sign of Strength, Upthrust, Sign of Weakness), cập nhật tự động hằng ngày.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -225,7 +225,7 @@
   <header class="page">
     <div>
       <h1>Bộ Lọc Wyckoff</h1>
-      <div class="sub">Rà toàn bộ HOSE/HNX/UPCOM, quét kỹ nhóm vốn hóa lớn - thanh khoản cao nhất theo mẫu hình giá &amp; khối lượng kiểu Wyckoff. · <a class="nav-link" href="index.html">← Nhịp Sàn Việt</a></div>
+      <div class="sub">Rà cổ phiếu HOSE (VN-Index), quét kỹ nhóm vốn hóa lớn - thanh khoản cao nhất theo mẫu hình giá &amp; khối lượng kiểu Wyckoff. · <a class="nav-link" href="index.html">← Nhịp Sàn Việt</a></div>
     </div>
     <div class="updated-badge">
       <span class="updated-dot" aria-hidden="true"></span>
@@ -415,7 +415,7 @@
     if(!screener) return;
     var b = screener.buckets;
     document.getElementById("statsRow").innerHTML =
-      '<span><b class="tabular">'+screener.totalSymbols.toLocaleString("vi-VN")+'</b> mã trên sàn</span>'+
+      '<span><b class="tabular">'+screener.totalSymbols.toLocaleString("vi-VN")+'</b> mã trên HOSE</span>'+
       '<span>quét kỹ <b class="tabular">'+screener.screenedSymbols.toLocaleString("vi-VN")+'</b> mã vốn hóa lớn, thanh khoản cao nhất</span>'+
       '<span><b class="tabular">'+(b.buy_confirmed.length+b.buy_watch.length+b.sell_confirmed.length+b.sell_watch.length)+'</b> mã có tín hiệu</span>';
 

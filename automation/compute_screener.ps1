@@ -12,6 +12,8 @@ $topNPath = Join-Path $cacheDir "topN_symbols.json"
 . (Join-Path $root "automation\lib\wyckoff_engine.ps1")
 
 $TOP_N = 120
+# Only screen HOSE (the VN-Index universe) - HNX and UPCOM are excluded per request.
+$ALLOWED_EXCHANGES = @("HOSE")
 
 $logDir = Join-Path $root "automation\logs"
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
@@ -44,7 +46,8 @@ $allFiles = $universe | ForEach-Object {
   $p = Join-Path $histDir "$($_.symbol).json"
   if (Test-Path $p) { Get-Item $p }
 } | Where-Object { $_ -ne $null }
-Write-Log "Universe: $totalUniverse symbols, $($allFiles.Count) with cached history"
+$hoseUniverseCount = ($universe | Where-Object { $_.exchange -in $ALLOWED_EXCHANGES }).Count
+Write-Log "Universe: $totalUniverse symbols total ($hoseUniverseCount on $($ALLOWED_EXCHANGES -join '/')), $($allFiles.Count) with cached history"
 
 if (Test-Path $topNPath) {
   $topList = Get-Content -Path $topNPath -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -54,9 +57,13 @@ if (Test-Path $topNPath) {
     if (Test-Path $p) { Get-Item $p }
   }
 } else {
-  Write-Log "No top-N list yet - ranking all $totalUniverse cached symbols by avg traded value (20-session)..."
+  $rankFiles = $universe | Where-Object { $_.exchange -in $ALLOWED_EXCHANGES } | ForEach-Object {
+    $p = Join-Path $histDir "$($_.symbol).json"
+    if (Test-Path $p) { Get-Item $p }
+  } | Where-Object { $_ -ne $null }
+  Write-Log ("No top-N list yet - ranking {0} cached symbols on {1} by avg traded value (20-session)..." -f $rankFiles.Count, ($ALLOWED_EXCHANGES -join '/'))
   $ranked = New-Object System.Collections.Generic.List[object]
-  foreach ($f in $allFiles) {
+  foreach ($f in $rankFiles) {
     $doc = Get-Content -Path $f.FullName -Raw -Encoding UTF8 | ConvertFrom-Json
     $pts = @($doc.points)
     if ($pts.Count -lt 40) { continue }
@@ -128,7 +135,7 @@ Write-Log "buy_confirmed=$($buckets.buy_confirmed.Count) buy_watch=$($buckets.bu
 $nowIso = (Get-Date).ToUniversalTime().ToString("o")
 $screener = [PSCustomObject]@{
   generatedAt     = $nowIso
-  totalSymbols    = $totalUniverse
+  totalSymbols    = $hoseUniverseCount
   screenedSymbols = $screened
   buckets         = [PSCustomObject]@{
     buy_confirmed  = $buckets.buy_confirmed
