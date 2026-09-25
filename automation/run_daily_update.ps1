@@ -11,7 +11,7 @@ $logFile = Join-Path $logDir "update_$stamp.log"
 function Write-Log($msg) {
   $line = "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $msg"
   Write-Output $line
-  Add-Content -Path $logFile -Value $line
+  try { Add-Content -Path $logFile -Value $line -ErrorAction Stop } catch { }
 }
 
 try {

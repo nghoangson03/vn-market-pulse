@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bộ Lọc Wyckoff</title>
+<meta name="description" content="Sàng lọc cổ phiếu toàn sàn HOSE/HNX/UPCOM theo các mẫu hình kiểu Wyckoff (Spring, Sign of Strength, Upthrust, Sign of Weakness), cập nhật tự động hằng ngày.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --bg: #f9f9f7;
+    --surface: #fcfcfb;
+    --surface-2: #f2f1ec;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --border: rgba(11,11,11,0.10);
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --series-vn: #2a78d6;
+    --series-vn-wash: rgba(42,120,214,0.10);
+    --series-hnx: #eb6834;
+    --series-hnx-wash: rgba(235,104,52,0.10);
+    --good: #0ca30c;
+    --good-wash: rgba(12,163,12,0.10);
+    --bad: #d03b3b;
+    --bad-wash: rgba(208,59,59,0.10);
+    --accent: #2a78d6;
+    --chip-bg: #f2f1ec;
+    --chip-active-bg: #0b0b0b;
+    --chip-active-ink: #fcfcfb;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 1px 1px rgba(11,11,11,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg: #0d0d0d;
+      --surface: #1a1a19;
+      --surface-2: #151513;
+      --ink: #ffffff;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --border: rgba(255,255,255,0.10);
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --series-vn: #3987e5;
+      --series-vn-wash: rgba(57,135,229,0.14);
+      --series-hnx: #d95926;
+      --series-hnx-wash: rgba(217,89,38,0.14);
+      --good: #34c77b;
+      --good-wash: rgba(52,199,123,0.14);
+      --bad: #f0665a;
+      --bad-wash: rgba(240,102,90,0.14);
+      --accent: #3987e5;
+      --chip-bg: #1f1f1d;
+      --chip-active-bg: #ffffff;
+      --chip-active-ink: #0b0b0b;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg: #0d0d0d;
+    --surface: #1a1a19;
+    --surface-2: #151513;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --border: rgba(255,255,255,0.10);
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --series-vn: #3987e5;
+    --series-vn-wash: rgba(57,135,229,0.14);
+    --series-hnx: #d95926;
+    --series-hnx-wash: rgba(217,89,38,0.14);
+    --good: #34c77b;
+    --good-wash: rgba(52,199,123,0.14);
+    --bad: #f0665a;
+    --bad-wash: rgba(240,102,90,0.14);
+    --accent: #3987e5;
+    --chip-bg: #1f1f1d;
+    --chip-active-bg: #ffffff;
+    --chip-active-ink: #0b0b0b;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+  .wrap{
+    max-width: 980px;
+    margin: 0 auto;
+    padding-inline: 16px;
+    padding-block: 28px 60px;
+  }
+  h1,h2,h3{ font-family:"Fraunces", Georgia, serif; font-weight:600; margin:0; text-wrap:balance; }
+  .tabular{ font-variant-numeric: tabular-nums; }
+  .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+
+  header.page{
+    display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;
+    margin-bottom:16px;
+  }
+  header.page h1{ font-size: 28px; letter-spacing:-0.01em; }
+  header.page .sub{ color:var(--ink-2); font-size:13.5px; margin-top:6px; max-width:60ch; }
+  .nav-link{ font-size:12.5px; font-weight:600; color:var(--accent); text-decoration:none; }
+  .nav-link:hover{ text-decoration:underline; }
+  .updated-badge{
+    display:flex; align-items:center; gap:8px;
+    font-size:12px; color:var(--ink-2);
+    border:1px solid var(--border); border-radius:100px;
+    padding:6px 12px 6px 10px; background:var(--surface); box-shadow:var(--shadow);
+    white-space:nowrap;
+  }
+  .updated-dot{ width:6px;height:6px;border-radius:50%; background:var(--good); flex:none; }
+  .refresh-btn{
+    border:none; background:transparent; color:var(--accent); font-size:12px; font-weight:600;
+    cursor:pointer; padding:0; font-family:inherit;
+  }
+  .refresh-btn:hover{ text-decoration:underline; }
+
+  .disclaimer{
+    background:var(--surface-2); border:1px solid var(--border); border-radius:12px;
+    padding:13px 16px; font-size:12.5px; color:var(--ink-2); line-height:1.5; margin-bottom:18px;
+  }
+  .disclaimer strong{ color:var(--ink); }
+
+  .stats-row{
+    display:flex; flex-wrap:wrap; gap:8px 20px; font-size:12.5px; color:var(--ink-2);
+    margin-bottom:18px;
+  }
+  .stats-row b{ color:var(--ink); font-family:"IBM Plex Mono", monospace; }
+
+  .filter-row{ margin-bottom:20px; }
+  .filter-input{
+    width:100%; max-width:320px; padding:9px 13px; border-radius:10px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink); font-size:13px; font-family:inherit;
+  }
+  .filter-input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+
+  section.screen-section{ margin-bottom:30px; }
+  section.screen-section h2{ font-size:18px; display:flex; align-items:center; gap:9px; margin-bottom:3px; }
+  section.screen-section .sec-sub{ font-size:12px; color:var(--muted); margin-bottom:12px; }
+  .sec-icon{ width:9px; height:9px; border-radius:50%; }
+  .sec-icon.buy{ background:var(--good); }
+  .sec-icon.sell{ background:var(--bad); }
+
+  .table-scroll{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); }
+  table.screen-table{ width:100%; border-collapse:collapse; font-size:12.5px; min-width:640px; }
+  table.screen-table thead th{
+    text-align:left; padding:10px 12px; font-weight:600; color:var(--ink-2);
+    border-bottom:1px solid var(--border); white-space:nowrap; background:var(--surface-2);
+  }
+  table.screen-table thead th.num{ text-align:right; }
+  table.screen-table td{ padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  table.screen-table td.num{ text-align:right; font-family:"IBM Plex Mono", monospace; white-space:nowrap; }
+  table.screen-table tbody tr{ cursor:pointer; }
+  table.screen-table tbody tr:hover{ background:var(--surface-2); }
+  table.screen-table .sym{ font-weight:700; font-family:"IBM Plex Mono", monospace; }
+  table.screen-table .exch{ font-size:10.5px; color:var(--muted); margin-left:6px; }
+  table.screen-table .note{ color:var(--ink-2); max-width:420px; }
+  table.screen-table .up{ color:var(--good); }
+  table.screen-table .down{ color:var(--bad); }
+  .empty-row td{ text-align:center; color:var(--muted); padding:22px; }
+
+  .badge{
+    display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.02em;
+    padding:3px 8px; border-radius:100px; white-space:nowrap;
+  }
+  .badge.tier-strong-buy{ background:var(--good-wash); color:var(--good); }
+  .badge.tier-watch-buy{ background:var(--surface-2); color:var(--good); border:1px solid var(--good); }
+  .badge.tier-strong-sell{ background:var(--bad-wash); color:var(--bad); }
+  .badge.tier-watch-sell{ background:var(--surface-2); color:var(--bad); border:1px solid var(--bad); }
+
+  .detail-row td{ padding:0; border-bottom:1px solid var(--border); }
+  .detail-inner{ padding:16px; background:var(--surface-2); }
+  .detail-head{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px; font-size:12.5px; color:var(--ink-2); }
+  .chart-wrap{ position:relative; }
+  svg.chart{ width:100%; height:auto; display:block; overflow:visible; }
+  .gridline{ stroke:var(--grid); stroke-width:1; }
+  .baseline{ stroke:var(--baseline); stroke-width:1; }
+  .axis-label{ fill:var(--muted); font-size:11px; font-family:"IBM Plex Mono", monospace; }
+  .end-label{ font-size:11.5px; font-weight:600; font-family:"IBM Plex Mono", monospace; }
+  .crosshair{ stroke:var(--muted); stroke-width:1; stroke-dasharray:3 3; opacity:0; pointer-events:none; }
+  .hover-dot{ opacity:0; pointer-events:none; }
+  .overlay-rect{ fill:transparent; cursor:crosshair; }
+  .overlay-rect:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .tooltip{
+    position:absolute; pointer-events:none; z-index:5;
+    background:var(--ink); color:var(--bg);
+    border-radius:8px; padding:8px 11px; font-size:12px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.18);
+    opacity:0; transform:translate(-50%,-110%); transition:opacity .08s ease;
+    min-width:120px;
+  }
+  .tooltip.show{ opacity:1; }
+  .tooltip .t-date{ font-family:"IBM Plex Mono", monospace; font-size:11px; opacity:.75; margin-bottom:4px; }
+  .tooltip .t-row{ display:flex; align-items:center; gap:6px; justify-content:space-between; }
+  .tooltip .t-key{ width:10px;height:2px;border-radius:2px; flex:none; }
+  .tooltip .t-name{ opacity:.85; flex:1; }
+  .tooltip .t-val{ font-family:"IBM Plex Mono", monospace; font-weight:600; }
+
+  .empty-state{ text-align:center; padding:50px 20px; color:var(--ink-2); }
+  .empty-state .big{ font-size:32px; margin-bottom:8px; }
+
+  footer.page{
+    margin-top:26px; padding-top:16px; border-top:1px solid var(--border);
+    font-size:11.5px; color:var(--muted); display:flex; flex-wrap:wrap; gap:6px 16px; justify-content:space-between;
+  }
+  footer.page a{ color:inherit; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <div>
+      <h1>Bộ Lọc Wyckoff</h1>
+      <div class="sub">Rà toàn bộ HOSE/HNX/UPCOM, quét kỹ nhóm vốn hóa lớn - thanh khoản cao nhất theo mẫu hình giá &amp; khối lượng kiểu Wyckoff. · <a class="nav-link" href="index.html">← Nhịp Sàn Việt</a></div>
+    </div>
+    <div class="updated-badge">
+      <span class="updated-dot" aria-hidden="true"></span>
+      <span id="updatedText">Đang tải…</span>
+      <button class="refresh-btn" id="refreshBtn" type="button">Làm mới</button>
+    </div>
+  </header>
+
+  <div class="disclaimer">
+    <strong>Đây là bộ lọc tự động, không phải phân tích Wyckoff thật.</strong> Các nhãn Spring / Sign of Strength / Upthrust / Sign of Weakness ở đây được tính bằng công thức giá–khối lượng đơn giản, KHÔNG thay thế cho việc đọc biểu đồ nhiều khung thời gian và phán đoán của người phân tích thực thụ. Đây chỉ là gợi ý để bạn tự kiểm chứng lại, hoàn toàn <strong>không phải khuyến nghị mua/bán</strong>.
+  </div>
+
+  <div class="stats-row" id="statsRow"></div>
+
+  <div class="filter-row">
+    <input class="filter-input" id="filterInput" type="text" placeholder="Lọc theo mã (VD: VNM, HPG...)">
+  </div>
+
+  <div id="content">
+    <div class="empty-state" id="loadingState">
+      <div class="big">⏳</div>
+      <div>Đang tải dữ liệu…</div>
+    </div>
+  </div>
+
+  <footer class="page">
+    <span>Nguồn dữ liệu: VNDirect (dchart) · chỉ mang tính tham khảo, không phải khuyến nghị đầu tư.</span>
+    <span>Tự động cập nhật sau ~16:00 (giờ VN), các ngày Thứ Hai–Thứ Sáu · <a href="https://github.com/nghoangson03/vn-market-pulse">mã nguồn</a></span>
+  </footer>
+</div>
+
+<script src="chart.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var fmtNum = VNChart.fmtNum, fmtDateFull = VNChart.fmtDateFull, fmtDateLong = VNChart.fmtDateLong,
+      drawChart = VNChart.drawChart, getComputedColor = VNChart.getComputedColor;
+
+  var PHASE_LABEL = {
+    markup_confirmed:   "Sign of Strength",
+    accumulation_setup: "Spring",
+    watch_range:        "Tích lũy, cung cạn dần",
+    markdown_confirmed: "Sign of Weakness",
+    distribution_setup: "Upthrust",
+    watch_top:          "Phân phối, theo dõi đỉnh"
+  };
+  var TIER_CLASS = {
+    buy_confirmed:  "tier-strong-buy",
+    buy_watch:      "tier-watch-buy",
+    sell_confirmed: "tier-strong-sell",
+    sell_watch:     "tier-watch-sell"
+  };
+
+  var screener = null;
+  var chartsData = null;
+  var filterText = "";
+  var openSymbol = null;
+
+  function fmtBigNum(n){
+    if(n===null||n===undefined) return "—";
+    if(Math.abs(n) >= 1000) return Math.round(n).toLocaleString("vi-VN");
+    return fmtNum(n);
+  }
+
+  function buildRow(item, tbody){
+    var tr = document.createElement("tr");
+    var dir = item.changePct >= 0 ? "up" : "down";
+    tr.innerHTML =
+      '<td><span class="sym">'+item.symbol+'</span><span class="exch">'+item.exchange+'</span><br>'+
+        '<span class="badge '+TIER_CLASS[item.signal]+'">'+(PHASE_LABEL[item.phase]||item.phase)+'</span></td>'+
+      '<td class="num tabular">'+fmtBigNum(item.lastClose)+'</td>'+
+      '<td class="num tabular '+dir+'">'+(item.changePct>=0?"+":"")+fmtNum(item.changePct)+'%</td>'+
+      '<td class="num tabular">'+fmtNum(item.volRatio)+'×</td>'+
+      '<td class="note">'+item.note+'</td>';
+    tr.dataset.symbol = item.symbol;
+    tbody.appendChild(tr);
+    tr.addEventListener("click", function(){ toggleDetail(item, tr); });
+    return tr;
+  }
+
+  function toggleDetail(item, tr){
+    var existing = tr.nextElementSibling;
+    if(existing && existing.classList.contains("detail-row")){
+      existing.remove();
+      openSymbol = null;
+      return;
+    }
+    document.querySelectorAll(".detail-row").forEach(function(n){ n.remove(); });
+    openSymbol = item.symbol;
+
+    var detailTr = document.createElement("tr");
+    detailTr.className = "detail-row";
+    var td = document.createElement("td");
+    td.colSpan = 5;
+    var inner = document.createElement("div");
+    inner.className = "detail-inner";
+    inner.innerHTML = '<div class="detail-head"><div>Hỗ trợ <b class="tabular">'+fmtBigNum(item.support)+'</b> · Kháng cự <b class="tabular">'+fmtBigNum(item.resistance)+'</b> · Mốc tín hiệu: '+fmtDateFull(item.triggerDate)+'</div></div><div class="chart-wrap"></div>';
+    td.appendChild(inner);
+    detailTr.appendChild(td);
+    tr.parentNode.insertBefore(detailTr, tr.nextSibling);
+
+    var chartInfo = chartsData ? chartsData[item.symbol] : null;
+    var wrap = inner.querySelector(".chart-wrap");
+    if(!chartInfo || !chartInfo.points || !chartInfo.points.length){
+      wrap.innerHTML = '<div style="padding:16px;color:var(--ink-2);font-size:12.5px;">Không có dữ liệu biểu đồ.</div>';
+      return;
+    }
+    var dates = chartInfo.points.map(function(p){ return p.d; });
+    var markerIdx = dates.indexOf(item.triggerDate);
+    var isBuy = item.signal.indexOf("buy") === 0;
+    var color = isBuy ? getComputedColor("--good") : getComputedColor("--bad");
+    var wash = isBuy ? getComputedColor("--good-wash") : getComputedColor("--bad-wash");
+    drawChart(wrap, dates,
+      [{label:item.symbol, color:color, points:chartInfo.points.map(function(p){return {v:p.c};}), area:true, wash:wash}],
+      {
+        ariaLabel: "Biểu đồ " + item.symbol,
+        height: 220,
+        endFormat: fmtBigNum,
+        hLines: [
+          {value:item.resistance, color:getComputedColor("--series-vn"), label:"Kháng cự"},
+          {value:item.support, color:getComputedColor("--series-hnx"), label:"Hỗ trợ"}
+        ],
+        markerIndex: markerIdx >= 0 ? markerIdx : null
+      });
+  }
+
+  function matchesFilter(item){
+    if(!filterText) return true;
+    return item.symbol.toUpperCase().indexOf(filterText) >= 0;
+  }
+
+  function renderSection(tbodyId, items, emptyMsg){
+    var tbody = document.getElementById(tbodyId);
+    tbody.innerHTML = "";
+    var filtered = items.filter(matchesFilter);
+    if(!filtered.length){
+      var tr = document.createElement("tr");
+      tr.className = "empty-row";
+      tr.innerHTML = '<td colspan="5">'+emptyMsg+'</td>';
+      tbody.appendChild(tr);
+      return;
+    }
+    filtered.forEach(function(item){ buildRow(item, tbody); });
+  }
+
+  function render(){
+    if(!screener) return;
+    var b = screener.buckets;
+    document.getElementById("statsRow").innerHTML =
+      '<span><b class="tabular">'+screener.totalSymbols.toLocaleString("vi-VN")+'</b> mã trên sàn</span>'+
+      '<span>quét kỹ <b class="tabular">'+screener.screenedSymbols.toLocaleString("vi-VN")+'</b> mã vốn hóa lớn, thanh khoản cao nhất</span>'+
+      '<span><b class="tabular">'+(b.buy_confirmed.length+b.buy_watch.length+b.sell_confirmed.length+b.sell_watch.length)+'</b> mã có tín hiệu</span>';
+
+    renderSection("buyBody", b.buy_confirmed.concat(b.buy_watch), "Không có mã nào khớp bộ lọc hiện tại.");
+    renderSection("sellBody", b.sell_confirmed.concat(b.sell_watch), "Không có mã nào khớp bộ lọc hiện tại.");
+
+    document.getElementById("updatedText").textContent = screener.generatedAt ? ("Cập nhật: "+fmtDateFull(screener.generatedAt.slice(0,10))) : "Chưa rõ thời gian cập nhật";
+  }
+
+  function buildLayout(){
+    var content = document.getElementById("content");
+    content.innerHTML =
+      '<section class="screen-section">'+
+        '<h2><span class="sec-icon buy"></span>Tiềm năng MUA</h2>'+
+        '<div class="sec-sub">Sign of Strength (đã xác nhận vượt kháng cự) và Spring (đang hình thành, cần theo dõi thêm).</div>'+
+        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+          '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
+        '</tr></thead><tbody id="buyBody"></tbody></table></div>'+
+      '</section>'+
+      '<section class="screen-section">'+
+        '<h2><span class="sec-icon sell"></span>Nên BÁN / Tránh</h2>'+
+        '<div class="sec-sub">Sign of Weakness (đã xác nhận thủng hỗ trợ) và Upthrust (đang hình thành, cần theo dõi thêm).</div>'+
+        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+          '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
+        '</tr></thead><tbody id="sellBody"></tbody></table></div>'+
+      '</section>';
+  }
+
+  function showEmpty(msg){
+    document.getElementById("content").innerHTML =
+      '<div class="empty-state"><div class="big">📉</div><div>'+msg+'</div></div>';
+  }
+
+  async function loadData(){
+    document.getElementById("updatedText").textContent = "Đang tải…";
+    try{
+      var res = await fetch("screener.json?_=" + Date.now());
+      if(!res.ok) throw new Error("HTTP "+res.status);
+      screener = await res.json();
+      if(!screener.buckets){ showEmpty("Dữ liệu chưa sẵn sàng. Vui lòng quay lại sau."); return; }
+
+      buildLayout();
+      render();
+
+      try{
+        var res2 = await fetch("screener_charts.json?_=" + Date.now());
+        if(res2.ok) chartsData = await res2.json();
+      }catch(e){ /* bieu do chi tiet la tinh nang phu, khong chan trang chinh */ }
+    }catch(e){
+      showEmpty("Có lỗi khi tải dữ liệu: "+(e&&e.message?e.message:"không rõ"));
+    }
+  }
+
+  document.getElementById("refreshBtn").addEventListener("click", loadData);
+  document.getElementById("filterInput").addEventListener("input", function(e){
+    filterText = e.target.value.trim().toUpperCase();
+    render();
+  });
+
+  loadData();
+})();
+</script>
+</body>
+</html>
