@@ -64,7 +64,9 @@ try {
     Write-Log "$sym : $newCount session(s) added/updated, total $($mergedPoints.Count) points."
   }
 
-  ($data | ConvertTo-Json -Depth 6 -Compress) | Out-File -FilePath $dataPath -Encoding utf8 -NoNewline
+  $json = $data | ConvertTo-Json -Depth 6 -Compress
+  $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+  [System.IO.File]::WriteAllText($dataPath, $json, $utf8NoBom)
 
   Set-Location $root
   git add data.json
