@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nhịp Sàn Việt</title>
+<meta name="description" content="Theo dõi VN-Index và HNX-Index hằng ngày, cập nhật tự động sau mỗi phiên giao dịch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --bg: #f9f9f7;
+    --surface: #fcfcfb;
+    --surface-2: #f2f1ec;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --border: rgba(11,11,11,0.10);
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --series-vn: #2a78d6;
+    --series-vn-wash: rgba(42,120,214,0.10);
+    --series-hnx: #eb6834;
+    --series-hnx-wash: rgba(235,104,52,0.10);
+    --good: #0ca30c;
+    --bad: #d03b3b;
+    --accent: #2a78d6;
+    --chip-bg: #f2f1ec;
+    --chip-active-bg: #0b0b0b;
+    --chip-active-ink: #fcfcfb;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 1px 1px rgba(11,11,11,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg: #0d0d0d;
+      --surface: #1a1a19;
+      --surface-2: #151513;
+      --ink: #ffffff;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --border: rgba(255,255,255,0.10);
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --series-vn: #3987e5;
+      --series-vn-wash: rgba(57,135,229,0.14);
+      --series-hnx: #d95926;
+      --series-hnx-wash: rgba(217,89,38,0.14);
+      --good: #34c77b;
+      --bad: #f0665a;
+      --accent: #3987e5;
+      --chip-bg: #1f1f1d;
+      --chip-active-bg: #ffffff;
+      --chip-active-ink: #0b0b0b;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg: #0d0d0d;
+    --surface: #1a1a19;
+    --surface-2: #151513;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --border: rgba(255,255,255,0.10);
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --series-vn: #3987e5;
+    --series-vn-wash: rgba(57,135,229,0.14);
+    --series-hnx: #d95926;
+    --series-hnx-wash: rgba(217,89,38,0.14);
+    --good: #34c77b;
+    --bad: #f0665a;
+    --accent: #3987e5;
+    --chip-bg: #1f1f1d;
+    --chip-active-bg: #ffffff;
+    --chip-active-ink: #0b0b0b;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+  .wrap{
+    max-width: 920px;
+    margin: 0 auto;
+    padding-inline: 16px;
+    padding-block: 28px 60px;
+  }
+  h1,h2,h3{ font-family:"Fraunces", Georgia, serif; font-weight:600; margin:0; text-wrap:balance; }
+  .tabular{ font-variant-numeric: tabular-nums; }
+  .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+
+  header.page{
+    display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;
+    margin-bottom:22px;
+  }
+  header.page h1{ font-size: 30px; letter-spacing:-0.01em; }
+  header.page .sub{ color:var(--ink-2); font-size:13.5px; margin-top:6px; max-width:46ch; }
+  .updated-badge{
+    display:flex; align-items:center; gap:8px;
+    font-size:12px; color:var(--ink-2);
+    border:1px solid var(--border); border-radius:100px;
+    padding:6px 12px 6px 10px; background:var(--surface); box-shadow:var(--shadow);
+    white-space:nowrap;
+  }
+  .updated-dot{ width:6px;height:6px;border-radius:50%; background:var(--good); flex:none; }
+  .refresh-btn{
+    border:none; background:transparent; color:var(--accent); font-size:12px; font-weight:600;
+    cursor:pointer; padding:0; font-family:inherit;
+  }
+  .refresh-btn:hover{ text-decoration:underline; }
+
+  .range-row{
+    display:flex; gap:6px; margin-bottom:18px; flex-wrap:wrap;
+  }
+  .chip{
+    border:1px solid var(--border); background:var(--chip-bg); color:var(--ink-2);
+    font-size:12.5px; font-weight:600; padding:6px 13px; border-radius:100px; cursor:pointer;
+    font-family:"IBM Plex Sans", sans-serif;
+  }
+  .chip[aria-pressed="true"]{ background:var(--chip-active-bg); color:var(--chip-active-ink); border-color:var(--chip-active-bg); }
+  .chip:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .stat-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;
+  }
+  @media (max-width:520px){ .stat-grid{ grid-template-columns:1fr; } }
+  .stat-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:16px 18px; box-shadow:var(--shadow);
+  }
+  .stat-card .label{ font-size:12.5px; color:var(--ink-2); font-weight:500; display:flex; align-items:center; gap:7px;}
+  .stat-card .swatch{ width:9px;height:9px;border-radius:2px; flex:none; }
+  .stat-card .value-row{ display:flex; align-items:baseline; gap:10px; margin-top:8px; flex-wrap:wrap; }
+  .stat-card .value{ font-size:27px; font-weight:600; font-family:"IBM Plex Sans", sans-serif; }
+  .stat-card .delta{ font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:3px; }
+  .stat-card .delta.up{ color:var(--good); }
+  .stat-card .delta.down{ color:var(--bad); }
+  .stat-card .delta.flat{ color:var(--muted); }
+  .stat-card .spark{ margin-top:10px; width:100%; height:40px; display:block; }
+  .stat-card .asof{ margin-top:4px; font-size:11px; color:var(--muted); }
+
+  .panel{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:18px 18px 12px; box-shadow:var(--shadow); margin-bottom:16px;
+    position:relative;
+  }
+  .panel h2{ font-size:16.5px; }
+  .panel .panel-sub{ font-size:12px; color:var(--muted); margin-top:2px; }
+  .panel-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
+  .legend{ display:flex; gap:14px; font-size:12px; color:var(--ink-2); }
+  .legend .item{ display:flex; align-items:center; gap:6px; }
+  .legend .key{ width:14px; height:2px; border-radius:2px; }
+
+  .chart-wrap{ position:relative; }
+  svg.chart{ width:100%; height:auto; display:block; overflow:visible; }
+  .gridline{ stroke:var(--grid); stroke-width:1; }
+  .baseline{ stroke:var(--baseline); stroke-width:1; }
+  .axis-label{ fill:var(--muted); font-size:11px; font-family:"IBM Plex Mono", monospace; }
+  .end-label{ font-size:11.5px; font-weight:600; font-family:"IBM Plex Mono", monospace; }
+  .crosshair{ stroke:var(--muted); stroke-width:1; stroke-dasharray:3 3; opacity:0; pointer-events:none; }
+  .hover-dot{ opacity:0; pointer-events:none; }
+  .overlay-rect{ fill:transparent; cursor:crosshair; }
+  .overlay-rect:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .tooltip{
+    position:absolute; pointer-events:none; z-index:5;
+    background:var(--ink); color:var(--bg);
+    border-radius:8px; padding:8px 11px; font-size:12px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.18);
+    opacity:0; transform:translate(-50%,-110%); transition:opacity .08s ease;
+    min-width:120px;
+  }
+  .tooltip.show{ opacity:1; }
+  .tooltip .t-date{ font-family:"IBM Plex Mono", monospace; font-size:11px; opacity:.75; margin-bottom:4px; }
+  .tooltip .t-row{ display:flex; align-items:center; gap:6px; justify-content:space-between; }
+  .tooltip .t-row + .t-row{ margin-top:3px; }
+  .tooltip .t-key{ width:10px;height:2px;border-radius:2px; flex:none; }
+  .tooltip .t-name{ opacity:.85; flex:1; }
+  .tooltip .t-val{ font-family:"IBM Plex Mono", monospace; font-weight:600; }
+
+  .table-toggle{
+    display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink-2); font-size:12.5px; font-weight:600;
+    padding:8px 14px; border-radius:10px; cursor:pointer; margin-bottom:14px; font-family:inherit;
+  }
+  .table-toggle:hover{ color:var(--ink); }
+  .table-scroll{ max-height:420px; overflow:auto; border:1px solid var(--border); border-radius:12px; }
+  table.data-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.data-table thead th{
+    position:sticky; top:0; background:var(--surface-2); text-align:right; padding:9px 12px;
+    font-weight:600; color:var(--ink-2); border-bottom:1px solid var(--border); white-space:nowrap;
+  }
+  table.data-table thead th:first-child{ text-align:left; }
+  table.data-table td{ padding:7px 12px; text-align:right; border-bottom:1px solid var(--border); font-family:"IBM Plex Mono", monospace; }
+  table.data-table td:first-child{ text-align:left; font-family:"IBM Plex Sans", sans-serif; }
+  table.data-table tbody tr:nth-child(even){ background:var(--surface-2); }
+  table.data-table .up{ color:var(--good); }
+  table.data-table .down{ color:var(--bad); }
+
+  .empty-state{ text-align:center; padding:50px 20px; color:var(--ink-2); }
+  .empty-state .big{ font-size:32px; margin-bottom:8px; }
+
+  footer.page{
+    margin-top:26px; padding-top:16px; border-top:1px solid var(--border);
+    font-size:11.5px; color:var(--muted); display:flex; flex-wrap:wrap; gap:6px 16px; justify-content:space-between;
+  }
+  footer.page a{ color:inherit; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <div>
+      <h1>Nhịp Sàn Việt</h1>
+      <div class="sub">VN-Index và HNX-Index theo từng phiên giao dịch, cập nhật tự động sau khi thị trường đóng cửa.</div>
+    </div>
+    <div class="updated-badge">
+      <span class="updated-dot" aria-hidden="true"></span>
+      <span id="updatedText">Đang tải…</span>
+      <button class="refresh-btn" id="refreshBtn" type="button">Làm mới</button>
+    </div>
+  </header>
+
+  <div id="content">
+    <div class="empty-state" id="loadingState">
+      <div class="big">⏳</div>
+      <div>Đang tải dữ liệu…</div>
+    </div>
+  </div>
+
+  <footer class="page">
+    <span>Nguồn dữ liệu: VNDirect (dchart) · chỉ mang tính tham khảo, không phải khuyến nghị đầu tư.</span>
+    <span>Tự động lấy dữ liệu sau ~15:30 (giờ VN), các ngày Thứ Hai–Thứ Sáu · <a href="https://github.com/nghoangson03/vn-market-pulse">mã nguồn</a></span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var RANGES = ["1M","3M","6M","1Y","ALL"];
+  var RANGE_LABEL = {"1M":"1 Tháng","3M":"3 Tháng","6M":"6 Tháng","1Y":"1 Năm","ALL":"Tất cả"};
+  var state = { range: "6M", vn: null, hnx: null };
+
+  function fmtNum(n, d){
+    if(d===undefined) d=2;
+    if(n===null||n===undefined||isNaN(n)) return "—";
+    return n.toLocaleString("vi-VN",{minimumFractionDigits:d,maximumFractionDigits:d});
+  }
+  function fmtInt(n){
+    if(n===null||n===undefined||isNaN(n)) return "—";
+    return Math.round(n).toLocaleString("vi-VN");
+  }
+  function fmtDateShort(d){
+    var p = d.split("-"); return p[2]+"/"+p[1];
+  }
+  function fmtDateFull(d){
+    var p = d.split("-"); return p[2]+"/"+p[1]+"/"+p[0];
+  }
+  function fmtDateLong(d){
+    var p = d.split("-");
+    var days = ["Chủ Nhật","Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy"];
+    var dt = new Date(d+"T00:00:00");
+    return days[dt.getDay()]+", "+p[2]+"/"+p[1]+"/"+p[0];
+  }
+  function svgEl(name, attrs){
+    var el = document.createElementNS("http://www.w3.org/2000/svg", name);
+    for(var k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+  function niceTicks(min, max, count){
+    var range = max-min;
+    if(range===0){ return [min]; }
+    var step = range/count;
+    var ticks = [];
+    for(var i=0;i<=count;i++) ticks.push(min+step*i);
+    return ticks;
+  }
+
+  function cutoffDate(range, lastDateStr){
+    if(range==="ALL") return null;
+    var end = new Date(lastDateStr+"T00:00:00");
+    var start = new Date(end);
+    if(range==="1M") start.setMonth(start.getMonth()-1);
+    else if(range==="3M") start.setMonth(start.getMonth()-3);
+    else if(range==="6M") start.setMonth(start.getMonth()-6);
+    else if(range==="1Y") start.setFullYear(start.getFullYear()-1);
+    return start;
+  }
+  function filterRange(points, range){
+    if(!points || !points.length) return [];
+    if(range==="ALL") return points;
+    var cutoff = cutoffDate(range, points[points.length-1].d);
+    return points.filter(function(p){ return new Date(p.d+"T00:00:00") >= cutoff; });
+  }
+
+  // ---- single/multi series chart with hover crosshair ----
+  function drawChart(container, dates, series, opts){
+    opts = opts || {};
+    var W = 760, H = opts.height || 260;
+    var padL = 54, padR = 14, padT = 14, padB = 26;
+    var innerW = W-padL-padR, innerH = H-padT-padB;
+    var n = dates.length;
+
+    container.innerHTML = "";
+    var svg = svgEl("svg", {"class":"chart","viewBox":"0 0 "+W+" "+H,"preserveAspectRatio":"none","role":"img","aria-label":opts.ariaLabel||""});
+
+    if(n < 2){
+      container.appendChild(svg);
+      return;
+    }
+
+    function xPos(i){ return n<=1 ? padL+innerW/2 : padL + (innerW*i)/(n-1); }
+
+    var allVals = [];
+    series.forEach(function(s){ s.points.forEach(function(p){ allVals.push(p.v); }); });
+    var minV = Math.min.apply(null, allVals), maxV = Math.max.apply(null, allVals);
+    if(minV===maxV){ minV -= 1; maxV += 1; }
+    var pad = (maxV-minV)*0.10;
+    minV -= pad; maxV += pad;
+    function yPos(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
+
+    var gGrid = svgEl("g");
+    var yTicks = niceTicks(minV+pad, maxV-pad, 4);
+    yTicks.forEach(function(t){
+      var y = yPos(t);
+      gGrid.appendChild(svgEl("line", {"class":"gridline", x1:padL, x2:W-padR, y1:y, y2:y}));
+      var lbl = svgEl("text", {"class":"axis-label", x:padL-8, y:y+3, "text-anchor":"end"});
+      lbl.textContent = fmtInt(t);
+      gGrid.appendChild(lbl);
+    });
+    gGrid.appendChild(svgEl("line", {"class":"baseline", x1:padL, x2:W-padR, y1:padT+innerH, y2:padT+innerH}));
+    svg.appendChild(gGrid);
+
+    var gX = svgEl("g");
+    var xTickCount = Math.min(5, n);
+    for(var ti=0; ti<xTickCount; ti++){
+      var idx = xTickCount===1 ? 0 : Math.round(ti*(n-1)/(xTickCount-1));
+      var x = xPos(idx);
+      var lbl2 = svgEl("text", {"class":"axis-label", x:x, y:H-6, "text-anchor": ti===0?"start":(ti===xTickCount-1?"end":"middle")});
+      lbl2.textContent = fmtDateShort(dates[idx]);
+      gX.appendChild(lbl2);
+    }
+    svg.appendChild(gX);
+
+    series.forEach(function(s){
+      var pts = s.points;
+      var linePts = pts.map(function(p,i){ return xPos(i)+","+yPos(p.v); }).join(" L ");
+      if(s.area){
+        var areaPts = "M "+xPos(0)+","+(padT+innerH)+" L "+linePts+" L "+xPos(pts.length-1)+","+(padT+innerH)+" Z";
+        svg.appendChild(svgEl("path", {d:areaPts, fill:s.wash, stroke:"none"}));
+      }
+      svg.appendChild(svgEl("path", {d:"M "+linePts, fill:"none", stroke:s.color, "stroke-width":2, "stroke-linejoin":"round", "stroke-linecap":"round", "vector-effect":"non-scaling-stroke"}));
+
+      var lastP = pts[pts.length-1];
+      var lastX = xPos(pts.length-1), lastY = yPos(lastP.v);
+      svg.appendChild(svgEl("circle", {cx:lastX, cy:lastY, r:5, fill:"var(--surface)"}));
+      svg.appendChild(svgEl("circle", {cx:lastX, cy:lastY, r:3.5, fill:s.color}));
+      var endLbl = svgEl("text", {"class":"end-label", x: Math.min(lastX+6, W-padR-2), y:lastY-8, "text-anchor": lastX > W-padR-40 ? "end":"start", fill:s.color});
+      endLbl.textContent = opts.endFormat ? opts.endFormat(lastP.v) : fmtNum(lastP.v);
+      svg.appendChild(endLbl);
+    });
+
+    // crosshair + hover dots
+    var crosshair = svgEl("line", {"class":"crosshair", x1:0,x2:0, y1:padT, y2:padT+innerH});
+    svg.appendChild(crosshair);
+    var hoverDots = series.map(function(s){
+      var g = svgEl("g", {"class":"hover-dot"});
+      g.appendChild(svgEl("circle", {r:6, fill:"var(--surface)"}));
+      var dot = svgEl("circle", {r:4, fill:s.color});
+      g.appendChild(dot);
+      svg.appendChild(g);
+      return g;
+    });
+
+    var overlay = svgEl("rect", {"class":"overlay-rect", x:padL, y:padT, width:innerW, height:innerH, tabindex:"0"});
+    svg.appendChild(overlay);
+    container.appendChild(svg);
+
+    var tooltip = document.createElement("div");
+    tooltip.className = "tooltip";
+    container.appendChild(tooltip);
+
+    var curIdx = -1;
+    function showIndex(i){
+      i = Math.max(0, Math.min(n-1, i));
+      curIdx = i;
+      var x = xPos(i);
+      crosshair.setAttribute("x1", x); crosshair.setAttribute("x2", x);
+      crosshair.style.opacity = 1;
+      var html = '<div class="t-date">'+fmtDateFull(dates[i])+'</div>';
+      series.forEach(function(s, si){
+        var p = s.points[i];
+        var y = yPos(p.v);
+        hoverDots[si].style.opacity = 1;
+        hoverDots[si].setAttribute("transform", "translate("+x+","+y+")");
+        html += '<div class="t-row"><span class="t-key" style="background:'+s.color+'"></span><span class="t-name">'+s.label+'</span><span class="t-val">'+(opts.endFormat?opts.endFormat(p.v):fmtNum(p.v))+'</span></div>';
+      });
+      tooltip.innerHTML = html;
+      tooltip.classList.add("show");
+      var rect = svg.getBoundingClientRect();
+      var px = rect.left + (x/W)*rect.width;
+      var py = rect.top + (padT/H)*rect.height;
+      var wrapRect = container.getBoundingClientRect();
+      tooltip.style.left = Math.max(60, Math.min(rect.width-60, px-wrapRect.left)) + "px";
+      tooltip.style.top = (py-wrapRect.top) + "px";
+    }
+    function hideAll(){
+      crosshair.style.opacity = 0;
+      hoverDots.forEach(function(g){ g.style.opacity = 0; });
+      tooltip.classList.remove("show");
+      curIdx = -1;
+    }
+    function pointerToIndex(evt){
+      var pt = svg.createSVGPoint();
+      pt.x = evt.clientX; pt.y = evt.clientY;
+      var ctm = svg.getScreenCTM();
+      if(!ctm) return 0;
+      var loc = pt.matrixTransform(ctm.inverse());
+      var frac = (loc.x-padL)/innerW;
+      return Math.round(frac*(n-1));
+    }
+    overlay.addEventListener("pointermove", function(e){ showIndex(pointerToIndex(e)); });
+    overlay.addEventListener("pointerdown", function(e){ showIndex(pointerToIndex(e)); });
+    overlay.addEventListener("pointerleave", hideAll);
+    overlay.addEventListener("keydown", function(e){
+      if(e.key==="ArrowRight"){ showIndex((curIdx<0?n-1:curIdx)+1); e.preventDefault(); }
+      else if(e.key==="ArrowLeft"){ showIndex((curIdx<0?n-1:curIdx)-1); e.preventDefault(); }
+    });
+    overlay.addEventListener("focus", function(){ showIndex(n-1); });
+    overlay.addEventListener("blur", hideAll);
+  }
+
+  function drawSpark(svg, points, color, wash){
+    var W=140,H=40,pad=3;
+    svg.setAttribute("viewBox","0 0 "+W+" "+H);
+    svg.innerHTML = "";
+    if(points.length<2) return;
+    var vals = points.map(function(p){return p.v;});
+    var minV=Math.min.apply(null,vals), maxV=Math.max.apply(null,vals);
+    if(minV===maxV){minV-=1;maxV+=1;}
+    function x(i){ return pad + (W-2*pad)*i/(points.length-1); }
+    function y(v){ return pad + (H-2*pad)*(1-(v-minV)/(maxV-minV)); }
+    var line = points.map(function(p,i){ return x(i)+","+y(p.v); }).join(" L ");
+    var area = "M "+x(0)+","+(H-pad)+" L "+line+" L "+x(points.length-1)+","+(H-pad)+" Z";
+    svg.appendChild(svgEl("path",{d:area, fill:wash, stroke:"none"}));
+    svg.appendChild(svgEl("path",{d:"M "+line, fill:"none", stroke:color, "stroke-width":1.75, "stroke-linejoin":"round","stroke-linecap":"round","vector-effect":"non-scaling-stroke"}));
+    var lastI = points.length-1;
+    svg.appendChild(svgEl("circle",{cx:x(lastI), cy:y(points[lastI].v), r:2.5, fill:color}));
+  }
+
+  function buildStatCard(key, name, color, wash, points){
+    var last = points[points.length-1];
+    var prev = points.length>1 ? points[points.length-2] : null;
+    var change = prev ? last.v-prev.v : 0;
+    var changePct = prev ? (change/prev.v*100) : 0;
+    var dir = change>0.005?"up":(change<-0.005?"down":"flat");
+    var arrow = dir==="up"?"▲":(dir==="down"?"▼":"■");
+
+    var card = document.createElement("div");
+    card.className = "stat-card";
+    card.innerHTML =
+      '<div class="label"><span class="swatch" style="background:'+color+'"></span>'+name+'</div>'+
+      '<div class="value-row">'+
+        '<span class="value tabular">'+fmtNum(last.v)+'</span>'+
+        '<span class="delta '+dir+'">'+arrow+' '+fmtNum(Math.abs(change))+' ('+fmtNum(Math.abs(changePct))+'%)</span>'+
+      '</div>'+
+      '<svg class="spark"></svg>'+
+      '<div class="asof">Phiên '+fmtDateLong(last.d)+'</div>';
+    drawSpark(card.querySelector(".spark"), points.slice(-40), color, wash);
+    return card;
+  }
+
+  function mergeDates(vnPoints, hnxPoints){
+    var set = {};
+    vnPoints.forEach(function(p){ set[p.d]=1; });
+    hnxPoints.forEach(function(p){ set[p.d]=1; });
+    return Object.keys(set).sort();
+  }
+  function alignToDates(points, dates){
+    var map = {};
+    points.forEach(function(p){ map[p.d]=p; });
+    var out = [];
+    var lastVal = null;
+    dates.forEach(function(d){
+      if(map[d]){ lastVal = map[d]; out.push({d:d, v:map[d].c}); }
+      else if(lastVal){ out.push({d:d, v:lastVal.c}); }
+    });
+    return out;
+  }
+
+  function render(){
+    var vnAll = state.vn.points, hnxAll = state.hnx.points;
+    if(!vnAll.length || !hnxAll.length){ return; }
+
+    var content = document.getElementById("content");
+    content.innerHTML = "";
+
+    // stat cards (always latest values, independent of range)
+    var statGrid = document.createElement("div");
+    statGrid.className = "stat-grid";
+    statGrid.appendChild(buildStatCard("VNINDEX","VN-Index","var(--series-vn)","var(--series-vn-wash)",vnAll));
+    statGrid.appendChild(buildStatCard("HNX","HNX-Index","var(--series-hnx)","var(--series-hnx-wash)",hnxAll));
+    content.appendChild(statGrid);
+
+    // range chips
+    var rangeRow = document.createElement("div");
+    rangeRow.className = "range-row";
+    RANGES.forEach(function(r){
+      var chip = document.createElement("button");
+      chip.className = "chip"; chip.type="button";
+      chip.textContent = RANGE_LABEL[r];
+      chip.setAttribute("aria-pressed", r===state.range ? "true":"false");
+      chip.addEventListener("click", function(){ state.range = r; render(); });
+      rangeRow.appendChild(chip);
+    });
+    content.appendChild(rangeRow);
+
+    var vnR = filterRange(vnAll, state.range);
+    var hnxR = filterRange(hnxAll, state.range);
+
+    // VN-Index panel
+    var pVn = document.createElement("div"); pVn.className="panel";
+    pVn.innerHTML = '<div class="panel-head"><div><h2>VN-Index theo phiên</h2><div class="panel-sub">Chỉ số sàn HOSE</div></div></div><div class="chart-wrap"></div>';
+    content.appendChild(pVn);
+    drawChart(pVn.querySelector(".chart-wrap"), vnR.map(function(p){return p.d;}),
+      [{label:"VN-Index", color:getComputedColor("--series-vn"), points:vnR.map(function(p){return {v:p.c};}), area:true, wash:getComputedColor("--series-vn-wash")}],
+      {ariaLabel:"Biểu đồ VN-Index"});
+
+    // HNX-Index panel
+    var pHnx = document.createElement("div"); pHnx.className="panel";
+    pHnx.innerHTML = '<div class="panel-head"><div><h2>HNX-Index theo phiên</h2><div class="panel-sub">Chỉ số sàn HNX</div></div></div><div class="chart-wrap"></div>';
+    content.appendChild(pHnx);
+    drawChart(pHnx.querySelector(".chart-wrap"), hnxR.map(function(p){return p.d;}),
+      [{label:"HNX-Index", color:getComputedColor("--series-hnx"), points:hnxR.map(function(p){return {v:p.c};}), area:true, wash:getComputedColor("--series-hnx-wash")}],
+      {ariaLabel:"Biểu đồ HNX-Index"});
+
+    // comparison panel, indexed to 100
+    var mergedDates = mergeDates(vnR, hnxR);
+    var vnAligned = alignToDates(vnR, mergedDates);
+    var hnxAligned = alignToDates(hnxR, mergedDates);
+    if(vnAligned.length>1 && hnxAligned.length>1){
+      var vnBase = vnAligned[0].v, hnxBase = hnxAligned[0].v;
+      var vnIdxSeries = vnAligned.map(function(p){ return {v: p.v/vnBase*100}; });
+      var hnxIdxSeries = hnxAligned.map(function(p){ return {v: p.v/hnxBase*100}; });
+      var pCmp = document.createElement("div"); pCmp.className="panel";
+      pCmp.innerHTML = '<div class="panel-head"><div><h2>Hiệu suất tương đối</h2><div class="panel-sub">Quy về mốc 100 tại đầu khoảng thời gian đã chọn</div></div>'+
+        '<div class="legend"><span class="item"><span class="key" style="background:'+getComputedColor("--series-vn")+'"></span>VN-Index</span><span class="item"><span class="key" style="background:'+getComputedColor("--series-hnx")+'"></span>HNX-Index</span></div></div>'+
+        '<div class="chart-wrap"></div>';
+      content.appendChild(pCmp);
+      drawChart(pCmp.querySelector(".chart-wrap"), mergedDates,
+        [
+          {label:"VN-Index", color:getComputedColor("--series-vn"), points:vnIdxSeries, area:false},
+          {label:"HNX-Index", color:getComputedColor("--series-hnx"), points:hnxIdxSeries, area:false}
+        ],
+        {ariaLabel:"So sánh hiệu suất VN-Index và HNX-Index", endFormat:function(v){ return fmtNum(v)+""; }});
+    }
+
+    // table
+    var tableBtn = document.createElement("button");
+    tableBtn.className = "table-toggle"; tableBtn.type="button";
+    tableBtn.textContent = "Xem bảng dữ liệu ▾";
+    content.appendChild(tableBtn);
+
+    var tableScroll = document.createElement("div");
+    tableScroll.className = "table-scroll"; tableScroll.hidden = true;
+    var vnMap = {}; vnR.forEach(function(p){vnMap[p.d]=p;});
+    var hnxMap = {}; hnxR.forEach(function(p){hnxMap[p.d]=p;});
+    var rows = mergedDates.slice().reverse();
+    var tHtml = '<table class="data-table"><thead><tr><th>Ngày</th><th>VN-Index</th><th>%Δ</th><th>HNX-Index</th><th>%Δ</th></tr></thead><tbody>';
+    rows.forEach(function(d, ri){
+      var origIdx = mergedDates.length-1-ri;
+      var vn = vnMap[d], hnx = hnxMap[d];
+      var vnPrev = origIdx>0 ? vnMap[mergedDates[origIdx-1]] : null;
+      var hnxPrev = origIdx>0 ? hnxMap[mergedDates[origIdx-1]] : null;
+      var vnPct = (vn && vnPrev) ? ((vn.c-vnPrev.c)/vnPrev.c*100) : null;
+      var hnxPct = (hnx && hnxPrev) ? ((hnx.c-hnxPrev.c)/hnxPrev.c*100) : null;
+      tHtml += "<tr><td>"+fmtDateFull(d)+"</td>"+
+        "<td class=\"tabular\">"+(vn?fmtNum(vn.c):"—")+"</td>"+
+        "<td class=\"tabular "+(vnPct==null?"":(vnPct>=0?"up":"down"))+"\">"+(vnPct==null?"—":(vnPct>=0?"+":"")+fmtNum(vnPct)+"%")+"</td>"+
+        "<td class=\"tabular\">"+(hnx?fmtNum(hnx.c):"—")+"</td>"+
+        "<td class=\"tabular "+(hnxPct==null?"":(hnxPct>=0?"up":"down"))+"\">"+(hnxPct==null?"—":(hnxPct>=0?"+":"")+fmtNum(hnxPct)+"%")+"</td></tr>";
+    });
+    tHtml += "</tbody></table>";
+    tableScroll.innerHTML = tHtml;
+    content.appendChild(tableScroll);
+    tableBtn.addEventListener("click", function(){
+      tableScroll.hidden = !tableScroll.hidden;
+      tableBtn.textContent = tableScroll.hidden ? "Xem bảng dữ liệu ▾" : "Ẩn bảng dữ liệu ▴";
+    });
+
+    // updated badge
+    var upd = state.vn.updatedAt || state.hnx.updatedAt;
+    document.getElementById("updatedText").textContent = upd ? ("Cập nhật: "+fmtDateFull(upd.slice(0,10))) : "Chưa rõ thời gian cập nhật";
+  }
+
+  var colorCache = {};
+  function getComputedColor(varName){
+    if(colorCache[varName]) return colorCache[varName];
+    var v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    colorCache[varName] = v;
+    return v;
+  }
+
+  function showEmpty(msg){
+    document.getElementById("content").innerHTML =
+      '<div class="empty-state"><div class="big">📉</div><div>'+msg+'</div></div>';
+  }
+
+  async function loadData(){
+    document.getElementById("updatedText").textContent = "Đang tải…";
+    try{
+      var res = await fetch("data.json?_=" + Date.now());
+      if(!res.ok) throw new Error("HTTP "+res.status);
+      var json = await res.json();
+      if(!json.vnindex || !json.hnx || !json.vnindex.points || !json.hnx.points){
+        showEmpty("Dữ liệu chưa sẵn sàng. Vui lòng quay lại sau.");
+        return;
+      }
+      state.vn = { points: (json.vnindex.points||[]).slice().sort(function(a,b){return a.d<b.d?-1:1;}), updatedAt: json.vnindex.updatedAt };
+      state.hnx = { points: (json.hnx.points||[]).slice().sort(function(a,b){return a.d<b.d?-1:1;}), updatedAt: json.hnx.updatedAt };
+      render();
+    }catch(e){
+      showEmpty("Có lỗi khi tải dữ liệu: "+(e&&e.message?e.message:"không rõ"));
+    }
+  }
+
+  document.getElementById("refreshBtn").addEventListener("click", loadData);
+  loadData();
+})();
+</script>
+</body>
+</html>
