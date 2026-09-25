@@ -1,4 +1,4 @@
-# Dung chung: nap file nay bang dot-source (". path\wyckoff_engine.ps1") de dung cac ham:
+﻿# Dung chung: nap file nay bang dot-source (". path\wyckoff_engine.ps1") de dung cac ham:
 #   Get-TradingRange, Get-AvgVol, Compute-WyckoffForSymbol
 # Khong goi Claude / agent nao. Chi xu ly du lieu OHLCV thuan tuy.
 
@@ -145,8 +145,8 @@ function Compute-WyckoffForSymbol($symbol, $name, $exchange, $points) {
     if ($sosVolRatio -ge 2.0) { $score += 5 }
     if (($lastIdx - $sosIdx) -le 5) { $score += 5 }
     $score = [Math]::Min(100, $score)
-    $note = "Vuot dinh vung tich luy $([Math]::Round($rangeHigh,2)) voi khoi luong gap $([Math]::Round($sosVolRatio,1)) lan TB20 phien - dang Sign of Strength."
-    if ($null -ne $lpsIdx) { $note += " Da co nhip hoi giu duoc vung khang cu cu (Last Point of Support)." }
+    $note = "Vượt đỉnh vùng tích lũy $([Math]::Round($rangeHigh,2)) với khối lượng gấp $([Math]::Round($sosVolRatio,1)) lần TB20 phiên - dạng Sign of Strength."
+    if ($null -ne $lpsIdx) { $note += " Đã có nhịp hồi giữ được vùng kháng cự cũ (Last Point of Support)." }
     $buyResult = [PSCustomObject]@{ phase = "markup_confirmed"; signal = "buy_confirmed"; score = $score; triggerIdx = $sosIdx; note = $note }
   } elseif ($null -ne $springIdx) {
     $score = 55
@@ -154,8 +154,8 @@ function Compute-WyckoffForSymbol($symbol, $name, $exchange, $points) {
     if ($springVolRatio -le 0.8) { $score += 5 }
     if (($lastIdx - $springIdx) -le 3) { $score += 4 }
     $score = [Math]::Min(79, $score)
-    $note = "Xuyen thung day vung tich luy $([Math]::Round($rangeLow,2)) roi dong cua lai tren ho tro, khoi luong chi bang $([Math]::Round($springVolRatio,2)) lan TB20 - dang Spring."
-    if ($null -ne $testIdx) { $note += " Da co phien Test lai voi khoi luong can kiet, cung co tin cay." }
+    $note = "Xuyên thủng đáy vùng tích lũy $([Math]::Round($rangeLow,2)) rồi đóng cửa lại trên hỗ trợ, khối lượng chỉ bằng $([Math]::Round($springVolRatio,2)) lần TB20 - dạng Spring."
+    if ($null -ne $testIdx) { $note += " Đã có phiên Test lại với khối lượng cạn kiệt, củng cố độ tin cậy." }
     $buyResult = [PSCustomObject]@{ phase = "accumulation_setup"; signal = "buy_watch"; score = $score; triggerIdx = $springIdx; note = $note }
   } elseif ($context -eq "after_decline" -and $tr.end -ge ($lastIdx - 30)) {
     $first10 = 0.0; $last10 = 0.0
@@ -165,7 +165,7 @@ function Compute-WyckoffForSymbol($symbol, $name, $exchange, $points) {
     if ($c1 -gt 0) { $first10 /= $c1 }
     if ($c2 -gt 0) { $last10 /= $c2 }
     if ($first10 -gt 0 -and $last10 -le (0.8 * $first10)) {
-      $note = "Sau nhip giam, gia di ngang trong vung $([Math]::Round($rangeLow,2))-$([Math]::Round($rangeHigh,2)) tren $($tr.len) phien, khoi luong ban ra giam dan (con $([Math]::Round(($last10/$first10)*100))% so dau vung) - cung tro."
+      $note = "Sau nhịp giảm, giá đi ngang trong vùng $([Math]::Round($rangeLow,2))-$([Math]::Round($rangeHigh,2)) trên $($tr.len) phiên, khối lượng bán ra giảm dần (còn $([Math]::Round(($last10/$first10)*100))% so đầu vùng) - dấu hiệu cung cạn dần."
       $buyResult = [PSCustomObject]@{ phase = "watch_range"; signal = "buy_watch"; score = 40; triggerIdx = $tr.end; note = $note }
     }
   }
@@ -177,18 +177,18 @@ function Compute-WyckoffForSymbol($symbol, $name, $exchange, $points) {
     if ($sowVolRatio -ge 2.0) { $score += 5 }
     if (($lastIdx - $sowIdx) -le 5) { $score += 5 }
     $score = [Math]::Min(100, $score)
-    $note = "Thung day vung phan phoi $([Math]::Round($rangeLow,2)) voi khoi luong gap $([Math]::Round($sowVolRatio,1)) lan TB20 phien - dang Sign of Weakness."
-    if ($null -ne $lpsyIdx) { $note += " Nhip hoi sau do yeu, khong lay lai duoc vung ho tro cu (Last Point of Supply)." }
+    $note = "Thủng đáy vùng phân phối $([Math]::Round($rangeLow,2)) với khối lượng gấp $([Math]::Round($sowVolRatio,1)) lần TB20 phiên - dạng Sign of Weakness."
+    if ($null -ne $lpsyIdx) { $note += " Nhịp hồi sau đó yếu, không lấy lại được vùng hỗ trợ cũ (Last Point of Supply)." }
     $sellResult = [PSCustomObject]@{ phase = "markdown_confirmed"; signal = "sell_confirmed"; score = $score; triggerIdx = $sowIdx; note = $note }
   } elseif ($null -ne $utIdx) {
     $score = 55
     if ($utVolRatio -ge 2.0) { $score += 10 }
     if (($lastIdx - $utIdx) -le 3) { $score += 4 }
     $score = [Math]::Min(79, $score)
-    $note = "Vuot dinh vung giao dich $([Math]::Round($rangeHigh,2)) trong phien nhung dong cua lai duoi/bang dinh cu, khoi luong gap $([Math]::Round($utVolRatio,1)) lan TB20 - dang Upthrust, canh bao hut hang mua."
+    $note = "Vượt đỉnh vùng giao dịch $([Math]::Round($rangeHigh,2)) trong phiên nhưng đóng cửa lại dưới/bằng đỉnh cũ, khối lượng gấp $([Math]::Round($utVolRatio,1)) lần TB20 - dạng Upthrust, cảnh báo hụt lực mua."
     $sellResult = [PSCustomObject]@{ phase = "distribution_setup"; signal = "sell_watch"; score = $score; triggerIdx = $utIdx; note = $note }
   } elseif ($context -eq "after_advance" -and $tr.end -ge ($lastIdx - 30)) {
-    $note = "Sau nhip tang, gia di ngang trong vung $([Math]::Round($rangeLow,2))-$([Math]::Round($rangeHigh,2)) tren $($tr.len) phien o vung dinh - can theo doi dau hieu phan phoi."
+    $note = "Sau nhịp tăng, giá đi ngang trong vùng $([Math]::Round($rangeLow,2))-$([Math]::Round($rangeHigh,2)) trên $($tr.len) phiên ở vùng đỉnh - cần theo dõi dấu hiệu phân phối."
     $sellResult = [PSCustomObject]@{ phase = "watch_top"; signal = "sell_watch"; score = 40; triggerIdx = $tr.end; note = $note }
   }
 
