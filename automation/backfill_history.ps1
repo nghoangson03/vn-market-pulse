@@ -17,7 +17,7 @@ function Write-Log($msg) {
 }
 
 $symbolsPath = Join-Path $cacheDir "symbols.json"
-$symbols = Get-Content -Path $symbolsPath -Raw | ConvertFrom-Json
+$symbols = Get-Content -Path $symbolsPath -Raw -Encoding UTF8 | ConvertFrom-Json
 Write-Log "Loaded $($symbols.Count) symbols."
 
 $headers = @{ "User-Agent" = "Mozilla/5.0" }

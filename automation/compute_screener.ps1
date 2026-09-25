@@ -28,8 +28,18 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding $false
 # than just listing automation/cache/history/*.json - that directory can carry stale files
 # for symbols no longer in the universe (e.g. an earlier crawl before a filter fix).
 $symbolsPath = Join-Path $cacheDir "symbols.json"
-$universe = Get-Content -Path $symbolsPath -Raw | ConvertFrom-Json
+$universe = Get-Content -Path $symbolsPath -Raw -Encoding UTF8 | ConvertFrom-Json
 $totalUniverse = $universe.Count
+
+# symbols.json (written straight from live API JSON, never round-tripped through a
+# file read) is the clean source for company names. The per-symbol history cache
+# files also carry a name field, but earlier runs wrote it after a Get-Content call
+# that lacked -Encoding UTF8, which mangled non-ASCII names on PS 5.1 - use this map
+# instead of $doc.name so screener.json gets correct names regardless of what's
+# sitting in the (gitignored, local-only) history cache.
+$nameMap = @{}
+foreach ($u in $universe) { $nameMap[$u.symbol] = $u.name }
+
 $allFiles = $universe | ForEach-Object {
   $p = Join-Path $histDir "$($_.symbol).json"
   if (Test-Path $p) { Get-Item $p }
@@ -37,7 +47,7 @@ $allFiles = $universe | ForEach-Object {
 Write-Log "Universe: $totalUniverse symbols, $($allFiles.Count) with cached history"
 
 if (Test-Path $topNPath) {
-  $topList = Get-Content -Path $topNPath -Raw | ConvertFrom-Json
+  $topList = Get-Content -Path $topNPath -Raw -Encoding UTF8 | ConvertFrom-Json
   Write-Log "Using existing top-N list ($($topList.Count) symbols) from $topNPath"
   $targetFiles = $topList | ForEach-Object {
     $p = Join-Path $histDir "$_.json"
@@ -47,7 +57,7 @@ if (Test-Path $topNPath) {
   Write-Log "No top-N list yet - ranking all $totalUniverse cached symbols by avg traded value (20-session)..."
   $ranked = New-Object System.Collections.Generic.List[object]
   foreach ($f in $allFiles) {
-    $doc = Get-Content -Path $f.FullName -Raw | ConvertFrom-Json
+    $doc = Get-Content -Path $f.FullName -Raw -Encoding UTF8 | ConvertFrom-Json
     $pts = @($doc.points)
     if ($pts.Count -lt 40) { continue }
     $n = $pts.Count
@@ -84,12 +94,14 @@ $flagged = 0
 
 foreach ($f in $targetFiles) {
   if ($null -eq $f) { continue }
-  $doc = Get-Content -Path $f.FullName -Raw | ConvertFrom-Json
+  $doc = Get-Content -Path $f.FullName -Raw -Encoding UTF8 | ConvertFrom-Json
   $pts = @($doc.points)
   if ($pts.Count -lt 40) { continue }
   $screened++
 
-  $result = Compute-WyckoffForSymbol $doc.symbol $doc.name $doc.exchange $pts
+  $cleanName = $nameMap[$doc.symbol]
+  if (-not $cleanName) { $cleanName = $doc.name }
+  $result = Compute-WyckoffForSymbol $doc.symbol $cleanName $doc.exchange $pts
   if ($null -eq $result) { continue }
 
   $flagged++

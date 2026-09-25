@@ -167,6 +167,7 @@
   table.screen-table tbody tr:hover{ background:var(--surface-2); }
   table.screen-table .sym{ font-weight:700; font-family:"IBM Plex Mono", monospace; }
   table.screen-table .exch{ font-size:10.5px; color:var(--muted); margin-left:6px; }
+  table.screen-table .sname{ font-size:11px; color:var(--muted); margin-top:2px; }
   table.screen-table .note{ color:var(--ink-2); max-width:420px; }
   table.screen-table .up{ color:var(--good); }
   table.screen-table .down{ color:var(--bad); }
@@ -291,15 +292,54 @@
   }
 
   function buildRow(item, tbody){
+    // Built with createElement/textContent rather than innerHTML string
+    // concatenation: symbol/name/note ultimately trace back to an external API
+    // (VNDirect), so they're treated as untrusted text, not markup.
     var tr = document.createElement("tr");
     var dir = item.changePct >= 0 ? "up" : "down";
-    tr.innerHTML =
-      '<td><span class="sym">'+item.symbol+'</span><span class="exch">'+item.exchange+'</span><br>'+
-        '<span class="badge '+TIER_CLASS[item.signal]+'">'+(PHASE_LABEL[item.phase]||item.phase)+'</span></td>'+
-      '<td class="num tabular">'+fmtBigNum(item.lastClose)+'</td>'+
-      '<td class="num tabular '+dir+'">'+(item.changePct>=0?"+":"")+fmtNum(item.changePct)+'%</td>'+
-      '<td class="num tabular">'+fmtNum(item.volRatio)+'×</td>'+
-      '<td class="note">'+item.note+'</td>';
+
+    var tdMain = document.createElement("td");
+    var symSpan = document.createElement("span");
+    symSpan.className = "sym";
+    symSpan.textContent = item.symbol;
+    var exchSpan = document.createElement("span");
+    exchSpan.className = "exch";
+    exchSpan.textContent = item.exchange;
+    tdMain.appendChild(symSpan);
+    tdMain.appendChild(exchSpan);
+    if(item.name){
+      var nameDiv = document.createElement("div");
+      nameDiv.className = "sname";
+      nameDiv.textContent = item.name;
+      tdMain.appendChild(nameDiv);
+    }
+    tdMain.appendChild(document.createElement("br"));
+    var badge = document.createElement("span");
+    badge.className = "badge " + TIER_CLASS[item.signal];
+    badge.textContent = PHASE_LABEL[item.phase] || item.phase;
+    tdMain.appendChild(badge);
+    tr.appendChild(tdMain);
+
+    var tdClose = document.createElement("td");
+    tdClose.className = "num tabular";
+    tdClose.textContent = fmtBigNum(item.lastClose);
+    tr.appendChild(tdClose);
+
+    var tdChange = document.createElement("td");
+    tdChange.className = "num tabular " + dir;
+    tdChange.textContent = (item.changePct>=0?"+":"") + fmtNum(item.changePct) + "%";
+    tr.appendChild(tdChange);
+
+    var tdVol = document.createElement("td");
+    tdVol.className = "num tabular";
+    tdVol.textContent = fmtNum(item.volRatio) + "×";
+    tr.appendChild(tdVol);
+
+    var tdNote = document.createElement("td");
+    tdNote.className = "note";
+    tdNote.textContent = item.note;
+    tr.appendChild(tdNote);
+
     tr.dataset.symbol = item.symbol;
     tbody.appendChild(tr);
     tr.addEventListener("click", function(){ toggleDetail(item, tr); });

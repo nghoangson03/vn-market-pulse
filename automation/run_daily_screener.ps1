@@ -19,7 +19,7 @@ try {
   if (-not (Test-Path $topNPath)) {
     throw "Top-N symbol list not found ($topNPath). Run compute_screener.ps1 once first (it picks the top-N liquid symbols and saves this file)."
   }
-  $topList = Get-Content -Path $topNPath -Raw | ConvertFrom-Json
+  $topList = Get-Content -Path $topNPath -Raw -Encoding UTF8 | ConvertFrom-Json
   $files = $topList | ForEach-Object {
     $p = Join-Path $histDir "$_.json"
     if (Test-Path $p) { Get-Item $p }
@@ -35,7 +35,7 @@ try {
   $refreshed = 0; $failed = 0; $idx = 0
   foreach ($f in $files) {
     $idx++
-    $doc = Get-Content -Path $f.FullName -Raw | ConvertFrom-Json
+    $doc = Get-Content -Path $f.FullName -Raw -Encoding UTF8 | ConvertFrom-Json
     $sym = $doc.symbol
     $url = "https://dchart-api.vndirect.com.vn/dchart/history?resolution=D&symbol=$sym&from=$from&to=$to"
 
