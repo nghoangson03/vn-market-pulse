@@ -28,6 +28,8 @@
     --good-wash: rgba(12,163,12,0.10);
     --bad: #d03b3b;
     --bad-wash: rgba(208,59,59,0.10);
+    --warn: #a86a0a;
+    --warn-wash: rgba(184,121,11,0.10);
     --accent: #2a78d6;
     --chip-bg: #f2f1ec;
     --chip-active-bg: #0b0b0b;
@@ -54,6 +56,8 @@
       --good-wash: rgba(52,199,123,0.14);
       --bad: #f0665a;
       --bad-wash: rgba(240,102,90,0.14);
+      --warn: #e0a72e;
+      --warn-wash: rgba(224,167,46,0.14);
       --accent: #3987e5;
       --chip-bg: #1f1f1d;
       --chip-active-bg: #ffffff;
@@ -80,6 +84,8 @@
     --good-wash: rgba(52,199,123,0.14);
     --bad: #f0665a;
     --bad-wash: rgba(240,102,90,0.14);
+    --warn: #e0a72e;
+    --warn-wash: rgba(224,167,46,0.14);
     --accent: #3987e5;
     --chip-bg: #1f1f1d;
     --chip-active-bg: #ffffff;
@@ -182,9 +188,44 @@
   .badge.tier-strong-sell{ background:var(--bad-wash); color:var(--bad); }
   .badge.tier-watch-sell{ background:var(--surface-2); color:var(--bad); border:1px solid var(--bad); }
   .badge.tier-neutral{ background:var(--surface-2); color:var(--muted); border:1px solid var(--border); }
+  .badge.chase-warn{ background:var(--warn-wash); color:var(--warn); border:1px solid var(--warn); margin-left:5px; }
+  .badge.sector-manh{ background:var(--good-wash); color:var(--good); }
+  .badge.sector-trung_binh{ background:var(--surface-2); color:var(--muted); border:1px solid var(--border); }
+  .badge.sector-yeu{ background:var(--bad-wash); color:var(--bad); }
 
   table.screen-table td.rank{ color:var(--muted); font-weight:700; }
   table.screen-table tbody tr.no-detail{ cursor:default; }
+  table.screen-table td.rr-good{ color:var(--good); }
+  table.screen-table td.rr-bad{ color:var(--warn); }
+
+  .overview-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:22px; }
+  @media (max-width:720px){ .overview-grid{ grid-template-columns:1fr; } }
+  .overview-card{
+    border:1px solid var(--border); border-radius:12px; background:var(--surface);
+    box-shadow:var(--shadow); padding:14px 16px;
+  }
+  .overview-card h3{ font-size:14px; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .overview-card .asof{ font-size:10.5px; color:var(--muted); font-weight:400; }
+  .overview-card p{ margin:0 0 8px; font-size:12.5px; color:var(--ink-2); line-height:1.55; }
+  .breadth-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+  .breadth-stat{ flex:1; min-width:78px; text-align:center; padding:8px 6px; border-radius:8px; background:var(--surface-2); }
+  .breadth-stat b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:16px; }
+  .breadth-stat span{ font-size:10.5px; color:var(--muted); }
+  .macro-chips{ display:flex; flex-direction:column; gap:5px; margin-top:8px; }
+  .macro-chip{ font-size:11.5px; display:flex; gap:6px; align-items:baseline; }
+  .macro-chip .dot{ width:7px; height:7px; border-radius:50%; flex:none; margin-top:3px; }
+  .macro-chip.thuan .dot{ background:var(--good); }
+  .macro-chip.nguoc .dot{ background:var(--bad); }
+  .macro-chip.trung_tinh .dot{ background:var(--muted); }
+  .macro-chip .m-label{ font-weight:600; color:var(--ink); flex:none; }
+  .macro-chip .m-value{ color:var(--ink-2); }
+  .macro-chip .m-note{ color:var(--muted); display:block; font-size:10.5px; }
+
+  table.sector-table{ width:100%; border-collapse:collapse; font-size:12px; }
+  table.sector-table th{ text-align:left; padding:7px 10px; color:var(--ink-2); font-weight:600; border-bottom:1px solid var(--border); }
+  table.sector-table th.num, table.sector-table td.num{ text-align:right; font-family:"IBM Plex Mono", monospace; }
+  table.sector-table td{ padding:7px 10px; border-bottom:1px solid var(--border); }
+  table.sector-table tbody tr:last-child td{ border-bottom:none; }
 
   .detail-row td{ padding:0; border-bottom:1px solid var(--border); }
   .detail-inner{ padding:16px; background:var(--surface-2); }
@@ -241,6 +282,10 @@
   <div class="disclaimer">
     <strong>Đây là bộ lọc tự động, không phải phân tích thật của con người.</strong> Nhãn Spring / Sign of Strength / Upthrust / Sign of Weakness đến từ công thức giá–khối lượng kiểu Wyckoff; điểm số sau đó được điều chỉnh thêm theo 3 lớp bối cảnh (chế độ thị trường chung, giai đoạn giá của chính mã, sức mạnh tương đối so VN-Index) rút từ Dow Theory/Weinstein/CANSLIM/Minervini — bối cảnh xấu chỉ HẠ mức tin cậy, không tự tạo tín hiệu mới. Toàn bộ vẫn là công thức máy tính, KHÔNG thay thế việc đọc biểu đồ nhiều khung thời gian và phán đoán của người phân tích thực thụ, hoàn toàn <strong>không phải khuyến nghị mua/bán</strong>.
   </div>
+
+  <div class="overview-grid" id="overviewGrid" hidden></div>
+
+  <div id="sectorStrengthWrap" hidden></div>
 
   <div class="stats-row" id="statsRow"></div>
 
@@ -330,6 +375,12 @@
     badge.className = "badge " + (TIER_CLASS[item.signal] || "tier-neutral");
     badge.textContent = PHASE_LABEL[item.phase] || "Trung lập";
     tdMain.appendChild(badge);
+    if(item.chaseWarning){
+      var warnBadge = document.createElement("span");
+      warnBadge.className = "badge chase-warn";
+      warnBadge.textContent = "Đã giãn, mua đuổi rủi ro";
+      tdMain.appendChild(warnBadge);
+    }
     tr.appendChild(tdMain);
 
     var tdClose = document.createElement("td");
@@ -346,6 +397,24 @@
     tdVol.className = "num tabular";
     tdVol.textContent = fmtNum(item.volRatio) + "×";
     tr.appendChild(tdVol);
+
+    if(opts.showLevels){
+      var tdTarget = document.createElement("td");
+      tdTarget.className = "num tabular";
+      tdTarget.textContent = item.tradeSetupBroken ? "—" : fmtBigNum(item.target);
+      tr.appendChild(tdTarget);
+
+      var tdStop = document.createElement("td");
+      tdStop.className = "num tabular";
+      tdStop.textContent = item.tradeSetupBroken ? "—" : fmtBigNum(item.stopLoss);
+      tr.appendChild(tdStop);
+
+      var tdRR = document.createElement("td");
+      var rr = item.riskRewardRatio;
+      tdRR.className = "num tabular" + (rr!=null ? (rr>=1.5?" rr-good":" rr-bad") : "");
+      tdRR.textContent = item.tradeSetupBroken ? "—" : (rr!=null ? fmtNum(rr)+"x" : "—");
+      tr.appendChild(tdRR);
+    }
 
     var tdNote = document.createElement("td");
     tdNote.className = "note";
@@ -433,9 +502,83 @@
     bearish: {cls:"tier-strong-sell", label:"Thị trường chung: NGƯỢC"},
     neutral: {cls:"tier-neutral", label:"Thị trường chung: TRUNG TÍNH"}
   };
+  var SECTOR_TIER_LABEL = { manh:"Mạnh", trung_binh:"Trung bình", yeu:"Yếu" };
+
+  function renderOverview(){
+    var grid = document.getElementById("overviewGrid");
+    var breadth = screener.marketBreadth;
+    var macro = screener.macro;
+    if(!breadth && !macro){ grid.hidden = true; return; }
+    grid.hidden = false;
+
+    var html = "";
+    if(breadth){
+      var total = breadth.screenedCount || 1;
+      var stagePct2 = Math.round((breadth.stage2Count/total)*100);
+      var stagePct4 = Math.round((breadth.stage4Count/total)*100);
+      var lean = stagePct2 > stagePct4 ? "nghiêng về phe MUA (nhiều mã đang trong xu hướng tăng hơn)"
+               : stagePct4 > stagePct2 ? "nghiêng về phe BÁN (nhiều mã đang trong xu hướng giảm hơn)"
+               : "khá cân bằng giữa hai phe";
+      html +=
+        '<div class="overview-card">'+
+          '<h3>Độ rộng kỹ thuật <span class="asof">'+total+' mã HOSE thanh khoản cao</span></h3>'+
+          '<p>'+stagePct2+'% số mã đang ở Stage 2 (xu hướng tăng, trên MA100 dốc lên), '+stagePct4+'% ở Stage 4 (xu hướng giảm) - dòng tiền chung đang '+lean+'.</p>'+
+          '<div class="breadth-row">'+
+            '<div class="breadth-stat"><b class="tabular">'+breadth.stage2Count+'</b><span>Stage 2</span></div>'+
+            '<div class="breadth-stat"><b class="tabular">'+breadth.stage4Count+'</b><span>Stage 4</span></div>'+
+            '<div class="breadth-stat"><b class="tabular up">'+breadth.buySignalCount+'</b><span>Tín hiệu MUA</span></div>'+
+            '<div class="breadth-stat"><b class="tabular down">'+breadth.sellSignalCount+'</b><span>Tín hiệu BÁN</span></div>'+
+          '</div>'+
+        '</div>';
+    }
+    if(macro){
+      var chips = (macro.indicators||[]).map(function(ind){
+        var tone = ind.tone || "trung_tinh";
+        return '<div class="macro-chip '+tone+'"><span class="dot"></span><div><span class="m-label">'+ind.label+':</span> <span class="m-value">'+ind.value+'</span>'+(ind.note?'<span class="m-note">'+ind.note+'</span>':'')+'</div></div>';
+      }).join("");
+      html +=
+        '<div class="overview-card">'+
+          '<h3>Bối cảnh vĩ mô <span class="asof">Cập nhật '+fmtDateFull(macro.asOf)+'</span></h3>'+
+          '<p>'+macro.summary+'</p>'+
+          '<div class="macro-chips">'+chips+'</div>'+
+        '</div>';
+    }
+    grid.innerHTML = html;
+  }
+
+  function renderSectorStrength(){
+    var wrap = document.getElementById("sectorStrengthWrap");
+    var sectors = screener.sectorStrength || [];
+    if(!sectors.length){ wrap.hidden = true; return; }
+    wrap.hidden = false;
+
+    var rows = sectors.map(function(s){
+      var tierCls = "sector-" + s.tier;
+      var tierLabel = SECTOR_TIER_LABEL[s.tier] || s.tier;
+      return '<tr><td>'+s.sector+' <span class="badge '+tierCls+'">'+tierLabel+'</span></td>'+
+        '<td class="num tabular">'+s.count+'</td>'+
+        '<td class="num tabular">'+(s.avgRs!=null ? (s.avgRs>=0?"+":"")+fmtNum(s.avgRs)+"%" : "—")+'</td>'+
+        '<td class="num tabular">'+s.stage2Pct+'%</td>'+
+        '<td class="num tabular">'+s.stage4Pct+'%</td>'+
+        '<td class="num tabular up">'+s.buyCount+'</td>'+
+        '<td class="num tabular down">'+s.sellCount+'</td></tr>';
+    }).join("");
+
+    wrap.innerHTML =
+      '<section class="screen-section">'+
+        '<h2><span class="sec-icon" style="background:var(--accent);"></span>Sức mạnh nhóm ngành</h2>'+
+        '<div class="sec-sub">Xếp hạng dòng tiền theo nhóm ngành trong '+screener.screenedSymbols+' mã đang quét, dựa trên RS trung bình so VNIndex + %mã đang Stage 2/4 + số tín hiệu mua/bán. Chỉ hiện nhóm có ≥2 mã.</div>'+
+        '<div class="table-scroll"><table class="sector-table">'+
+          '<thead><tr><th>Nhóm ngành</th><th class="num">Số mã</th><th class="num">RS TB</th><th class="num">%Stage2</th><th class="num">%Stage4</th><th class="num">Mua</th><th class="num">Bán</th></tr></thead>'+
+          '<tbody>'+rows+'</tbody>'+
+        '</table></div>'+
+      '</section>';
+  }
 
   function render(){
     if(!screener) return;
+    renderOverview();
+    renderSectorStrength();
     var b = screener.buckets;
     var neutralItems = b.neutral || [];
     var buyItems = b.buy_confirmed.concat(b.buy_watch);
@@ -453,7 +596,7 @@
       '<span><b class="tabular">'+(b.buy_confirmed.length+b.buy_watch.length+b.sell_confirmed.length+b.sell_watch.length)+'</b> mã có tín hiệu</span>'+
       '<span><b class="tabular">'+neutralItems.length+'</b> mã trung lập</span>';
 
-    renderSection("buyBody", buyItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:6});
+    renderSection("buyBody", buyItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:9, showLevels:true});
     renderSection("sellBody", b.sell_confirmed.concat(b.sell_watch), "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5});
     renderSection("neutralBody", neutralItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5, clickable:false});
 
@@ -465,9 +608,9 @@
     content.innerHTML =
       '<section class="screen-section">'+
         '<h2><span class="sec-icon buy"></span>Tiềm năng MUA</h2>'+
-        '<div class="sec-sub">Sign of Strength (đã xác nhận vượt kháng cự) và Spring (đang hình thành, cần theo dõi thêm) · #1 = tín hiệu mua mạnh nhất.</div>'+
+        '<div class="sec-sub">Sign of Strength (đã xác nhận vượt kháng cự) và Spring (đang hình thành, cần theo dõi thêm) · #1 = tín hiệu mua mạnh nhất · Target/Cắt lỗ tính từ chiều cao vùng tích lũy, KHÔNG phải khuyến nghị đầu tư.</div>'+
         '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
-          '<th class="num">#</th><th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
+          '<th class="num">#</th><th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th class="num">Target</th><th class="num">Cắt lỗ</th><th class="num">R:R</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="buyBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+

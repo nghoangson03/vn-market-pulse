@@ -1,0 +1,29 @@
+{
+  "_comment": "Ticker -> nhom nganh (HOSE top-120 dang quet, xem topN_symbols.json). Phan loai bang tay, doi chieu 2 lan (mot lan tu kien thuc chung, mot lan qua agent nghien cuu rieng ngay 26/09/2026 - khong tim duoc API mien phi on dinh cho ICB/nganh cua VN, vnstock/VietCap co endpoint tiem nang nhung tra ve 403 chua xac minh). Cac ma do tin cay THAP (nghi ngo, can kiem tra lai khi ranh): TCX, VCK, GEL, VPX, HHP, TDP, VVS - 7/120. Sua truc tiep file nay khi phat hien sai; compute_screener.ps1 doc lai moi lan chay, khong can sua code.",
+  "sectors": {
+    "VIC": "BĐS", "VHM": "BĐS", "TCB": "Bank", "VPB": "Bank", "SHB": "Bank",
+    "VIX": "Chứng khoán", "FPT": "Công nghệ", "SSI": "Chứng khoán", "HPG": "Thép", "BSR": "Dầu khí",
+    "HDB": "Bank", "VCB": "Bank", "MSN": "Hàng tiêu dùng", "STB": "Bank", "MBB": "Bank",
+    "CTG": "Bank", "GEX": "Điện - Năng lượng", "PLX": "Dầu khí", "VCI": "Chứng khoán", "PNJ": "Bán lẻ",
+    "MWG": "Bán lẻ công nghệ", "ACB": "Bank", "NVL": "BĐS", "VJC": "Hàng không", "VND": "Chứng khoán",
+    "VNM": "Thực phẩm - Đồ uống", "PVT": "Vận tải biển - Logistics", "VRE": "BĐS", "GAS": "Dầu khí", "BID": "Bank",
+    "VPI": "BĐS", "TPB": "Bank", "DXG": "BĐS", "PVD": "Dầu khí", "DCM": "Phân bón - Hóa chất",
+    "LPB": "Bank", "VSC": "Vận tải biển - Logistics", "CII": "Đầu tư công", "MSB": "Bank", "GEE": "Điện - Năng lượng",
+    "MCH": "Thực phẩm - Đồ uống", "VPL": "Du lịch - Nghỉ dưỡng", "DGW": "Bán lẻ công nghệ", "DPM": "Phân bón - Hóa chất", "HCM": "Chứng khoán",
+    "POW": "Điện - Năng lượng", "SSB": "Bank", "GVR": "Cao su", "KDH": "BĐS", "TCX": "Vận tải biển - Logistics",
+    "EIB": "Bank", "DCL": "Dược phẩm", "VIB": "Bank", "VCK": "Chứng khoán", "FRT": "Bán lẻ công nghệ",
+    "GMD": "Vận tải biển - Logistics", "TCH": "BĐS", "BAF": "Thịt heo", "GEL": "Điện - Năng lượng", "BVH": "Bảo hiểm",
+    "NLG": "BĐS", "PDR": "BĐS", "DIG": "BĐS", "HAH": "Vận tải biển - Logistics", "DGC": "Phân bón - Hóa chất",
+    "PC1": "Điện - Năng lượng", "KBC": "BĐS KCN", "CTS": "Chứng khoán", "VCG": "Đầu tư công", "VTP": "Vận tải biển - Logistics",
+    "ORS": "Chứng khoán", "SBT": "Nông nghiệp", "PET": "Dầu khí", "BCM": "BĐS KCN", "HSG": "Thép",
+    "VPX": "Khác", "OCB": "Bank", "HAG": "Nông nghiệp", "HHV": "Đầu tư công", "PVP": "Dầu khí",
+    "DBC": "Thịt heo", "SAB": "Thực phẩm - Đồ uống", "HDG": "BĐS", "HHP": "Nhựa - Bao bì", "NAF": "Thực phẩm - Đồ uống",
+    "NAB": "Bank", "EVF": "Tài chính", "DHC": "Nhựa - Bao bì", "HVN": "Hàng không", "NKG": "Thép",
+    "AAA": "Nhựa - Bao bì", "REE": "Điện - Năng lượng", "VHC": "Thủy sản", "VGC": "Xây dựng - VLXD", "CTR": "Xây dựng - VLXD",
+    "PHR": "Cao su", "FTS": "Chứng khoán", "TCM": "Dệt may", "CTD": "Xây dựng - VLXD", "DSE": "Chứng khoán",
+    "TLG": "Hàng tiêu dùng", "BVB": "Bank", "DXS": "BĐS", "BMP": "Nhựa - Bao bì", "HHS": "BĐS",
+    "HDC": "BĐS", "NT2": "Điện - Năng lượng", "DPR": "Cao su", "VOS": "Vận tải biển - Logistics", "DPG": "Xây dựng - VLXD",
+    "IJC": "BĐS KCN", "BSI": "Chứng khoán", "HII": "Nhựa - Bao bì", "TDP": "Nhựa - Bao bì", "VVS": "Khác",
+    "PAN": "Nông nghiệp", "NTL": "BĐS", "BFC": "Phân bón - Hóa chất", "KHG": "BĐS", "VDS": "Chứng khoán"
+  }
+}

@@ -247,6 +247,7 @@ function Compute-WyckoffForSymbol($symbol, $name, $exchange, $points) {
     support     = [Math]::Round($rangeLow, 2)
     resistance  = [Math]::Round($rangeHigh, 2)
     triggerDate = $points[$chosen.triggerIdx].d
+    triggerIdx  = $chosen.triggerIdx
     note        = $chosen.note
   }
 }
@@ -365,5 +366,75 @@ function Get-LayerAdjustment($signal, $baseScore, $marketStatus, $stage, $rs) {
     rawScore  = [Math]::Round($baseScore)
     signal    = $finalSignal
     layerText = $layerText
+  }
+}
+
+# --- Canh bao "mua duoi" rieng cho dac thu T+2,5 cua thi truong VN: mua xong phai
+# doi ~2-3 phien lo moi ve tai khoan de ban duoc, nen neu vao lenh khi gia da chay
+# qua xa diem pha (resistance) thi luc gia dao chieu trong luc cho ve la KHONG THE
+# cat lo kip. Chi ap dung cho tin hieu MUA (ban hang dang cam thi ban duoc ngay,
+# khong bi khoa T+2,5). Lay tinh than "dung mua duoi qua xa pivot" cua Minervini/O'Neil,
+# nhung ly do dua ra la rui ro thanh khoan/thanh toan cua VN, khong phai "tin hieu gia".
+# Day la truc rui ro THOI DIEM VAO LENH, tach biet voi truc "tin hieu that hay khong"
+# cua Get-LayerAdjustment - nen KHONG dung diem/tier, chi tra ve canh bao rieng.
+function Get-ExtensionRisk($signal, $lastClose, $resistance, $sessionsSinceTrigger) {
+  if (-not $signal.StartsWith("buy")) { return $null }
+  if ($null -eq $resistance -or $resistance -le 0) { return $null }
+
+  $extensionPct = (($lastClose - $resistance) / $resistance) * 100
+  $extended = ($extensionPct -ge 8) -or ($sessionsSinceTrigger -ge 6 -and $extensionPct -ge 4)
+  if (-not $extended) { return $null }
+
+  $pctTxt = [Math]::Round($extensionPct, 1)
+  $sign = if ($pctTxt -ge 0) { "+" } else { "" }
+  $text = "Đã chạy $sign$pctTxt% / $sessionsSinceTrigger phiên kể từ điểm phá $([Math]::Round($resistance,2)) - mua đuổi lúc này rủi ro cao vì T+2,5 (mua xong ~2-3 phiên mới bán được lô này), nếu đảo chiều sẽ không kịp cắt lỗ."
+
+  return [PSCustomObject]@{
+    extensionPct         = $pctTxt
+    sessionsSinceTrigger = $sessionsSinceTrigger
+    text                 = $text
+  }
+}
+
+# --- Diem stop-loss & target CU THE cho tin hieu MUA (khong noi chung chung "vung ho
+# tro/khang cu" - phai ra duoc 1 con so). Chi tinh tu chinh vung tich luy da phat hien
+# ra tin hieu, khong dung %co dinh:
+# - stopLoss: buy_confirmed (da SOS) dat duoi vung khang cu cu - luc nay da thanh ho
+#   tro moi, mat la gay that bai breakout; buy_watch (moi Spring, chua SOS) dat duoi
+#   day vung tich luy (support) - vi luan diem Spring dua tren viec giu duoc muc nay.
+#   Tru them 3% de tranh bi quet nhieu 1 phien (bien do gia HOSE toi da +-7%/phien).
+# - target: chieu cao vung tich luy (resistance-support) chieu tu diem pha len - ky
+#   thuat "do hop" pho bien (Darvas box / muc tieu Wyckoff rut gon).
+function Get-TradeLevels($signal, $phase, $lastClose, $support, $resistance) {
+  if (-not $signal.StartsWith("buy")) { return $null }
+  if ($null -eq $support -or $null -eq $resistance -or $resistance -le $support) { return $null }
+
+  $rangeHeight = $resistance - $support
+  $stopBase = if ($phase -eq "markup_confirmed") { $resistance } else { $support }
+  # Sàn 5% duoi gia hien tai: neu stopBase*0.97 nam qua sat gia (VD Spring vua dong cua sat
+  # ngay tren support), stop qua gan se bi nhieu 1 phien binh thuong (+-1-2%) quet ra ngay,
+  # va lam RR ao len hang chuc lan. Lay muc THAP HON (rong hon) giua 2 cach tinh.
+  $stopLoss = [Math]::Round([Math]::Min($stopBase * 0.97, $lastClose * 0.95), 2)
+  $target = [Math]::Round($resistance + $rangeHeight, 2)
+
+  $risk = $lastClose - $stopLoss
+  if ($risk -le 0) {
+    # Gia da lui ve duoi ca muc stop ly thuyet (VD SOS roi nhung phien sau tut lai duoi
+    # khang cu cu) - tin hieu breakout dang yeu di, khong co diem vao lenh ro rang luc nay.
+    return [PSCustomObject]@{
+      stopLoss        = $null
+      target          = $null
+      riskRewardRatio = $null
+      broken          = $true
+    }
+  }
+  $reward = $target - $lastClose
+  $rr = [Math]::Round($reward / $risk, 1)
+
+  return [PSCustomObject]@{
+    stopLoss        = $stopLoss
+    target          = $target
+    riskRewardRatio = $rr
+    broken          = $false
   }
 }
