@@ -1,6 +1,13 @@
 ﻿# Dung chung: nap file nay bang dot-source (". path\wyckoff_engine.ps1") de dung cac ham:
-#   Get-TradingRange, Get-AvgVol, Compute-WyckoffForSymbol
+#   Get-TradingRange, Get-AvgVol, Compute-WyckoffForSymbol, Get-MarketRegime,
+#   Get-StageContext, Get-RelativeStrength, Get-LayerAdjustment
 # Khong goi Claude / agent nao. Chi xu ly du lieu OHLCV thuan tuy.
+#
+# --- "4 Lop Xac Nhan" (dung rut tu Dow/Weinstein/Minervini/CANSLIM/Darvas/VSA) ---
+# Lop 3 (cau truc + effort-volume) la Compute-WyckoffForSymbol o duoi, giu nguyen.
+# Cac ham duoi day la 3 lop con lai: (1) che do thi truong chung, (2) giai doan
+# cua chinh ma, (4) suc manh tuong doi so VN-Index - dung de dieu chinh diem/tier
+# CHU KHONG tao tin hieu moi (khong co Wyckoff trigger thi van la "trung lap").
 
 function Get-AvgVol($points, $n) {
   $cnt = [Math]::Min($n, $points.Count)
@@ -241,5 +248,122 @@ function Compute-WyckoffForSymbol($symbol, $name, $exchange, $points) {
     resistance  = [Math]::Round($rangeHigh, 2)
     triggerDate = $points[$chosen.triggerIdx].d
     note        = $chosen.note
+  }
+}
+
+# --- Lop 1: che do thi truong chung (Dow Theory + CANSLIM "M") ---
+function Get-SMA($points, $n, $endIdx) {
+  if ($endIdx -lt ($n - 1) -or $endIdx -ge $points.Count) { return $null }
+  $sum = 0.0
+  for ($i = $endIdx - $n + 1; $i -le $endIdx; $i++) { $sum += $points[$i].c }
+  return $sum / $n
+}
+
+# Thuan (bullish) khi VNIndex dang tren MA50 va MA50 dang doc len; nguoc (bearish)
+# khi duoi MA50 va MA50 doc xuong; con lai la trung tinh (chua ro xu huong).
+function Get-MarketRegime($vnPoints) {
+  $lastIdx = $vnPoints.Count - 1
+  $maNow = Get-SMA $vnPoints 50 $lastIdx
+  $maPrev = Get-SMA $vnPoints 50 ($lastIdx - 10)
+  if ($null -eq $maNow -or $null -eq $maPrev) {
+    return [PSCustomObject]@{ status = "neutral"; vnClose = $vnPoints[$lastIdx].c; ma50 = $null }
+  }
+  $close = $vnPoints[$lastIdx].c
+  $rising = $maNow -gt $maPrev
+  $status = "neutral"
+  if ($close -gt $maNow -and $rising) { $status = "bullish" }
+  elseif ($close -lt $maNow -and -not $rising) { $status = "bearish" }
+  return [PSCustomObject]@{ status = $status; vnClose = [Math]::Round($close, 2); ma50 = [Math]::Round($maNow, 2) }
+}
+
+# --- Lop 2: giai doan cua chinh ma (Weinstein Stage Analysis + Minervini Trend Template, rut gon) ---
+# stage2 = gia tren MA100 dang doc len (giai doan tang), stage4 = duoi MA100 doc xuong
+# (giai doan giam). Can >=110 phien du lieu, neu khong tra "unknown".
+function Get-StageContext($points) {
+  $maLen = 100
+  $lastIdx = $points.Count - 1
+  if ($points.Count -lt ($maLen + 10)) { return "unknown" }
+  $maNow = Get-SMA $points $maLen $lastIdx
+  $maPrev = Get-SMA $points $maLen ($lastIdx - 10)
+  if ($null -eq $maNow -or $null -eq $maPrev) { return "unknown" }
+  $close = $points[$lastIdx].c
+  $rising = $maNow -gt $maPrev
+  if ($close -gt $maNow -and $rising) { return "stage2" }
+  if ($close -lt $maNow -and -not $rising) { return "stage4" }
+  return "neutral"
+}
+
+# --- Lop 4: suc manh tuong doi so VN-Index (CANSLIM "L" / IBD RS, rut gon) ---
+# %thay doi gia cua ma tru %thay doi VNIndex trong cung $lookback phien gan nhat
+# (khop theo vi tri cuoi day, khong khop theo ngay - ca 2 chuoi deu la phien giao
+# dich HOSE nen lich gan nhu trung nhau, du chinh xac cho muc dich sang loc nay).
+function Get-RelativeStrength($points, $vnPoints, $lookback) {
+  $n = $points.Count; $vn = $vnPoints.Count
+  if ($n -le $lookback -or $vn -le $lookback) { return $null }
+  $stockBase = $points[$n - 1 - $lookback].c
+  $vnBase = $vnPoints[$vn - 1 - $lookback].c
+  if ($stockBase -le 0 -or $vnBase -le 0) { return $null }
+  $stockChg = (($points[$n - 1].c - $stockBase) / $stockBase) * 100
+  $vnChg = (($vnPoints[$vn - 1].c - $vnBase) / $vnBase) * 100
+  return [Math]::Round($stockChg - $vnChg, 2)
+}
+
+# Ket hop 3 lop tren de dieu chinh diem/tier cua 1 ket qua Wyckoff da co (KHONG dung
+# de tao tin hieu moi). Chi CHO PHEP HA tier (confirmed -> watch), khong bao gio
+# nang tier - dung tinh than "chi phan ung theo bang chung cau truc, khong doan truoc"
+# cua Wyckoff: boi canh thuan chi lam tin hieu dang tin hon, khong the thay the cau truc.
+function Get-LayerAdjustment($signal, $baseScore, $marketStatus, $stage, $rs) {
+  $isBuy = $signal.StartsWith("buy")
+
+  $marketDelta = 0; $marketNote = $null
+  if ($marketStatus -eq "bullish") {
+    if ($isBuy) { $marketDelta = 10; $marketNote = "thị trường chung thuận" }
+    else { $marketDelta = -15; $marketNote = "thị trường chung ngược chiều" }
+  } elseif ($marketStatus -eq "bearish") {
+    if ($isBuy) { $marketDelta = -15; $marketNote = "thị trường chung ngược chiều" }
+    else { $marketDelta = 10; $marketNote = "thị trường chung thuận" }
+  }
+
+  $stageDelta = 0; $stageNote = $null
+  if ($stage -eq "stage2") {
+    if ($isBuy) { $stageDelta = 10; $stageNote = "đúng giai đoạn Stage 2 (tăng)" }
+    else { $stageDelta = -10; $stageNote = "giai đoạn còn Stage 2, chưa xác nhận suy yếu" }
+  } elseif ($stage -eq "stage4") {
+    if ($isBuy) { $stageDelta = -15; $stageNote = "giai đoạn còn Stage 4, chưa xác nhận phục hồi" }
+    else { $stageDelta = 10; $stageNote = "đúng giai đoạn Stage 4 (giảm)" }
+  }
+
+  $rsDelta = 0; $rsNote = $null
+  if ($null -ne $rs) {
+    if ($rs -ge 5) {
+      if ($isBuy) { $rsDelta = 8; $rsNote = "RS +$rs% so VNIndex" }
+      else { $rsDelta = -8; $rsNote = "RS +$rs% so VNIndex - mạnh hơn thị trường, cần thận trọng" }
+    } elseif ($rs -le -5) {
+      if ($isBuy) { $rsDelta = -8; $rsNote = "RS $rs% so VNIndex - yếu hơn thị trường" }
+      else { $rsDelta = 8; $rsNote = "RS $rs% so VNIndex" }
+    }
+  }
+
+  $totalDelta = $marketDelta + $stageDelta + $rsDelta
+  $adjustedScore = [Math]::Max(0, [Math]::Min(100, $baseScore + $totalDelta))
+
+  $finalSignal = $signal
+  if (($signal -eq "buy_confirmed" -or $signal -eq "sell_confirmed") -and $adjustedScore -lt 70) {
+    $finalSignal = $signal -replace "_confirmed", "_watch"
+  }
+
+  $parts = @($marketNote, $stageNote, $rsNote) | Where-Object { $_ }
+  $layerText = $null
+  if ($parts.Count -gt 0) {
+    $sign = if ($totalDelta -ge 0) { "+" } else { "" }
+    $layerText = "Bối cảnh 4 lớp: " + ($parts -join "; ") + " ($sign$totalDelta đ)."
+    if ($finalSignal -ne $signal) { $layerText += " Hạ xuống mức theo dõi vì bối cảnh chưa đồng thuận." }
+  }
+
+  return [PSCustomObject]@{
+    score     = [Math]::Round($adjustedScore)
+    rawScore  = [Math]::Round($baseScore)
+    signal    = $finalSignal
+    layerText = $layerText
   }
 }

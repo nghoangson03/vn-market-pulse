@@ -239,7 +239,7 @@
   </header>
 
   <div class="disclaimer">
-    <strong>Đây là bộ lọc tự động, không phải phân tích Wyckoff thật.</strong> Các nhãn Spring / Sign of Strength / Upthrust / Sign of Weakness ở đây được tính bằng công thức giá–khối lượng đơn giản, KHÔNG thay thế cho việc đọc biểu đồ nhiều khung thời gian và phán đoán của người phân tích thực thụ. Đây chỉ là gợi ý để bạn tự kiểm chứng lại, hoàn toàn <strong>không phải khuyến nghị mua/bán</strong>.
+    <strong>Đây là bộ lọc tự động, không phải phân tích thật của con người.</strong> Nhãn Spring / Sign of Strength / Upthrust / Sign of Weakness đến từ công thức giá–khối lượng kiểu Wyckoff; điểm số sau đó được điều chỉnh thêm theo 3 lớp bối cảnh (chế độ thị trường chung, giai đoạn giá của chính mã, sức mạnh tương đối so VN-Index) rút từ Dow Theory/Weinstein/CANSLIM/Minervini — bối cảnh xấu chỉ HẠ mức tin cậy, không tự tạo tín hiệu mới. Toàn bộ vẫn là công thức máy tính, KHÔNG thay thế việc đọc biểu đồ nhiều khung thời gian và phán đoán của người phân tích thực thụ, hoàn toàn <strong>không phải khuyến nghị mua/bán</strong>.
   </div>
 
   <div class="stats-row" id="statsRow"></div>
@@ -428,6 +428,12 @@
     filtered.forEach(function(item){ buildRow(item, tbody, opts); });
   }
 
+  var REGIME_INFO = {
+    bullish: {cls:"tier-strong-buy", label:"Thị trường chung: THUẬN"},
+    bearish: {cls:"tier-strong-sell", label:"Thị trường chung: NGƯỢC"},
+    neutral: {cls:"tier-neutral", label:"Thị trường chung: TRUNG TÍNH"}
+  };
+
   function render(){
     if(!screener) return;
     var b = screener.buckets;
@@ -436,7 +442,12 @@
     // Diem tin hieu mua cao nhat = hang 1, giu nguyen thu tu nay khi loc theo o tim kiem.
     buyItems.forEach(function(item, i){ item.rank = i + 1; });
 
+    var regime = screener.marketRegime || {status:"neutral"};
+    var regimeInfo = REGIME_INFO[regime.status] || REGIME_INFO.neutral;
+    var regimeDetail = (regime.vnClose!=null && regime.ma50!=null) ? (" (VNIndex "+fmtBigNum(regime.vnClose)+" · MA50 "+fmtBigNum(regime.ma50)+")") : "";
+
     document.getElementById("statsRow").innerHTML =
+      '<span><span class="badge '+regimeInfo.cls+'">'+regimeInfo.label+'</span>'+regimeDetail+'</span>'+
       '<span><b class="tabular">'+screener.totalSymbols.toLocaleString("vi-VN")+'</b> mã trên HOSE</span>'+
       '<span>quét kỹ <b class="tabular">'+screener.screenedSymbols.toLocaleString("vi-VN")+'</b> mã vốn hóa lớn, thanh khoản cao nhất</span>'+
       '<span><b class="tabular">'+(b.buy_confirmed.length+b.buy_watch.length+b.sell_confirmed.length+b.sell_watch.length)+'</b> mã có tín hiệu</span>'+

@@ -42,6 +42,20 @@ $totalUniverse = $universe.Count
 $nameMap = @{}
 foreach ($u in $universe) { $nameMap[$u.symbol] = $u.name }
 
+# VN-Index (data.json, ghi boi tac vu "Daily Update" luc 15:40, truoc tac vu nay 16:00)
+# lam nguon cho Lop 1 (che do thi truong chung) va Lop 4 (suc manh tuong doi).
+$vnIndexPath = Join-Path $root "data.json"
+$vnPoints = $null
+$marketRegime = [PSCustomObject]@{ status = "neutral"; vnClose = $null; ma50 = $null }
+if (Test-Path $vnIndexPath) {
+  $dataDoc = Get-Content -Path $vnIndexPath -Raw -Encoding UTF8 | ConvertFrom-Json
+  if ($dataDoc.vnindex -and $dataDoc.vnindex.points) {
+    $vnPoints = @($dataDoc.vnindex.points)
+    $marketRegime = Get-MarketRegime $vnPoints
+  }
+}
+Write-Log "Market regime (VN-Index): $($marketRegime.status) (close=$($marketRegime.vnClose) MA50=$($marketRegime.ma50))"
+
 $allFiles = $universe | ForEach-Object {
   $p = Join-Path $histDir "$($_.symbol).json"
   if (Test-Path $p) { Get-Item $p }
@@ -124,6 +138,19 @@ foreach ($f in $targetFiles) {
   }
 
   $flagged++
+
+  if ($vnPoints) {
+    $stage = Get-StageContext $pts
+    $rs = Get-RelativeStrength $pts $vnPoints 20
+    $adj = Get-LayerAdjustment $result.signal $result.score $marketRegime.status $stage $rs
+    $result.signal = $adj.signal
+    $result.score = $adj.score
+    if ($adj.layerText) { $result.note = "$($result.note) $($adj.layerText)" }
+    $result | Add-Member -NotePropertyName rawScore -NotePropertyValue $adj.rawScore
+    $result | Add-Member -NotePropertyName stage -NotePropertyValue $stage
+    $result | Add-Member -NotePropertyName rs -NotePropertyValue $rs
+  }
+
   $buckets[$result.signal].Add($result) | Out-Null
 
   $chartPts = $pts | Select-Object -Last 120 | ForEach-Object { [PSCustomObject]@{ d=$_.d; o=$_.o; h=$_.h; l=$_.l; c=$_.c; v=$_.v } }
@@ -153,6 +180,7 @@ $screener = [PSCustomObject]@{
   generatedAt     = $nowIso
   totalSymbols    = $hoseUniverseCount
   screenedSymbols = $screened
+  marketRegime    = $marketRegime
   buckets         = [PSCustomObject]@{
     buy_confirmed  = $buckets.buy_confirmed
     buy_watch      = $buckets.buy_watch
