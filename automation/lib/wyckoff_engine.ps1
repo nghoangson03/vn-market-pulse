@@ -10,6 +10,23 @@ function Get-AvgVol($points, $n) {
   return $sum / $cnt
 }
 
+# Tinh nhanh gia dong cua / %thay doi phien / ty le KL so TB20 cho 1 ma. Dung khi
+# Compute-WyckoffForSymbol tra ve null (khong co tin hieu Wyckoff ro rang) nhung
+# van can hien thi ma do trong danh sach "trung lap" de nguoi dung search/xem duoc.
+function Get-BasicQuote($points) {
+  $n = $points.Count
+  $last = $points[$n - 1]
+  $prev = if ($n -gt 1) { $points[$n - 2] } else { $last }
+  $avgVol20 = Get-AvgVol $points 20
+  $changePct = if ($prev.c -gt 0) { (($last.c - $prev.c) / $prev.c) * 100 } else { 0 }
+  $volRatio = if ($avgVol20 -gt 0) { $last.v / $avgVol20 } else { 0 }
+  return [PSCustomObject]@{
+    lastClose = $last.c
+    changePct = [Math]::Round($changePct, 2)
+    volRatio  = [Math]::Round($volRatio, 2)
+  }
+}
+
 # Tim vung tich luy/phan phoi (trading range) gan nhat, ket thuc tai hoac truoc $preEnd (index),
 # dai >=15 phien, (high-low)/mid <= 0.18. Tra ve $null neu khong tim thay.
 function Get-TradingRange($points, $preEnd) {

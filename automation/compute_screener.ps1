@@ -94,6 +94,7 @@ $buckets = @{
   buy_watch      = New-Object System.Collections.Generic.List[object]
   sell_confirmed = New-Object System.Collections.Generic.List[object]
   sell_watch     = New-Object System.Collections.Generic.List[object]
+  neutral        = New-Object System.Collections.Generic.List[object]
 }
 $charts = @{}
 $screened = 0
@@ -109,7 +110,18 @@ foreach ($f in $targetFiles) {
   $cleanName = $nameMap[$doc.symbol]
   if (-not $cleanName) { $cleanName = $doc.name }
   $result = Compute-WyckoffForSymbol $doc.symbol $cleanName $doc.exchange $pts
-  if ($null -eq $result) { continue }
+  if ($null -eq $result) {
+    $q = Get-BasicQuote $pts
+    $buckets.neutral.Add([PSCustomObject]@{
+      symbol     = $doc.symbol
+      exchange   = $doc.exchange
+      name       = $cleanName
+      lastClose  = $q.lastClose
+      changePct  = $q.changePct
+      volRatio   = $q.volRatio
+    }) | Out-Null
+    continue
+  }
 
   $flagged++
   $buckets[$result.signal].Add($result) | Out-Null
@@ -125,11 +137,15 @@ foreach ($f in $targetFiles) {
 }
 
 foreach ($k in @($buckets.Keys)) {
-  $sorted2 = $buckets[$k] | Sort-Object -Property score -Descending
+  if ($k -eq "neutral") {
+    $sorted2 = $buckets[$k] | Sort-Object -Property symbol
+  } else {
+    $sorted2 = $buckets[$k] | Sort-Object -Property score -Descending
+  }
   $buckets[$k] = @($sorted2)
 }
 
-Write-Log "totalUniverse=$totalUniverse screened=$screened flagged=$flagged"
+Write-Log "totalUniverse=$totalUniverse screened=$screened flagged=$flagged neutral=$($buckets.neutral.Count)"
 Write-Log "buy_confirmed=$($buckets.buy_confirmed.Count) buy_watch=$($buckets.buy_watch.Count) sell_confirmed=$($buckets.sell_confirmed.Count) sell_watch=$($buckets.sell_watch.Count)"
 
 $nowIso = (Get-Date).ToUniversalTime().ToString("o")
@@ -142,6 +158,7 @@ $screener = [PSCustomObject]@{
     buy_watch      = $buckets.buy_watch
     sell_confirmed = $buckets.sell_confirmed
     sell_watch     = $buckets.sell_watch
+    neutral        = $buckets.neutral
   }
 }
 

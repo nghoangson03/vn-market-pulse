@@ -181,6 +181,10 @@
   .badge.tier-watch-buy{ background:var(--surface-2); color:var(--good); border:1px solid var(--good); }
   .badge.tier-strong-sell{ background:var(--bad-wash); color:var(--bad); }
   .badge.tier-watch-sell{ background:var(--surface-2); color:var(--bad); border:1px solid var(--bad); }
+  .badge.tier-neutral{ background:var(--surface-2); color:var(--muted); border:1px solid var(--border); }
+
+  table.screen-table td.rank{ color:var(--muted); font-weight:700; }
+  table.screen-table tbody tr.no-detail{ cursor:default; }
 
   .detail-row td{ padding:0; border-bottom:1px solid var(--border); }
   .detail-inner{ padding:16px; background:var(--surface-2); }
@@ -291,12 +295,20 @@
     return fmtNum(n);
   }
 
-  function buildRow(item, tbody){
+  function buildRow(item, tbody, opts){
     // Built with createElement/textContent rather than innerHTML string
     // concatenation: symbol/name/note ultimately trace back to an external API
     // (VNDirect), so they're treated as untrusted text, not markup.
+    opts = opts || {};
     var tr = document.createElement("tr");
     var dir = item.changePct >= 0 ? "up" : "down";
+
+    if(item.rank){
+      var tdRank = document.createElement("td");
+      tdRank.className = "num tabular rank";
+      tdRank.textContent = item.rank;
+      tr.appendChild(tdRank);
+    }
 
     var tdMain = document.createElement("td");
     var symSpan = document.createElement("span");
@@ -315,8 +327,8 @@
     }
     tdMain.appendChild(document.createElement("br"));
     var badge = document.createElement("span");
-    badge.className = "badge " + TIER_CLASS[item.signal];
-    badge.textContent = PHASE_LABEL[item.phase] || item.phase;
+    badge.className = "badge " + (TIER_CLASS[item.signal] || "tier-neutral");
+    badge.textContent = PHASE_LABEL[item.phase] || "Trung lập";
     tdMain.appendChild(badge);
     tr.appendChild(tdMain);
 
@@ -337,16 +349,20 @@
 
     var tdNote = document.createElement("td");
     tdNote.className = "note";
-    tdNote.textContent = item.note;
+    tdNote.textContent = item.note || "Chưa khớp mẫu hình mua/bán nào trong bộ quy tắc hiện tại.";
     tr.appendChild(tdNote);
 
     tr.dataset.symbol = item.symbol;
     tbody.appendChild(tr);
-    tr.addEventListener("click", function(){ toggleDetail(item, tr); });
+    if(opts.clickable === false){
+      tr.classList.add("no-detail");
+    } else {
+      tr.addEventListener("click", function(){ toggleDetail(item, tr, opts.colspan); });
+    }
     return tr;
   }
 
-  function toggleDetail(item, tr){
+  function toggleDetail(item, tr, colspan){
     var existing = tr.nextElementSibling;
     if(existing && existing.classList.contains("detail-row")){
       existing.remove();
@@ -359,7 +375,7 @@
     var detailTr = document.createElement("tr");
     detailTr.className = "detail-row";
     var td = document.createElement("td");
-    td.colSpan = 5;
+    td.colSpan = colspan || 5;
     var inner = document.createElement("div");
     inner.className = "detail-inner";
     inner.innerHTML = '<div class="detail-head"><div>Hỗ trợ <b class="tabular">'+fmtBigNum(item.support)+'</b> · Kháng cự <b class="tabular">'+fmtBigNum(item.resistance)+'</b> · Mốc tín hiệu: '+fmtDateFull(item.triggerDate)+'</div></div><div class="chart-wrap"></div>';
@@ -397,30 +413,38 @@
     return item.symbol.toUpperCase().indexOf(filterText) >= 0;
   }
 
-  function renderSection(tbodyId, items, emptyMsg){
+  function renderSection(tbodyId, items, emptyMsg, opts){
+    opts = opts || {};
     var tbody = document.getElementById(tbodyId);
     tbody.innerHTML = "";
     var filtered = items.filter(matchesFilter);
     if(!filtered.length){
       var tr = document.createElement("tr");
       tr.className = "empty-row";
-      tr.innerHTML = '<td colspan="5">'+emptyMsg+'</td>';
+      tr.innerHTML = '<td colspan="'+(opts.colspan||5)+'">'+emptyMsg+'</td>';
       tbody.appendChild(tr);
       return;
     }
-    filtered.forEach(function(item){ buildRow(item, tbody); });
+    filtered.forEach(function(item){ buildRow(item, tbody, opts); });
   }
 
   function render(){
     if(!screener) return;
     var b = screener.buckets;
+    var neutralItems = b.neutral || [];
+    var buyItems = b.buy_confirmed.concat(b.buy_watch);
+    // Diem tin hieu mua cao nhat = hang 1, giu nguyen thu tu nay khi loc theo o tim kiem.
+    buyItems.forEach(function(item, i){ item.rank = i + 1; });
+
     document.getElementById("statsRow").innerHTML =
       '<span><b class="tabular">'+screener.totalSymbols.toLocaleString("vi-VN")+'</b> mã trên HOSE</span>'+
       '<span>quét kỹ <b class="tabular">'+screener.screenedSymbols.toLocaleString("vi-VN")+'</b> mã vốn hóa lớn, thanh khoản cao nhất</span>'+
-      '<span><b class="tabular">'+(b.buy_confirmed.length+b.buy_watch.length+b.sell_confirmed.length+b.sell_watch.length)+'</b> mã có tín hiệu</span>';
+      '<span><b class="tabular">'+(b.buy_confirmed.length+b.buy_watch.length+b.sell_confirmed.length+b.sell_watch.length)+'</b> mã có tín hiệu</span>'+
+      '<span><b class="tabular">'+neutralItems.length+'</b> mã trung lập</span>';
 
-    renderSection("buyBody", b.buy_confirmed.concat(b.buy_watch), "Không có mã nào khớp bộ lọc hiện tại.");
-    renderSection("sellBody", b.sell_confirmed.concat(b.sell_watch), "Không có mã nào khớp bộ lọc hiện tại.");
+    renderSection("buyBody", buyItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:6});
+    renderSection("sellBody", b.sell_confirmed.concat(b.sell_watch), "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5});
+    renderSection("neutralBody", neutralItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5, clickable:false});
 
     document.getElementById("updatedText").textContent = screener.generatedAt ? ("Cập nhật: "+fmtDateFull(screener.generatedAt.slice(0,10))) : "Chưa rõ thời gian cập nhật";
   }
@@ -430,9 +454,9 @@
     content.innerHTML =
       '<section class="screen-section">'+
         '<h2><span class="sec-icon buy"></span>Tiềm năng MUA</h2>'+
-        '<div class="sec-sub">Sign of Strength (đã xác nhận vượt kháng cự) và Spring (đang hình thành, cần theo dõi thêm).</div>'+
+        '<div class="sec-sub">Sign of Strength (đã xác nhận vượt kháng cự) và Spring (đang hình thành, cần theo dõi thêm) · #1 = tín hiệu mua mạnh nhất.</div>'+
         '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
-          '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
+          '<th class="num">#</th><th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="buyBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+
@@ -441,6 +465,13 @@
         '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
           '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="sellBody"></tbody></table></div>'+
+      '</section>'+
+      '<section class="screen-section">'+
+        '<h2><span class="sec-icon" style="background:var(--muted);"></span>Trung lập</h2>'+
+        '<div class="sec-sub">Chưa khớp mẫu hình mua/bán nào trong bộ quy tắc hiện tại - không có nghĩa là xấu hay tốt, chỉ là chưa đủ dấu hiệu rõ ràng. Vẫn lọc/tìm được theo mã.</div>'+
+        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+          '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
+        '</tr></thead><tbody id="neutralBody"></tbody></table></div>'+
       '</section>';
   }
 
