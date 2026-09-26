@@ -597,6 +597,7 @@
       '<span><b class="tabular">'+neutralItems.length+'</b> mã trung lập</span>';
 
     renderSection("buyBody", buyItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:9, showLevels:true});
+    renderSection("expiredBody", b.buy_expired || [], "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5, clickable:false});
     renderSection("sellBody", b.sell_confirmed.concat(b.sell_watch), "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5});
     renderSection("neutralBody", neutralItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5, clickable:false});
 
@@ -612,6 +613,13 @@
         '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
           '<th class="num">#</th><th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th class="num">Target</th><th class="num">Cắt lỗ</th><th class="num">R:R</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="buyBody"></tbody></table></div>'+
+      '</section>'+
+      '<section class="screen-section">'+
+        '<h2><span class="sec-icon" style="background:var(--warn);"></span>Đã hết dư địa lãi (bỏ qua)</h2>'+
+        '<div class="sec-sub">Vẫn có tín hiệu Wyckoff thật (SOS/Spring) nhưng giá đã chạy quá xa - tiềm năng lãi tới target dưới 5% hoặc đã vượt target, trừ phí giao dịch gần như không còn lãi nên KHÔNG được tính là khuyến nghị mua. Vẫn lọc/tìm được theo mã.</div>'+
+        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+          '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
+        '</tr></thead><tbody id="expiredBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+
         '<h2><span class="sec-icon sell"></span>Nên BÁN / Tránh</h2>'+

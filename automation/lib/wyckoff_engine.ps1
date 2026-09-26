@@ -409,32 +409,48 @@ function Get-TradeLevels($signal, $phase, $lastClose, $support, $resistance) {
   if (-not $signal.StartsWith("buy")) { return $null }
   if ($null -eq $support -or $null -eq $resistance -or $resistance -le $support) { return $null }
 
+  # Nguong lai toi thieu: mua ma tiem nang lai duoi muc nay thi sau phi giao dich VN
+  # (phi moi gioi 2 chieu + thue ban 0.1%, thuc te ~0.5-1% round-trip) gan nhu khong con
+  # lai - user yeu cau CHI hien tin hieu mua khi tiem nang lai >=5%.
+  $MIN_REWARD_PCT = 5.0
+
   $rangeHeight = $resistance - $support
   $stopBase = if ($phase -eq "markup_confirmed") { $resistance } else { $support }
-  # Sàn 5% duoi gia hien tai: neu stopBase*0.97 nam qua sat gia (VD Spring vua dong cua sat
+  # San 5% duoi gia hien tai: neu stopBase*0.97 nam qua sat gia (VD Spring vua dong cua sat
   # ngay tren support), stop qua gan se bi nhieu 1 phien binh thuong (+-1-2%) quet ra ngay,
   # va lam RR ao len hang chuc lan. Lay muc THAP HON (rong hon) giua 2 cach tinh.
   $stopLoss = [Math]::Round([Math]::Min($stopBase * 0.97, $lastClose * 0.95), 2)
   $target = [Math]::Round($resistance + $rangeHeight, 2)
 
   $risk = $lastClose - $stopLoss
-  if ($risk -le 0) {
-    # Gia da lui ve duoi ca muc stop ly thuyet (VD SOS roi nhung phien sau tut lai duoi
-    # khang cu cu) - tin hieu breakout dang yeu di, khong co diem vao lenh ro rang luc nay.
+  $reward = $target - $lastClose
+  $rewardPct = [Math]::Round(($reward / $lastClose) * 100, 1)
+
+  # 2 ly do khien 1 tin hieu MUA that (SOS/Spring that su xay ra) khong con dang mua LUC NAY:
+  # (1) gia da lui ve duoi muc stop ly thuyet (breakout dang that bai), hoac (2) gia da chay
+  # qua xa - target do luong (chieu cao vung tich luy chieu tu diem pha) khong con du 5% nua,
+  # co khi con THAP HON ca gia hien tai (da vuot target truoc khi co tin hieu). Ca 2 truong
+  # hop deu tra ve hasEdge=false thay vi vao lenh voi ty le lai/rui ro te.
+  if ($risk -le 0 -or $rewardPct -lt $MIN_REWARD_PCT) {
+    $reason =
+      if ($risk -le 0) { "giá đã lùi về dưới vùng phá $([Math]::Round($resistance,2)) - tín hiệu breakout đang yếu đi" }
+      elseif ($rewardPct -le 0) { "giá đã vượt qua target đo lường $target - hết dư địa tăng theo cách tính này" }
+      else { "target chỉ còn cách giá hiện tại +$rewardPct% (dưới ngưỡng lãi tối thiểu $([int]$MIN_REWARD_PCT)%), trừ phí giao dịch gần như không còn lãi" }
     return [PSCustomObject]@{
-      stopLoss        = $null
-      target          = $null
-      riskRewardRatio = $null
-      broken          = $true
+      hasEdge   = $false
+      stopLoss  = $stopLoss
+      target    = $target
+      rewardPct = $rewardPct
+      reason    = $reason
     }
   }
-  $reward = $target - $lastClose
-  $rr = [Math]::Round($reward / $risk, 1)
 
+  $rr = [Math]::Round($reward / $risk, 1)
   return [PSCustomObject]@{
+    hasEdge         = $true
     stopLoss        = $stopLoss
     target          = $target
+    rewardPct       = $rewardPct
     riskRewardRatio = $rr
-    broken          = $false
   }
 }

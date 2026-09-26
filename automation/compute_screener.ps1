@@ -124,6 +124,7 @@ if (Test-Path $topNPath) {
 $buckets = @{
   buy_confirmed  = New-Object System.Collections.Generic.List[object]
   buy_watch      = New-Object System.Collections.Generic.List[object]
+  buy_expired    = New-Object System.Collections.Generic.List[object]
   sell_confirmed = New-Object System.Collections.Generic.List[object]
   sell_watch     = New-Object System.Collections.Generic.List[object]
   neutral        = New-Object System.Collections.Generic.List[object]
@@ -190,13 +191,20 @@ foreach ($f in $targetFiles) {
     }
 
     $levels = Get-TradeLevels $result.signal $result.phase $result.lastClose $result.support $result.resistance
-    if ($levels -and $levels.broken) {
-      $result.note = "$($result.note) Giá đã lùi về dưới vùng phá $([Math]::Round($result.resistance,2)) - tín hiệu breakout đang yếu đi, KHÔNG có điểm vào lệnh rõ ràng lúc này."
+    if ($levels -and -not $levels.hasEdge) {
+      # Tin hieu MUA that (SOS/Spring da xay ra) nhung khong con dang mua LUC NAY - chuyen
+      # sang bucket rieng buy_expired, KHONG tinh vao buy_confirmed/buy_watch (breadth, xep
+      # hang nganh, thong ke "so ma co tin hieu" deu tu dong loai no ra vi khop chinh xac
+      # "buy_confirmed"/"buy_watch", khong dung wildcard "buy*").
+      $result.note = "$($result.note) Đã có tín hiệu mua nhưng $($levels.reason) - KHÔNG khuyến nghị mua ở vùng giá này (chỉ hiện tín hiệu tiềm năng lãi ≥5%)."
       $result | Add-Member -NotePropertyName tradeSetupBroken -NotePropertyValue $true
+      $result | Add-Member -NotePropertyName rewardPct -NotePropertyValue $levels.rewardPct
+      $result.signal = $result.signal -replace "^buy_(confirmed|watch)$", "buy_expired"
     } elseif ($levels) {
       $result | Add-Member -NotePropertyName stopLoss -NotePropertyValue $levels.stopLoss
       $result | Add-Member -NotePropertyName target -NotePropertyValue $levels.target
       $result | Add-Member -NotePropertyName riskRewardRatio -NotePropertyValue $levels.riskRewardRatio
+      $result | Add-Member -NotePropertyName rewardPct -NotePropertyValue $levels.rewardPct
     }
   }
 
@@ -224,7 +232,7 @@ foreach ($k in @($buckets.Keys)) {
 }
 
 Write-Log "totalUniverse=$totalUniverse screened=$screened flagged=$flagged neutral=$($buckets.neutral.Count)"
-Write-Log "buy_confirmed=$($buckets.buy_confirmed.Count) buy_watch=$($buckets.buy_watch.Count) sell_confirmed=$($buckets.sell_confirmed.Count) sell_watch=$($buckets.sell_watch.Count)"
+Write-Log "buy_confirmed=$($buckets.buy_confirmed.Count) buy_watch=$($buckets.buy_watch.Count) buy_expired=$($buckets.buy_expired.Count) sell_confirmed=$($buckets.sell_confirmed.Count) sell_watch=$($buckets.sell_watch.Count)"
 
 # --- Do rong thi truong (breadth) tren toan bo $screened ma da quet ---
 $stage2Count = ($breadthList | Where-Object { $_.stage -eq "stage2" }).Count
@@ -249,8 +257,8 @@ foreach ($g in $sectorGroups) {
   if ($items.Count -lt 2) { continue }
   $rsVals = $items | Where-Object { $null -ne $_.rs } | ForEach-Object { $_.rs }
   $avgRs = if ($rsVals.Count -gt 0) { ($rsVals | Measure-Object -Average).Average } else { $null }
-  $buyCount = ($items | Where-Object { $_.signal -like "buy*" }).Count
-  $sellCount = ($items | Where-Object { $_.signal -like "sell*" }).Count
+  $buyCount = ($items | Where-Object { $_.signal -eq "buy_confirmed" -or $_.signal -eq "buy_watch" }).Count
+  $sellCount = ($items | Where-Object { $_.signal -eq "sell_confirmed" -or $_.signal -eq "sell_watch" }).Count
   $stage2Pct = (($items | Where-Object { $_.stage -eq "stage2" }).Count / $items.Count) * 100
   $stage4Pct = (($items | Where-Object { $_.stage -eq "stage4" }).Count / $items.Count) * 100
   $rsScore = if ($null -ne $avgRs) { $avgRs } else { 0 }
@@ -283,6 +291,7 @@ $screener = [PSCustomObject]@{
   buckets         = [PSCustomObject]@{
     buy_confirmed  = $buckets.buy_confirmed
     buy_watch      = $buckets.buy_watch
+    buy_expired    = $buckets.buy_expired
     sell_confirmed = $buckets.sell_confirmed
     sell_watch     = $buckets.sell_watch
     neutral        = $buckets.neutral
