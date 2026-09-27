@@ -74,6 +74,16 @@ if (Test-Path $macroPath) {
   $macro = [PSCustomObject]@{ asOf = $macroDoc.asOf; summary = $macroDoc.summary; indicators = $macroDoc.indicators }
 }
 
+# Vi mo THEO TUNG NGANH (khac voi $macro o tren la vi mo chung toan thi truong) - cung la
+# du lieu tinh, cap nhat thu cong dinh ky qua WebSearch, xem automation/data/sector_macro.json.
+$sectorMacroPath = Join-Path $root "automation\data\sector_macro.json"
+$sectorMacroMap = @{}
+if (Test-Path $sectorMacroPath) {
+  $sectorMacroDoc = Get-Content -Path $sectorMacroPath -Raw -Encoding UTF8 | ConvertFrom-Json
+  foreach ($m in $sectorMacroDoc.items) { $sectorMacroMap[$m.sector] = $m }
+  Write-Log "Sector macro: $($sectorMacroMap.Count) nganh co ghi chu vi mo"
+}
+
 $allFiles = $universe | ForEach-Object {
   $p = Join-Path $histDir "$($_.symbol).json"
   if (Test-Path $p) { Get-Item $p }
@@ -161,7 +171,7 @@ foreach ($f in $targetFiles) {
       sector     = $sector
       stage      = $stageAll
     }) | Out-Null
-    $breadthList.Add([PSCustomObject]@{ symbol = $doc.symbol; sector = $sector; stage = $stageAll; signal = "neutral"; rs = $null }) | Out-Null
+    $breadthList.Add([PSCustomObject]@{ symbol = $doc.symbol; name = $cleanName; lastClose = $q.lastClose; changePct = $q.changePct; sector = $sector; stage = $stageAll; signal = "neutral"; rs = $null }) | Out-Null
     continue
   }
 
@@ -210,7 +220,7 @@ foreach ($f in $targetFiles) {
 
   $result | Add-Member -NotePropertyName sector -NotePropertyValue $sector
   $buckets[$result.signal].Add($result) | Out-Null
-  $breadthList.Add([PSCustomObject]@{ symbol = $doc.symbol; sector = $sector; stage = $stageAll; signal = $result.signal; rs = $rs }) | Out-Null
+  $breadthList.Add([PSCustomObject]@{ symbol = $doc.symbol; name = $cleanName; lastClose = $result.lastClose; changePct = $result.changePct; sector = $sector; stage = $stageAll; signal = $result.signal; rs = $rs }) | Out-Null
 
   $chartPts = $pts | Select-Object -Last 120 | ForEach-Object { [PSCustomObject]@{ d=$_.d; o=$_.o; h=$_.h; l=$_.l; c=$_.c; v=$_.v } }
   $charts[$doc.symbol] = [PSCustomObject]@{
@@ -264,6 +274,11 @@ foreach ($g in $sectorGroups) {
   $rsScore = if ($null -ne $avgRs) { $avgRs } else { 0 }
   $strengthScore = [Math]::Round($rsScore + ($stage2Pct - $stage4Pct) * 0.3 + (($buyCount - $sellCount) * 5), 1)
   $tier = if ($strengthScore -ge 8) { "manh" } elseif ($strengthScore -le -8) { "yeu" } else { "trung_binh" }
+  # Danh sach ma trong nganh de nguoi dung bam vao xem (khong chi thay con so tong) -
+  # sap theo RS giam dan (ma chua co RS - vd thieu du lieu VNIndex - roi xuong cuoi).
+  $memberList = $items | Sort-Object -Property @{Expression={ if ($null -ne $_.rs) { $_.rs } else { -9999 } }; Descending = $true}, symbol |
+    ForEach-Object { [PSCustomObject]@{ symbol=$_.symbol; name=$_.name; lastClose=$_.lastClose; changePct=$_.changePct; signal=$_.signal; rs=$_.rs; stage=$_.stage } }
+  $macroNote = $sectorMacroMap[$g.Name]
   $sectorStrength += [PSCustomObject]@{
     sector        = $g.Name
     count         = $items.Count
@@ -274,6 +289,8 @@ foreach ($g in $sectorGroups) {
     sellCount     = $sellCount
     strengthScore = $strengthScore
     tier          = $tier
+    symbols       = @($memberList)
+    macro         = $macroNote
   }
 }
 $sectorStrength = @($sectorStrength | Sort-Object -Property strengthScore -Descending)
@@ -298,7 +315,7 @@ $screener = [PSCustomObject]@{
   }
 }
 
-$screenerJson = $screener | ConvertTo-Json -Depth 6 -Compress
+$screenerJson = $screener | ConvertTo-Json -Depth 8 -Compress
 [System.IO.File]::WriteAllText((Join-Path $root "screener.json"), $screenerJson, $utf8NoBom)
 
 $chartsJson = ($charts) | ConvertTo-Json -Depth 6 -Compress

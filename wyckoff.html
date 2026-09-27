@@ -140,6 +140,34 @@
   }
   .disclaimer strong{ color:var(--ink); }
 
+  details.guide{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    box-shadow:var(--shadow); margin-bottom:18px; overflow:hidden;
+  }
+  details.guide summary{
+    cursor:pointer; padding:13px 16px; list-style:none;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  details.guide summary::-webkit-details-marker{ display:none; }
+  details.guide summary .g-title{ font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:15px; }
+  details.guide summary .g-hint{ font-size:11.5px; font-weight:400; color:var(--muted); margin-right:auto; }
+  details.guide summary .g-chev{ font-size:11px; color:var(--muted); transition:transform .15s ease; flex:none; }
+  details.guide[open] summary .g-chev{ transform:rotate(90deg); }
+  .guide-body{ padding:2px 16px 18px; border-top:1px solid var(--border); }
+  .guide-section{ margin-top:16px; }
+  .guide-section h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted);
+    margin-bottom:9px; font-weight:600;
+  }
+  .guide-section > p{ font-size:12.5px; color:var(--ink-2); line-height:1.55; margin:0 0 8px; }
+  .guide-body ul{ margin:0; padding-left:18px; font-size:12.5px; color:var(--ink-2); line-height:1.6; }
+  .guide-body ul li{ margin-bottom:5px; }
+  .term-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media (max-width:640px){ .term-grid{ grid-template-columns:1fr; } }
+  .term-card{ border:1px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface-2); }
+  .term-card .term-head{ margin-bottom:5px; }
+  .term-card p{ margin:0; font-size:12px; color:var(--ink-2); line-height:1.5; }
+
   .stats-row{
     display:flex; flex-wrap:wrap; gap:8px 20px; font-size:12.5px; color:var(--ink-2);
     margin-bottom:18px;
@@ -174,6 +202,7 @@
   table.screen-table .sym{ font-weight:700; font-family:"IBM Plex Mono", monospace; }
   table.screen-table .exch{ font-size:10.5px; color:var(--muted); margin-left:6px; }
   table.screen-table .sname{ font-size:11px; color:var(--muted); margin-top:2px; }
+  table.screen-table .sector-tag{ color:var(--accent); font-weight:500; }
   table.screen-table .note{ color:var(--ink-2); max-width:420px; }
   .up{ color:var(--good); }
   .down{ color:var(--bad); }
@@ -229,6 +258,28 @@
   table.sector-table th.num, table.sector-table td.num{ text-align:right; font-family:"IBM Plex Mono", monospace; }
   table.sector-table td{ padding:7px 10px; border-bottom:1px solid var(--border); }
   table.sector-table tbody tr:last-child td{ border-bottom:none; }
+  table.sector-table tbody tr.sector-row{ cursor:pointer; }
+  table.sector-table tbody tr.sector-row:hover{ background:var(--surface-2); }
+  table.sector-table tbody tr.sector-row td:first-child{ display:flex; align-items:center; gap:6px; }
+  table.sector-table .sector-caret{ color:var(--muted); font-size:10px; flex:none; transition:transform .15s ease; }
+  table.sector-table tbody tr.sector-row.open .sector-caret{ transform:rotate(90deg); }
+  .sector-detail-inner{ padding:11px 10px 13px; background:var(--surface-2); }
+  .sector-macro-note{ margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid var(--border); font-size:11.5px; }
+  .sector-macro-note .m-label{ font-weight:600; color:var(--ink); }
+  .sector-macro-note .m-note{ display:block; color:var(--ink-2); margin-top:2px; }
+  .sector-chip-list{ display:flex; flex-wrap:wrap; gap:6px; }
+  .sector-chip{
+    display:flex; align-items:baseline; gap:5px; font-size:11.5px;
+    border:1px solid var(--border); border-radius:8px; padding:4px 8px; background:var(--surface);
+  }
+  .sector-chip .c-sym{ font-family:"IBM Plex Mono", monospace; font-weight:700; }
+  .sector-chip .c-name{ color:var(--muted); font-size:10.5px; }
+  .sector-chip .c-tag{ font-size:9.5px; font-weight:700; padding:1px 5px; border-radius:100px; }
+  .sector-chip .c-tag.tier-strong-buy{ background:var(--good-wash); color:var(--good); }
+  .sector-chip .c-tag.tier-watch-buy{ background:var(--surface-2); color:var(--good); border:1px solid var(--good); }
+  .sector-chip .c-tag.tier-strong-sell{ background:var(--bad-wash); color:var(--bad); }
+  .sector-chip .c-tag.tier-watch-sell{ background:var(--surface-2); color:var(--bad); border:1px solid var(--bad); }
+  .sector-chip .c-tag.tier-neutral{ background:var(--surface-2); color:var(--muted); border:1px solid var(--border); }
 
   .detail-row td{ padding:0; border-bottom:1px solid var(--border); }
   .detail-inner{ padding:16px; background:var(--surface-2); }
@@ -285,6 +336,91 @@
   <div class="disclaimer">
     <strong>Đây là bộ lọc tự động, không phải phân tích thật của con người.</strong> Nhãn Spring / Sign of Strength / Upthrust / Sign of Weakness đến từ công thức giá–khối lượng kiểu Wyckoff; điểm số sau đó được điều chỉnh thêm theo 3 lớp bối cảnh (chế độ thị trường chung, giai đoạn giá của chính mã, sức mạnh tương đối so VN-Index) rút từ Dow Theory/Weinstein/CANSLIM/Minervini — bối cảnh xấu chỉ HẠ mức tin cậy, không tự tạo tín hiệu mới. Toàn bộ vẫn là công thức máy tính, KHÔNG thay thế việc đọc biểu đồ nhiều khung thời gian và phán đoán của người phân tích thực thụ, hoàn toàn <strong>không phải khuyến nghị mua/bán</strong>.
   </div>
+
+  <details class="guide">
+    <summary>
+      <span class="g-title">📖 Sổ tay đọc tín hiệu</span>
+      <span class="g-hint">Spring/SOS/Upthrust nghĩa là gì, điểm số &amp; target/cắt lỗ tính sao</span>
+      <span class="g-chev">▸</span>
+    </summary>
+    <div class="guide-body">
+
+      <div class="guide-section">
+        <h4>4 khu vực trên trang</h4>
+        <div class="term-grid">
+          <div class="term-card">
+            <div class="term-head"><span class="badge tier-strong-buy">Sign of Strength</span></div>
+            <p><b>Tiềm năng MUA - đã xác nhận.</b> Giá đóng cửa vượt hẳn đỉnh vùng tích lũy kèm khối lượng đột biến (≥1,5 lần TB20) - phe mua đã thắng thế rõ ràng.</p>
+          </div>
+          <div class="term-card">
+            <div class="term-head"><span class="badge tier-watch-buy">Spring</span></div>
+            <p><b>Tiềm năng MUA - đang theo dõi.</b> Giá xuyên thủng đáy vùng tích lũy rồi bật lại đóng cửa trên đáy đó, khối lượng lại cạn (≤1,3 lần TB20) - dấu hiệu "rũ hàng" trước khi tăng, chưa chắc chắn bằng SOS.</p>
+          </div>
+          <div class="term-card">
+            <div class="term-head"><span class="badge chase-warn">Đã giãn, mua đuổi rủi ro</span></div>
+            <p><b>Cảnh báo đi kèm</b>, không phải khu riêng. Tín hiệu mua thật nhưng giá đã chạy xa điểm phá - xem mục T+2,5 bên dưới.</p>
+          </div>
+          <div class="term-card">
+            <div class="term-head"><span class="badge chase-warn">Đã hết dư địa lãi</span></div>
+            <p><b>Bỏ qua, không tính là khuyến nghị.</b> Vẫn là SOS/Spring thật nhưng tiềm năng lãi tới target dưới 5% (hoặc đã vượt target) - trừ phí giao dịch gần như không còn lãi.</p>
+          </div>
+          <div class="term-card">
+            <div class="term-head"><span class="badge tier-strong-sell">Sign of Weakness</span></div>
+            <p><b>Nên bán/tránh - đã xác nhận.</b> Giá đóng cửa thủng hẳn đáy vùng phân phối kèm khối lượng đột biến - phe bán đã thắng thế.</p>
+          </div>
+          <div class="term-card">
+            <div class="term-head"><span class="badge tier-watch-sell">Upthrust</span></div>
+            <p><b>Nên bán/tránh - đang theo dõi.</b> Giá vượt đỉnh vùng giao dịch trong phiên nhưng đóng cửa tụt lại dưới đỉnh cũ, khối lượng lớn - dấu hiệu hụt lực mua ("bull trap").</p>
+          </div>
+          <div class="term-card">
+            <div class="term-head"><span class="badge tier-neutral">Trung lập</span></div>
+            <p>Chưa khớp mẫu hình mua/bán nào trong bộ quy tắc - không có nghĩa là xấu hay tốt, chỉ là chưa đủ dấu hiệu rõ ràng để xếp loại.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <h4>Mẫu hình phụ (xuất hiện trong cột Ghi chú)</h4>
+        <ul>
+          <li><b>Test</b> - 1-10 phiên sau Spring, giá quay lại gần đáy cũ nhưng khối lượng cạn hơn hẳn phiên Spring và đóng cửa trên giá mở - xác nhận bên bán đã kiệt sức. Có Test thì Spring đáng tin hơn (+15 điểm).</li>
+          <li><b>LPS (Last Point of Support)</b> - sau SOS, có nhịp hồi về nhưng vẫn giữ được vùng kháng cự cũ (nay là hỗ trợ mới), khối lượng thấp - xác nhận breakout không phải bull trap.</li>
+          <li><b>LPSY (Last Point of Supply)</b> - sau SOW, nhịp hồi yếu, không lấy lại được vùng hỗ trợ cũ - xác nhận breakdown không phải cú rũ tạm thời.</li>
+          <li>Cả 4 mẫu hình gốc (Spring/SOS/Upthrust/SOW) chỉ được tính khi xảy ra trong 10-15 phiên gần nhất, để tránh dùng lại tín hiệu đã cũ vài tuần/tháng.</li>
+        </ul>
+      </div>
+
+      <div class="guide-section">
+        <h4>Điểm số &amp; bối cảnh "4 lớp xác nhận"</h4>
+        <p>Điểm gốc (0-100) chỉ tính từ cấu trúc giá-khối lượng ở trên (SOS/SOW ≥80đ, Spring/Upthrust 55-79đ). Sau đó điểm được cộng/trừ theo 3 lớp bối cảnh - các lớp này chỉ có thể HẠ mức tin cậy (kể cả hạ "đã xác nhận" xuống "theo dõi" nếu điểm sau điều chỉnh &lt;70), không bao giờ tự tạo ra tín hiệu mới:</p>
+        <ul>
+          <li><b>Chế độ thị trường chung</b> (khớp badge trên đầu trang) - VN-Index trên MA50 và MA50 dốc lên = <i>thuận</i> cho lệnh mua (+10đ), dưới MA50 và dốc xuống = <i>ngược</i> (−15đ); còn lại là trung tính.</li>
+          <li><b>Giai đoạn giá của chính mã</b> - Stage 2 (giá trên MA100 dốc lên) hỗ trợ tín hiệu mua (+10đ); Stage 4 (dưới MA100 dốc xuống) hỗ trợ tín hiệu bán (+10đ), ngược lại thì bị trừ điểm.</li>
+          <li><b>Sức mạnh tương đối (RS) so VN-Index</b> - %tăng/giảm 20 phiên của mã trừ %tăng/giảm của VN-Index cùng kỳ. RS ≥+5% hỗ trợ mua (+8đ), RS ≤−5% hỗ trợ bán (+8đ).</li>
+        </ul>
+      </div>
+
+      <div class="guide-section">
+        <h4>Cảnh báo "Đã giãn, mua đuổi rủi ro" (đặc thù T+2,5 của TTCK Việt Nam)</h4>
+        <p style="margin:0;">Cổ phiếu mua ở Việt Nam cần khoảng 2-3 phiên mới về tài khoản để bán được (T+2,5). Nếu vào lệnh khi giá đã chạy xa điểm phá (≥8%, hoặc ≥4% sau từ 6 phiên trở lên), lỡ giá đảo chiều trong lúc chờ hàng về thì không cắt lỗ kịp. Cảnh báo này độc lập với điểm số/tier - một tín hiệu vẫn "xác nhận" đúng nghĩa Wyckoff nhưng vào lệnh lúc này rủi ro thanh toán cao.</p>
+      </div>
+
+      <div class="guide-section">
+        <h4>Target / Cắt lỗ / R:R (chỉ ở bảng Tiềm năng MUA)</h4>
+        <ul>
+          <li><b>Cắt lỗ</b> - lấy mốc thấp hơn giữa: 97% của (kháng cự cũ nếu đã SOS, hoặc đáy vùng tích lũy nếu mới Spring), và 95% giá hiện tại - để không bị 1 phiên biến động thường (±1-2%) quét nhầm.</li>
+          <li><b>Target</b> - chiều cao vùng tích lũy (kháng cự − hỗ trợ) chiếu tiếp từ điểm phá lên (kiểu "đo hộp" Darvas box), không phải con số tùy ý.</li>
+          <li><b>R:R</b> = (target − giá hiện tại) ÷ (giá hiện tại − cắt lỗ). Số <span class="up" style="font-weight:600;">xanh</span> khi ≥1,5 lần, <span style="color:var(--warn);font-weight:600;">vàng</span> khi thấp hơn.</li>
+          <li>Tín hiệu chỉ hiện ở bảng MUA khi tiềm năng lãi tới target ≥5% - dưới ngưỡng này (hoặc giá đã lùi dưới cắt lỗ/vượt target) sẽ rơi vào mục "Đã hết dư địa lãi" thay vì bị ẩn hẳn.</li>
+        </ul>
+      </div>
+
+      <div class="guide-section">
+        <h4>Độ rộng thị trường &amp; Sức mạnh nhóm ngành</h4>
+        <p style="margin:0;">"Stage 2 / Stage 4" đếm trên toàn bộ số mã đang quét (không chỉ mã có tín hiệu) để đo dòng tiền chung đang nghiêng phe nào. Bảng ngành xếp hạng theo RS trung bình + %mã Stage 2/4 + số tín hiệu mua/bán của các mã cùng ngành (chỉ hiện ngành có ≥2 mã) - tier <span class="badge sector-manh">Mạnh</span>/<span class="badge sector-trung_binh">Trung bình</span>/<span class="badge sector-yeu">Yếu</span> phản ánh dòng tiền đang chảy vào hay ra khỏi ngành đó. Bấm vào 1 dòng ngành để xem danh sách mã cụ thể trong ngành kèm bối cảnh vĩ mô riêng của ngành đó (nếu có) - phần này là ghi chú vĩ mô/tin tức được cập nhật thủ công định kỳ, KHÔNG phải tín hiệu Wyckoff.</p>
+      </div>
+
+    </div>
+  </details>
 
   <div class="overview-grid" id="overviewGrid" hidden></div>
 
@@ -367,10 +503,17 @@
     exchSpan.textContent = item.exchange;
     tdMain.appendChild(symSpan);
     tdMain.appendChild(exchSpan);
-    if(item.name){
+    if(item.name || item.sector){
       var nameDiv = document.createElement("div");
       nameDiv.className = "sname";
-      nameDiv.textContent = item.name;
+      if(item.name){ nameDiv.appendChild(document.createTextNode(item.name)); }
+      if(item.sector){
+        if(item.name){ nameDiv.appendChild(document.createTextNode(" · ")); }
+        var sectorSpan = document.createElement("span");
+        sectorSpan.className = "sector-tag";
+        sectorSpan.textContent = item.sector;
+        nameDiv.appendChild(sectorSpan);
+      }
       tdMain.appendChild(nameDiv);
     }
     tdMain.appendChild(document.createElement("br"));
@@ -556,10 +699,10 @@
     if(!sectors.length){ wrap.hidden = true; return; }
     wrap.hidden = false;
 
-    var rows = sectors.map(function(s){
+    var rows = sectors.map(function(s, idx){
       var tierCls = "sector-" + s.tier;
       var tierLabel = SECTOR_TIER_LABEL[s.tier] || s.tier;
-      return '<tr><td>'+s.sector+' <span class="badge '+tierCls+'">'+tierLabel+'</span></td>'+
+      return '<tr class="sector-row" data-idx="'+idx+'"><td><span class="sector-caret">▸</span>'+s.sector+' <span class="badge '+tierCls+'">'+tierLabel+'</span></td>'+
         '<td class="num tabular">'+s.count+'</td>'+
         '<td class="num tabular'+(s.avgRs!=null ? (s.avgRs>=0?" up":" down") : "")+'">'+(s.avgRs!=null ? (s.avgRs>=0?"+":"")+fmtNum(s.avgRs)+"%" : "—")+'</td>'+
         '<td class="num tabular">'+s.stage2Pct+'%</td>'+
@@ -571,12 +714,81 @@
     wrap.innerHTML =
       '<section class="screen-section">'+
         '<h2><span class="sec-icon" style="background:var(--accent);"></span>Sức mạnh nhóm ngành</h2>'+
-        '<div class="sec-sub">Xếp hạng dòng tiền theo nhóm ngành trong '+screener.screenedSymbols+' mã đang quét, dựa trên RS trung bình so VNIndex + %mã đang Stage 2/4 + số tín hiệu mua/bán. Chỉ hiện nhóm có ≥2 mã.</div>'+
+        '<div class="sec-sub">Xếp hạng dòng tiền theo nhóm ngành trong '+screener.screenedSymbols+' mã đang quét, dựa trên RS trung bình so VNIndex + %mã đang Stage 2/4 + số tín hiệu mua/bán. Chỉ hiện nhóm có ≥2 mã · bấm vào 1 dòng để xem các mã trong nhóm.</div>'+
         '<div class="table-scroll"><table class="sector-table">'+
           '<thead><tr><th>Nhóm ngành</th><th class="num">Số mã</th><th class="num">RS TB</th><th class="num">%Stage2</th><th class="num">%Stage4</th><th class="num">Mua</th><th class="num">Bán</th></tr></thead>'+
           '<tbody>'+rows+'</tbody>'+
         '</table></div>'+
       '</section>';
+
+    wrap.querySelectorAll("tr.sector-row").forEach(function(tr){
+      tr.addEventListener("click", function(){
+        var idx = +tr.dataset.idx;
+        toggleSectorDetail(sectors[idx], tr);
+      });
+    });
+  }
+
+  function toggleSectorDetail(sectorItem, tr){
+    var existing = tr.nextElementSibling;
+    if(existing && existing.classList.contains("sector-detail-row")){
+      existing.remove();
+      tr.classList.remove("open");
+      return;
+    }
+    tr.classList.add("open");
+
+    var detailTr = document.createElement("tr");
+    detailTr.className = "sector-detail-row";
+    var td = document.createElement("td");
+    td.colSpan = 7;
+    var inner = document.createElement("div");
+    inner.className = "sector-detail-inner";
+
+    // Ghi chu vi mo nganh (sectorItem.macro) la du lieu TU CURATE trong sector_macro.json,
+    // giong macro.json dang render o renderOverview() - an toan de dung innerHTML.
+    if(sectorItem.macro){
+      var m = sectorItem.macro;
+      var tone = m.tone || "trung_tinh";
+      var macroDiv = document.createElement("div");
+      macroDiv.className = "macro-chip sector-macro-note " + tone;
+      macroDiv.innerHTML = '<span class="dot"></span><div><span class="m-label">'+m.headline+'</span><span class="m-note">'+m.note+' ('+fmtDateFull(m.asOf)+' · '+m.source+')</span></div>';
+      inner.appendChild(macroDiv);
+    }
+
+    var list = document.createElement("div");
+    list.className = "sector-chip-list";
+
+    var members = sectorItem.symbols || [];
+    // Ma/ten trong danh sach nay tra ve tu API ben ngoai (VNDirect) qua nameMap, nen
+    // dung createElement/textContent thay vi ghep chuoi innerHTML (giong buildRow o tren).
+    members.forEach(function(m){
+      var chip = document.createElement("span");
+      chip.className = "sector-chip";
+      var sym = document.createElement("span");
+      sym.className = "c-sym";
+      sym.textContent = m.symbol;
+      chip.appendChild(sym);
+      if(m.name){
+        var nm = document.createElement("span");
+        nm.className = "c-name";
+        nm.textContent = m.name;
+        chip.appendChild(nm);
+      }
+      var tag = document.createElement("span");
+      tag.className = "c-tag " + (TIER_CLASS[m.signal] || "tier-neutral");
+      tag.textContent = m.rs!=null ? ((m.rs>=0?"+":"")+fmtNum(m.rs)+"%") : "—";
+      chip.appendChild(tag);
+      list.appendChild(chip);
+    });
+    if(!members.length){
+      list.textContent = "Chưa có dữ liệu mã trong nhóm này.";
+    }
+
+    inner.appendChild(list);
+    td.appendChild(inner);
+    detailTr.appendChild(td);
+    tr.parentNode.insertBefore(detailTr, tr.nextSibling);
   }
 
   function render(){
