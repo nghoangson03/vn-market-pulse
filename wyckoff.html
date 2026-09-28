@@ -357,7 +357,7 @@
     <div class="guide-body">
 
       <div class="guide-section">
-        <h4>4 khu vực trên trang</h4>
+        <h4>5 khu vực trên trang</h4>
         <div class="term-grid">
           <div class="term-card">
             <div class="term-head"><span class="badge tier-strong-buy">Sign of Strength</span></div>
@@ -382,6 +382,10 @@
           <div class="term-card">
             <div class="term-head"><span class="badge tier-watch-sell">Upthrust</span></div>
             <p><b>Nên bán/tránh - đang theo dõi.</b> Giá vượt đỉnh vùng giao dịch trong phiên nhưng đóng cửa tụt lại dưới đỉnh cũ, khối lượng lớn - dấu hiệu hụt lực mua ("bull trap").</p>
+          </div>
+          <div class="term-card">
+            <div class="term-head"><span class="badge chase-warn">Đã giảm hết dư địa</span></div>
+            <p><b>Bỏ qua, không tính là cảnh báo mới.</b> Vẫn là SOW/Upthrust thật nhưng vùng tích lũy dùng để tính mốc đảo chiều/mốc giảm đo lường đã quá cũ so giá hiện tại (thường gặp ở mã giảm sâu liên tục nhiều tháng) - không đủ cơ sở coi là tín hiệu MỚI.</p>
           </div>
           <div class="term-card">
             <div class="term-head"><span class="badge tier-neutral">Trung lập</span></div>
@@ -891,6 +895,7 @@
     renderSection("buyBody", buyItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:9, showLevels:true});
     renderSection("expiredBody", b.buy_expired || [], "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5, clickable:false});
     renderSection("sellBody", b.sell_confirmed.concat(b.sell_watch), "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5});
+    renderSection("sellExpiredBody", b.sell_expired || [], "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5, clickable:false});
     renderSection("neutralBody", neutralItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5, clickable:false});
 
     document.getElementById("updatedText").textContent = screener.generatedAt ? ("Cập nhật: "+fmtDateFull(screener.generatedAt.slice(0,10))) : "Chưa rõ thời gian cập nhật";
@@ -919,6 +924,13 @@
         '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
           '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="sellBody"></tbody></table></div>'+
+      '</section>'+
+      '<section class="screen-section">'+
+        '<h2><span class="sec-icon" style="background:var(--warn);"></span>Đã giảm hết dư địa (bỏ qua)</h2>'+
+        '<div class="sec-sub">Vẫn có tín hiệu Wyckoff thật (SOW/Upthrust) nhưng vùng tích lũy dùng để tính mốc đảo chiều/mốc giảm đo lường đã quá cũ, không còn liên quan giá hiện tại (thường là mã đã giảm sâu, liên tục nhiều tháng) - không đủ cơ sở coi là cảnh báo bán MỚI. Vẫn lọc/tìm được theo mã.</div>'+
+        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+          '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
+        '</tr></thead><tbody id="sellExpiredBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+
         '<h2><span class="sec-icon" style="background:var(--muted);"></span>Trung lập</h2>'+

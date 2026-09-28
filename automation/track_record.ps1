@@ -58,12 +58,13 @@ foreach ($db in $directionBuckets) {
     $id = "$($item.symbol)_$($item.triggerDate)_$($item.phase)"
     if ($existingIds.ContainsKey($id)) { continue }
 
+    # compute_screener.ps1 da loc san: buy_confirmed/buy_watch/sell_confirmed/sell_watch chi
+    # chua cac tin hieu hasEdge=true (con "du dia" that su) - tin hieu het du dia da bi chuyen
+    # sang buy_expired/sell_expired va khong nam trong 4 bucket duoc quet o day.
     if ($db.direction -eq "buy") {
       $badLevel = $item.stopLoss; $goodLevel = $item.target
     } else {
-      $levels = Get-SellLevels $item.phase $item.lastClose $item.support $item.resistance
-      if ($null -eq $levels) { continue }
-      $badLevel = $levels.invalidation; $goodLevel = $levels.downTarget
+      $badLevel = $item.invalidation; $goodLevel = $item.downTarget
     }
 
     $entries.Add([PSCustomObject]@{

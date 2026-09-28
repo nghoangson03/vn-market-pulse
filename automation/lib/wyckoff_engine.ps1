@@ -454,3 +454,45 @@ function Get-TradeLevels($signal, $phase, $lastClose, $support, $resistance) {
     riskRewardRatio = $rr
   }
 }
+
+# --- Doi xung Get-TradeLevels o tren nhung cho tin hieu BAN (sell_confirmed/sell_watch).
+# Dung chinh support/resistance da co san tren moi ket qua Wyckoff (ca 2 chieu deu tra ve):
+# - invalidation: muc GIA neu hoi phuc lai qua day thi coi nhu luan diem BAN sai (gia da
+#   vuot lai vung khang cu/ho tro cu). Doi xung voi stopLoss ben MUA: sell_confirmed (da SOW,
+#   tham chi thung ho tro) lay lai support cu lam moc, sell_watch (moi Upthrust, con quanh
+#   quan trong vung) lay resistance lam moc. Nhan 1.03 (rong hon 3% tranh nhieu 1 phien) va
+#   lay MAX voi 1.05x gia hien tai (doi xung voi MIN ben stopLoss MUA).
+# - downTarget: chieu cao vung tich luy/phan phoi chieu XUONG tu day vung (doi xung voi
+#   target ben MUA chieu LEN tu dinh vung).
+#
+# 🚨 hasEdge (them 28/09 sau khi phat hien bug PNJ that): Get-TradingRange KHONG gioi han tim
+# vung tich luy xa toi dau ve qua khu - voi ma giam sau lien tuc (VD PNJ rot ~75->~30 trong 6
+# thang) no co the roi vao 1 vung tu vai thang truoc, hoan toan khong con lien quan gia hien
+# tai. Dung 2 dieu kien doi xung voi Get-TradeLevels (risk<=0, reward<=0) de bat truong hop
+# nay: neu gia da HOI PHUC vuot invalidation (risk<=0) hoac da GIAM QUA ca downTarget roi
+# (reward<=0, luan diem BAN da "het du dia" - chinh la truong hop PNJ, downTarget tinh tu 1
+# vung qua cu cao hon ca gia hien tai) thi tra ve hasEdge=false thay vi de nguyen 1 muc gia
+# vo nghia duoc dung lam "tin hieu that". Khong dat MIN_REWARD_PCT nhu ben MUA vi ban hang
+# dang cam khong co chi phi "mo lenh" can bu lai bang % loi nhuan toi thieu.
+function Get-SellLevels($signal, $phase, $lastClose, $support, $resistance) {
+  if (-not $signal.StartsWith("sell")) { return $null }
+  if ($null -eq $support -or $null -eq $resistance -or $resistance -le $support) { return $null }
+  $rangeHeight = $resistance - $support
+  $invalidBase = if ($phase -eq "markdown_confirmed") { $support } else { $resistance }
+  $invalidation = [Math]::Round([Math]::Max($invalidBase * 1.03, $lastClose * 1.05), 2)
+  $downTarget = [Math]::Round($support - $rangeHeight, 2)
+  if ($downTarget -le 0) { return $null }
+
+  $risk = $invalidation - $lastClose
+  $reward = $lastClose - $downTarget
+  $rewardPct = [Math]::Round(($reward / $lastClose) * 100, 1)
+
+  if ($risk -le 0 -or $rewardPct -le 0) {
+    $reason =
+      if ($risk -le 0) { "giá đã hồi phục vượt mốc đảo chiều $([Math]::Round($invalidation,2)) - tín hiệu bán đang yếu đi" }
+      else { "giá đã giảm qua target đo lường $downTarget - vùng tích lũy dùng để tính đã quá cũ/không còn liên quan giá hiện tại" }
+    return [PSCustomObject]@{ hasEdge = $false; invalidation = $invalidation; downTarget = $downTarget; rewardPct = $rewardPct; reason = $reason }
+  }
+
+  return [PSCustomObject]@{ hasEdge = $true; invalidation = $invalidation; downTarget = $downTarget; rewardPct = $rewardPct }
+}

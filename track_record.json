@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-09-28T09:00:21.8603581Z",
+    "generatedAt":  "2026-09-28T09:12:40.7482211Z",
     "startedTracking":  "2026-09-28",
     "overall":  {
                     "buy":  {
@@ -15,49 +15,21 @@
                             },
                     "sell":  {
                                  "openCount":  29,
-                                 "closedCount":  1,
-                                 "wins":  1,
+                                 "closedCount":  0,
+                                 "wins":  0,
                                  "losses":  0,
                                  "expired":  0,
-                                 "winRatePct":  100,
-                                 "avgReturnPct":  -43.03,
-                                 "avgWinPct":  -43.03,
+                                 "winRatePct":  null,
+                                 "avgReturnPct":  null,
+                                 "avgWinPct":  null,
                                  "avgLossPct":  null
                              }
                 },
     "byPhase":  [
-                    {
-                        "phase":  "markdown_confirmed",
-                        "direction":  "sell",
-                        "closedCount":  1,
-                        "winRatePct":  100,
-                        "avgReturnPct":  -43.03
-                    }
+
                 ],
     "recentClosed":  [
-                         {
-                             "id":  "PNJ_2026-09-24_markdown_confirmed",
-                             "symbol":  "PNJ",
-                             "name":  "Vàng Phú Nhuận",
-                             "sector":  "Bán lẻ",
-                             "direction":  "sell",
-                             "signalAtEntry":  "sell_confirmed",
-                             "phase":  "markdown_confirmed",
-                             "triggerDate":  "2026-09-24",
-                             "entryDate":  "2026-09-27",
-                             "entryPrice":  33,
-                             "badLevel":  60.46,
-                             "goodLevel":  47.2,
-                             "scoreAtEntry":  100,
-                             "marketRegimeAtEntry":  "neutral",
-                             "stageAtEntry":  "stage4",
-                             "rsAtEntry":  -22.27,
-                             "status":  "hit_target",
-                             "resolvedDate":  "2026-09-28",
-                             "resolvedPrice":  47.2,
-                             "actualReturnPct":  -43.03,
-                             "sessionsToResolve":  1
-                         }
+
                      ],
     "openPositions":  [
                           {

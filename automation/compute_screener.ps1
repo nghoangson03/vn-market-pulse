@@ -137,6 +137,7 @@ $buckets = @{
   buy_expired    = New-Object System.Collections.Generic.List[object]
   sell_confirmed = New-Object System.Collections.Generic.List[object]
   sell_watch     = New-Object System.Collections.Generic.List[object]
+  sell_expired   = New-Object System.Collections.Generic.List[object]
   neutral        = New-Object System.Collections.Generic.List[object]
 }
 $charts = @{}
@@ -216,6 +217,22 @@ foreach ($f in $targetFiles) {
       $result | Add-Member -NotePropertyName riskRewardRatio -NotePropertyValue $levels.riskRewardRatio
       $result | Add-Member -NotePropertyName rewardPct -NotePropertyValue $levels.rewardPct
     }
+
+    # Doi xung y het khoi MUA o tren nhung cho tin hieu BAN: Get-TradingRange khong gioi han
+    # tim vung tich luy xa toi dau ve qua khu, nen 1 ma giam sau lien tuc (VD PNJ) co the bi
+    # gan mot vung tu nhieu thang truoc, khong con lien quan gia hien tai - Get-SellLevels
+    # tra ve hasEdge=false cho truong hop nay, chuyen sang bucket rieng sell_expired.
+    $sellLevels = Get-SellLevels $result.signal $result.phase $result.lastClose $result.support $result.resistance
+    if ($sellLevels -and -not $sellLevels.hasEdge) {
+      $result.note = "$($result.note) Đã có tín hiệu bán nhưng $($sellLevels.reason)."
+      $result | Add-Member -NotePropertyName tradeSetupBroken -NotePropertyValue $true
+      $result | Add-Member -NotePropertyName rewardPct -NotePropertyValue $sellLevels.rewardPct
+      $result.signal = $result.signal -replace "^sell_(confirmed|watch)$", "sell_expired"
+    } elseif ($sellLevels) {
+      $result | Add-Member -NotePropertyName invalidation -NotePropertyValue $sellLevels.invalidation
+      $result | Add-Member -NotePropertyName downTarget -NotePropertyValue $sellLevels.downTarget
+      $result | Add-Member -NotePropertyName rewardPct -NotePropertyValue $sellLevels.rewardPct
+    }
   }
 
   $result | Add-Member -NotePropertyName sector -NotePropertyValue $sector
@@ -242,7 +259,7 @@ foreach ($k in @($buckets.Keys)) {
 }
 
 Write-Log "totalUniverse=$totalUniverse screened=$screened flagged=$flagged neutral=$($buckets.neutral.Count)"
-Write-Log "buy_confirmed=$($buckets.buy_confirmed.Count) buy_watch=$($buckets.buy_watch.Count) buy_expired=$($buckets.buy_expired.Count) sell_confirmed=$($buckets.sell_confirmed.Count) sell_watch=$($buckets.sell_watch.Count)"
+Write-Log "buy_confirmed=$($buckets.buy_confirmed.Count) buy_watch=$($buckets.buy_watch.Count) buy_expired=$($buckets.buy_expired.Count) sell_confirmed=$($buckets.sell_confirmed.Count) sell_watch=$($buckets.sell_watch.Count) sell_expired=$($buckets.sell_expired.Count)"
 
 # --- Do rong thi truong (breadth) tren toan bo $screened ma da quet ---
 $stage2Count = ($breadthList | Where-Object { $_.stage -eq "stage2" }).Count
@@ -311,6 +328,7 @@ $screener = [PSCustomObject]@{
     buy_expired    = $buckets.buy_expired
     sell_confirmed = $buckets.sell_confirmed
     sell_watch     = $buckets.sell_watch
+    sell_expired   = $buckets.sell_expired
     neutral        = $buckets.neutral
   }
 }
