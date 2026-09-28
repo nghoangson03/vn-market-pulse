@@ -189,6 +189,8 @@
   .sec-icon.sell{ background:var(--bad); }
 
   .table-scroll{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); }
+  .table-scroll.tall{ max-height:480px; overflow-y:auto; }
+  .table-scroll.tall table thead th{ position:sticky; top:0; z-index:1; background:var(--surface-2); }
   table.screen-table{ width:100%; border-collapse:collapse; font-size:12.5px; min-width:640px; }
   table.screen-table thead th{
     text-align:left; padding:10px 12px; font-weight:600; color:var(--ink-2);
@@ -335,7 +337,7 @@
   <header class="page">
     <div>
       <h1>Bộ Lọc Wyckoff</h1>
-      <div class="sub">Rà cổ phiếu HOSE (VN-Index), quét kỹ nhóm vốn hóa lớn - thanh khoản cao nhất theo mẫu hình giá &amp; khối lượng kiểu Wyckoff. · <a class="nav-link" href="index.html">← Nhịp Sàn Việt</a></div>
+      <div class="sub">Rà cổ phiếu HOSE (VN-Index), quét kỹ nhóm vốn hóa lớn - thanh khoản cao nhất theo mẫu hình giá &amp; khối lượng kiểu Wyckoff. · <a class="nav-link" href="index.html">← Nhịp Sàn Việt</a> · <a class="nav-link" href="portfolio.html">Danh mục của tôi →</a></div>
     </div>
     <div class="updated-badge">
       <span class="updated-dot" aria-hidden="true"></span>
@@ -907,35 +909,35 @@
       '<section class="screen-section">'+
         '<h2><span class="sec-icon buy"></span>Tiềm năng MUA</h2>'+
         '<div class="sec-sub">Sign of Strength (đã xác nhận vượt kháng cự) và Spring (đang hình thành, cần theo dõi thêm) · #1 = tín hiệu mua mạnh nhất · Target/Cắt lỗ tính từ chiều cao vùng tích lũy, KHÔNG phải khuyến nghị đầu tư.</div>'+
-        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+        '<div class="table-scroll tall"><table class="screen-table"><thead><tr>'+
           '<th class="num">#</th><th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th class="num">Target</th><th class="num">Cắt lỗ</th><th class="num">R:R</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="buyBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+
         '<h2><span class="sec-icon" style="background:var(--warn);"></span>Đã hết dư địa lãi (bỏ qua)</h2>'+
         '<div class="sec-sub">Vẫn có tín hiệu Wyckoff thật (SOS/Spring) nhưng giá đã chạy quá xa - tiềm năng lãi tới target dưới 5% hoặc đã vượt target, trừ phí giao dịch gần như không còn lãi nên KHÔNG được tính là khuyến nghị mua. Vẫn lọc/tìm được theo mã.</div>'+
-        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+        '<div class="table-scroll tall"><table class="screen-table"><thead><tr>'+
           '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="expiredBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+
         '<h2><span class="sec-icon sell"></span>Nên BÁN / Tránh</h2>'+
         '<div class="sec-sub">Sign of Weakness (đã xác nhận thủng hỗ trợ) và Upthrust (đang hình thành, cần theo dõi thêm).</div>'+
-        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+        '<div class="table-scroll tall"><table class="screen-table"><thead><tr>'+
           '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="sellBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+
         '<h2><span class="sec-icon" style="background:var(--warn);"></span>Đã giảm hết dư địa (bỏ qua)</h2>'+
         '<div class="sec-sub">Vẫn có tín hiệu Wyckoff thật (SOW/Upthrust) nhưng vùng tích lũy dùng để tính mốc đảo chiều/mốc giảm đo lường đã quá cũ, không còn liên quan giá hiện tại (thường là mã đã giảm sâu, liên tục nhiều tháng) - không đủ cơ sở coi là cảnh báo bán MỚI. Vẫn lọc/tìm được theo mã.</div>'+
-        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+        '<div class="table-scroll tall"><table class="screen-table"><thead><tr>'+
           '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="sellExpiredBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+
         '<h2><span class="sec-icon" style="background:var(--muted);"></span>Trung lập</h2>'+
         '<div class="sec-sub">Chưa khớp mẫu hình mua/bán nào trong bộ quy tắc hiện tại - không có nghĩa là xấu hay tốt, chỉ là chưa đủ dấu hiệu rõ ràng. Vẫn lọc/tìm được theo mã.</div>'+
-        '<div class="table-scroll"><table class="screen-table"><thead><tr>'+
+        '<div class="table-scroll tall"><table class="screen-table"><thead><tr>'+
           '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="neutralBody"></tbody></table></div>'+
       '</section>';

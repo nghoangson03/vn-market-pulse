@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Danh Mục Của Tôi</title>
+<meta name="description" content="Nhập vốn và các mã đang nắm giữ để đánh giá khẩu vị rủi ro hiện tại và nhận khuyến nghị mua thêm/bán/giữ cho từng mã, dựa trên tín hiệu Wyckoff đang có. Dữ liệu chỉ lưu trong trình duyệt của bạn.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --bg: #f9f9f7;
+    --surface: #fcfcfb;
+    --surface-2: #f2f1ec;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --border: rgba(11,11,11,0.10);
+    --good: #096b09;
+    --good-wash: rgba(9,107,9,0.10);
+    --bad: #b52e2e;
+    --bad-wash: rgba(181,46,46,0.10);
+    --warn: #8a5205;
+    --warn-wash: rgba(138,82,5,0.10);
+    --accent: #2a78d6;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 1px 1px rgba(11,11,11,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg: #0d0d0d; --surface: #1a1a19; --surface-2: #151513;
+      --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+      --border: rgba(255,255,255,0.10);
+      --good: #34c77b; --good-wash: rgba(52,199,123,0.14);
+      --bad: #f0665a; --bad-wash: rgba(240,102,90,0.14);
+      --warn: #e0a72e; --warn-wash: rgba(224,167,46,0.14);
+      --accent: #3987e5;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg: #0d0d0d; --surface: #1a1a19; --surface-2: #151513;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --border: rgba(255,255,255,0.10);
+    --good: #34c77b; --good-wash: rgba(52,199,123,0.14);
+    --bad: #f0665a; --bad-wash: rgba(240,102,90,0.14);
+    --warn: #e0a72e; --warn-wash: rgba(224,167,46,0.14);
+    --accent: #3987e5;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{ margin:0; padding:0; }
+  body{ background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  [hidden]{ display:none !important; }
+  .wrap{ max-width:980px; margin:0 auto; padding-inline:16px; padding-block:28px 60px; }
+  h1,h2,h3{ font-family:"Fraunces", Georgia, serif; font-weight:600; margin:0; text-wrap:balance; }
+  .tabular{ font-variant-numeric: tabular-nums; }
+  .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+
+  header.page{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:16px; }
+  header.page h1{ font-size:28px; letter-spacing:-0.01em; }
+  header.page .sub{ color:var(--ink-2); font-size:13.5px; margin-top:6px; max-width:64ch; }
+  .nav-link{ font-size:12.5px; font-weight:600; color:var(--accent); text-decoration:none; }
+  .nav-link:hover{ text-decoration:underline; }
+
+  .disclaimer{ background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:13px 16px; font-size:12.5px; color:var(--ink-2); line-height:1.5; margin-bottom:18px; }
+  .disclaimer strong{ color:var(--ink); }
+
+  .card{ border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); padding:16px 18px; margin-bottom:18px; }
+  .card h2{ font-size:16px; margin-bottom:10px; }
+  .card .hint{ font-size:12px; color:var(--muted); margin:0 0 12px; line-height:1.5; }
+
+  .field-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; margin-bottom:10px; }
+  .field{ display:flex; flex-direction:column; gap:4px; }
+  .field label{ font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.03em; }
+  .field input{ padding:8px 11px; border-radius:9px; border:1px solid var(--border); background:var(--surface); color:var(--ink); font-size:13.5px; font-family:inherit; width:150px; }
+  .field input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .field.symbol input{ width:100px; text-transform:uppercase; }
+  .field.wide input{ width:220px; }
+  .btn{ padding:9px 16px; border-radius:9px; border:none; background:var(--accent); color:#fff; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .btn:hover{ opacity:.9; }
+  .btn.secondary{ background:transparent; border:1px solid var(--border); color:var(--ink-2); }
+  .btn.danger-text{ background:transparent; border:none; color:var(--bad); font-size:12px; font-weight:600; cursor:pointer; padding:4px 6px; font-family:inherit; }
+  .btn.danger-text:hover{ text-decoration:underline; }
+  .form-error{ color:var(--bad); font-size:12px; margin:4px 0 0; }
+
+  table.holding-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.holding-table thead th{ text-align:left; padding:8px 10px; font-weight:600; color:var(--ink-2); border-bottom:1px solid var(--border); background:var(--surface-2); white-space:nowrap; }
+  table.holding-table thead th.num{ text-align:right; }
+  table.holding-table td{ padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:middle; }
+  table.holding-table td.num{ text-align:right; font-family:"IBM Plex Mono", monospace; white-space:nowrap; }
+  table.holding-table td input{ padding:5px 8px; border-radius:7px; border:1px solid var(--border); background:var(--surface); color:var(--ink); font-size:12.5px; font-family:"IBM Plex Mono", monospace; width:90px; text-align:right; }
+  table.holding-table .sym{ font-weight:700; font-family:"IBM Plex Mono", monospace; }
+  table.holding-table .sname{ font-size:10.5px; color:var(--muted); display:block; margin-top:1px; }
+  .table-scroll{ overflow-x:auto; border-radius:10px; }
+  .up{ color:var(--good); }
+  .down{ color:var(--bad); }
+  .empty-state{ text-align:center; padding:40px 20px; color:var(--ink-2); font-size:13px; }
+
+  .badge{ display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.02em; padding:3px 8px; border-radius:100px; white-space:nowrap; }
+  .badge.risk-thap{ background:var(--good-wash); color:var(--good); }
+  .badge.risk-trung_binh{ background:var(--surface-2); color:var(--ink-2); border:1px solid var(--border); }
+  .badge.risk-cao{ background:var(--bad-wash); color:var(--bad); }
+  .badge.rec-buy{ background:var(--good-wash); color:var(--good); }
+  .badge.rec-sell{ background:var(--bad-wash); color:var(--bad); }
+  .badge.rec-hold{ background:var(--surface-2); color:var(--ink-2); border:1px solid var(--border); }
+  .badge.rec-none{ background:var(--surface-2); color:var(--muted); border:1px solid var(--border); }
+
+  .risk-summary{ display:flex; flex-wrap:wrap; gap:10px; margin:10px 0 14px; }
+  .risk-stat{ flex:1; min-width:120px; text-align:center; padding:10px 8px; border-radius:10px; background:var(--surface-2); }
+  .risk-stat b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:17px; }
+  .risk-stat span{ font-size:10.5px; color:var(--muted); }
+  .risk-note{ font-size:12.5px; color:var(--ink-2); line-height:1.6; margin:0; }
+  .risk-note li{ margin-bottom:5px; }
+  .risk-note ul{ margin:6px 0 0; padding-left:18px; }
+
+  .rec-note{ font-size:12px; color:var(--ink-2); max-width:340px; display:block; margin-top:3px; line-height:1.45; }
+
+  footer.page{ margin-top:26px; padding-top:16px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); display:flex; flex-wrap:wrap; gap:6px 16px; justify-content:space-between; }
+  footer.page a{ color:inherit; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <div>
+      <h1>Danh Mục Của Tôi</h1>
+      <div class="sub">Nhập vốn và các mã đang cầm để xem khẩu vị rủi ro hiện tại + khuyến nghị mua thêm/bán/giữ theo tín hiệu Wyckoff. · <a class="nav-link" href="index.html">← Nhịp Sàn Việt</a> · <a class="nav-link" href="wyckoff.html">Bộ Lọc Wyckoff →</a></div>
+    </div>
+  </header>
+
+  <div class="disclaimer">
+    <strong>Dữ liệu chỉ lưu TRONG TRÌNH DUYỆT này của bạn (localStorage)</strong> - không gửi lên máy chủ, không lưu vào kho mã nguồn công khai của trang, không ai khác xem được. Nhưng vì vậy nó cũng KHÔNG đồng bộ sang máy/trình duyệt khác, và sẽ MẤT nếu bạn xoá dữ liệu duyệt web. Khuyến nghị dưới đây suy ra tự động từ tín hiệu kiểu Wyckoff + tỉ trọng danh mục bạn nhập, hoàn toàn <strong>không phải lời khuyên đầu tư</strong> - xem thêm giới hạn ở <a href="wyckoff.html" style="color:inherit;">Bộ Lọc Wyckoff</a>.
+  </div>
+
+  <div class="card">
+    <h2>1. Vốn &amp; các mã đang cầm</h2>
+    <p class="hint">Giá nhập theo đúng đơn vị hiển thị trên trang (VD cổ phiếu 41.900đ thì nhập <b>41.9</b>). Tổng vốn nhập theo <b>triệu đồng</b> (VD 500 triệu thì nhập <b>500</b>) - gồm cả tiền mặt còn lại lẫn tiền đã mua cổ phiếu.</p>
+
+    <div class="field-row">
+      <div class="field wide">
+        <label for="totalCapitalInput">Tổng vốn (triệu đồng)</label>
+        <input type="number" id="totalCapitalInput" min="0" step="1" placeholder="VD: 500">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field symbol">
+        <label for="addSymbol">Mã</label>
+        <input type="text" id="addSymbol" placeholder="VD: PET" maxlength="10">
+      </div>
+      <div class="field">
+        <label for="addQty">Số lượng (cp)</label>
+        <input type="number" id="addQty" min="1" step="1" placeholder="1000">
+      </div>
+      <div class="field">
+        <label for="addPrice">Giá mua</label>
+        <input type="number" id="addPrice" min="0" step="0.01" placeholder="41.9">
+      </div>
+      <button class="btn" id="addBtn" type="button">+ Thêm / Gộp mã</button>
+    </div>
+    <p class="form-error" id="formError" hidden></p>
+
+    <div class="table-scroll">
+      <table class="holding-table">
+        <thead><tr><th>Mã</th><th class="num">Số lượng</th><th class="num">Giá mua TB</th><th class="num">Giá trị (triệu)</th><th></th></tr></thead>
+        <tbody id="holdingsBody"></tbody>
+      </table>
+    </div>
+    <div id="holdingsEmpty" class="empty-state" hidden>Chưa nhập mã nào. Thêm mã ở trên để bắt đầu.</div>
+    <div class="field-row" style="margin-top:12px; margin-bottom:0;">
+      <button class="btn secondary" id="clearBtn" type="button">Xoá toàn bộ danh mục</button>
+    </div>
+  </div>
+
+  <div id="analysisWrap" hidden>
+    <div class="card">
+      <h2>2. Khẩu vị rủi ro hiện tại</h2>
+      <div class="risk-summary" id="riskStats"></div>
+      <div class="risk-note" id="riskNote"></div>
+    </div>
+
+    <div class="card">
+      <h2>3. Khuyến nghị theo từng mã</h2>
+      <p class="hint">Dựa trên tín hiệu Wyckoff mới nhất (xem <a href="wyckoff.html" style="color:inherit;">Bộ Lọc Wyckoff</a>) kết hợp lãi/lỗ và tỉ trọng vị thế của bạn. Mã ngoài top-120 đang quét sẽ không có tín hiệu kỹ thuật.</p>
+      <div class="table-scroll">
+        <table class="holding-table">
+          <thead><tr><th>Mã</th><th class="num">Giá mua</th><th class="num">Giá hiện tại</th><th class="num">Lãi/lỗ</th><th class="num">%Danh mục</th><th>Khuyến nghị</th></tr></thead>
+          <tbody id="recBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page">
+    <span>Nguồn tín hiệu: Bộ Lọc Wyckoff (screener.json) · chỉ mang tính tham khảo, không phải khuyến nghị đầu tư.</span>
+    <span><a href="https://github.com/nghoangson03/vn-market-pulse">mã nguồn</a></span>
+  </footer>
+</div>
+
+<script src="chart.js"></script>
+<script>
+(function(){
+  "use strict";
+  var fmtNum = VNChart.fmtNum;
+
+  var STORAGE_KEY = "vnpf_portfolio_v1";
+  var PHASE_LABEL = {
+    markup_confirmed:   "Sign of Strength",
+    accumulation_setup: "Spring",
+    watch_range:        "Tích lũy, cung cạn dần",
+    markdown_confirmed: "Sign of Weakness",
+    distribution_setup: "Upthrust",
+    watch_top:          "Phân phối, theo dõi đỉnh"
+  };
+
+  var screener = null;
+  var portfolio = loadPortfolio();
+
+  function loadPortfolio(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return { totalCapital: null, holdings: [] };
+      var p = JSON.parse(raw);
+      if(!p || typeof p !== "object") return { totalCapital: null, holdings: [] };
+      if(!Array.isArray(p.holdings)) p.holdings = [];
+      return p;
+    }catch(e){ return { totalCapital: null, holdings: [] }; }
+  }
+  function savePortfolio(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolio)); }catch(e){ /* private mode / storage blocked - vẫn dùng được trong phiên hiện tại */ }
+  }
+
+  function findSymbolData(symbol){
+    if(!screener || !screener.buckets) return null;
+    var order = ["buy_confirmed","buy_watch","buy_expired","sell_confirmed","sell_watch","sell_expired","neutral"];
+    for(var i=0;i<order.length;i++){
+      var arr = screener.buckets[order[i]] || [];
+      for(var j=0;j<arr.length;j++){
+        if(arr[j].symbol === symbol){
+          var item = {};
+          for(var k in arr[j]){ item[k] = arr[j][k]; }
+          if(!item.signal) item.signal = "neutral";
+          return item;
+        }
+      }
+    }
+    return null;
+  }
+
+  function renderFormError(msg){
+    var el = document.getElementById("formError");
+    if(!msg){ el.hidden = true; el.textContent = ""; return; }
+    el.hidden = false; el.textContent = msg;
+  }
+
+  function addHolding(){
+    var sym = document.getElementById("addSymbol").value.trim().toUpperCase();
+    var qty = parseFloat(document.getElementById("addQty").value);
+    var price = parseFloat(document.getElementById("addPrice").value);
+    if(!sym){ renderFormError("Nhập mã cổ phiếu."); return; }
+    if(!(qty > 0)){ renderFormError("Số lượng phải là số dương."); return; }
+    if(!(price > 0)){ renderFormError("Giá mua phải là số dương."); return; }
+    renderFormError(null);
+
+    var existing = null;
+    for(var i=0;i<portfolio.holdings.length;i++){ if(portfolio.holdings[i].symbol === sym){ existing = portfolio.holdings[i]; break; } }
+    if(existing){
+      // Gop lenh, tinh gia mua trung binh gia quyen theo so luong (giong cach san moi gioi tinh gia von TB).
+      var totalQty = existing.quantity + qty;
+      existing.buyPrice = ((existing.buyPrice * existing.quantity) + (price * qty)) / totalQty;
+      existing.quantity = totalQty;
+    } else {
+      portfolio.holdings.push({ symbol: sym, quantity: qty, buyPrice: price });
+    }
+    savePortfolio();
+    document.getElementById("addSymbol").value = "";
+    document.getElementById("addQty").value = "";
+    document.getElementById("addPrice").value = "";
+    renderAll();
+  }
+
+  function removeHolding(symbol){
+    portfolio.holdings = portfolio.holdings.filter(function(h){ return h.symbol !== symbol; });
+    savePortfolio();
+    renderAll();
+  }
+
+  function updateHoldingField(symbol, field, value){
+    var h = portfolio.holdings.filter(function(x){ return x.symbol === symbol; })[0];
+    if(!h) return;
+    var v = parseFloat(value);
+    if(!(v > 0)) return;
+    h[field] = v;
+    savePortfolio();
+    renderAll();
+  }
+
+  function renderHoldingsTable(){
+    var tbody = document.getElementById("holdingsBody");
+    tbody.innerHTML = "";
+    document.getElementById("holdingsEmpty").hidden = portfolio.holdings.length > 0;
+    portfolio.holdings.forEach(function(h){
+      var data = findSymbolData(h.symbol);
+      var valueTrieu = (h.quantity * h.buyPrice) / 1000;
+      var tr = document.createElement("tr");
+
+      var tdSym = document.createElement("td");
+      var symSpan = document.createElement("span"); symSpan.className = "sym"; symSpan.textContent = h.symbol;
+      tdSym.appendChild(symSpan);
+      if(data && data.name){ var nm = document.createElement("span"); nm.className = "sname"; nm.textContent = data.name; tdSym.appendChild(nm); }
+      tr.appendChild(tdSym);
+
+      var tdQty = document.createElement("td"); tdQty.className = "num";
+      var qtyInput = document.createElement("input"); qtyInput.type = "number"; qtyInput.min = "1"; qtyInput.step = "1"; qtyInput.value = h.quantity;
+      qtyInput.addEventListener("change", function(){ updateHoldingField(h.symbol, "quantity", this.value); });
+      tdQty.appendChild(qtyInput); tr.appendChild(tdQty);
+
+      var tdPrice = document.createElement("td"); tdPrice.className = "num";
+      var priceInput = document.createElement("input"); priceInput.type = "number"; priceInput.min = "0"; priceInput.step = "0.01"; priceInput.value = h.buyPrice;
+      priceInput.addEventListener("change", function(){ updateHoldingField(h.symbol, "buyPrice", this.value); });
+      tdPrice.appendChild(priceInput); tr.appendChild(tdPrice);
+
+      var tdVal = document.createElement("td"); tdVal.className = "num tabular"; tdVal.textContent = fmtNum(valueTrieu, 1);
+      tr.appendChild(tdVal);
+
+      var tdDel = document.createElement("td");
+      var delBtn = document.createElement("button"); delBtn.type = "button"; delBtn.className = "danger-text"; delBtn.textContent = "Xoá";
+      delBtn.addEventListener("click", function(){ removeHolding(h.symbol); });
+      tdDel.appendChild(delBtn); tr.appendChild(tdDel);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Nguong cu the (khong noi chung chung "rui ro cao/thap") - xem theo thu tu uu tien, dieu kien
+  // dau tien khop se quyet dinh nhan CAO/TRUNG BINH/THAP, kem giai thich dung nguong nao kich hoat.
+  function computeRisk(investedPct, maxStockPct, maxStockSym, maxSectorPct, maxSectorName){
+    var reasons = [];
+    var tier;
+    if(maxStockPct >= 30){
+      tier = "cao";
+      reasons.push("mã " + maxStockSym + " chiếm " + fmtNum(maxStockPct,1) + "% tổng vốn (≥30% là tập trung cao vào 1 mã)");
+    } else if(maxSectorPct >= 60){
+      tier = "cao";
+      reasons.push("ngành " + maxSectorName + " chiếm " + fmtNum(maxSectorPct,1) + "% giá trị đã đầu tư (≥60% là tập trung cao vào 1 ngành)");
+    } else if(investedPct >= 75 || maxStockPct >= 15 || maxSectorPct >= 40){
+      tier = "trung_binh_cao";
+      if(investedPct >= 75) reasons.push("đã dùng " + fmtNum(investedPct,1) + "% tổng vốn (≥75%), còn ít tiền mặt dự phòng");
+      if(maxStockPct >= 15) reasons.push("mã " + maxStockSym + " chiếm " + fmtNum(maxStockPct,1) + "% tổng vốn (15-30% là tập trung vừa)");
+      if(maxSectorPct >= 40) reasons.push("ngành " + maxSectorName + " chiếm " + fmtNum(maxSectorPct,1) + "% giá trị đã đầu tư (40-60% là tập trung vừa)");
+    } else if(investedPct < 40 && maxStockPct < 15){
+      tier = "thap";
+      reasons.push("chỉ dùng " + fmtNum(investedPct,1) + "% tổng vốn (dưới 40%), còn nhiều tiền mặt, không mã nào chiếm quá 15% tổng vốn");
+    } else {
+      tier = "trung_binh";
+      reasons.push("đã dùng " + fmtNum(investedPct,1) + "% tổng vốn, chưa mã/ngành nào vượt ngưỡng tập trung cao");
+    }
+    return { tier: tier, reasons: reasons };
+  }
+  var RISK_LABEL = { thap: "THẤP", trung_binh: "TRUNG BÌNH", trung_binh_cao: "TRUNG BÌNH - CAO", cao: "CAO" };
+  var RISK_BADGE_CLASS = { thap: "risk-thap", trung_binh: "risk-trung_binh", trung_binh_cao: "risk-cao", cao: "risk-cao" };
+
+  // Uu tien theo thu tu, dieu kien dau tien khop se la khuyen nghi cuoi cung cho ma do.
+  function recommendFor(h, data, stockPctOfCapital, investedPct){
+    if(!data){
+      return { cls: "rec-none", label: "Không đủ dữ liệu", note: "Mã ngoài top-120 HOSE đang quét (hoặc không thuộc HOSE) - không có tín hiệu kỹ thuật, chỉ tính vào rủi ro danh mục theo giá bạn nhập." };
+    }
+    var unrealizedPct = ((data.lastClose - h.buyPrice) / h.buyPrice) * 100;
+    var plText = "Đang " + (unrealizedPct >= 0 ? "lãi +" : "lỗ ") + fmtNum(unrealizedPct,1) + "%.";
+
+    if(data.signal === "sell_confirmed"){
+      return { cls: "rec-sell", label: "NÊN BÁN / GIẢM TỈ TRỌNG", note: "Tín hiệu Sign of Weakness đã xác nhận (điểm " + data.score + "). " + plText };
+    }
+    if(data.signal === "sell_watch"){
+      return { cls: "rec-sell", label: "CÂN NHẮC GIẢM TỈ TRỌNG", note: "Tín hiệu Upthrust đang hình thành, chưa chắc chắn - theo dõi thêm. " + plText };
+    }
+    if(data.signal === "buy_confirmed" || data.signal === "buy_watch"){
+      if(stockPctOfCapital >= 20){
+        return { cls: "rec-hold", label: "GIỮ, không mua thêm", note: "Mã này đã chiếm " + fmtNum(stockPctOfCapital,1) + "% tổng vốn (≥20%), đủ lớn dù tín hiệu " + (PHASE_LABEL[data.phase]||"mua") + " vẫn còn. " + plText };
+      }
+      if(investedPct >= 85){
+        return { cls: "rec-hold", label: "GIỮ, chưa mua thêm", note: "Tín hiệu " + (PHASE_LABEL[data.phase]||"mua") + " vẫn tốt nhưng danh mục đã dùng " + fmtNum(investedPct,1) + "% tổng vốn (≥85%), nên giữ tiền mặt dự phòng trước. " + plText };
+      }
+      if(data.chaseWarning){
+        return { cls: "rec-hold", label: "CHƯA MUA THÊM NGAY", note: "Giá đã chạy xa điểm phá - rủi ro T+2,5 nếu đảo chiều trong lúc chờ cổ phiếu về tài khoản. " + plText };
+      }
+      var lv = "";
+      if(data.target != null && data.stopLoss != null) lv = " Target " + fmtNum(data.target,2) + ", cắt lỗ " + fmtNum(data.stopLoss,2) + (data.riskRewardRatio!=null ? (", R:R " + fmtNum(data.riskRewardRatio,1) + "x") : "") + ".";
+      return { cls: "rec-buy", label: "CÓ THỂ MUA THÊM", note: "Tín hiệu " + (PHASE_LABEL[data.phase]||"mua") + "." + lv + " " + plText };
+    }
+    if(data.signal === "buy_expired"){
+      return { cls: "rec-hold", label: "GIỮ, không mua thêm", note: "Tín hiệu mua thật nhưng đã hết dư địa lãi ở vùng giá này (dưới 5% hoặc đã vượt target). " + plText };
+    }
+    if(data.signal === "sell_expired"){
+      return { cls: "rec-hold", label: "GIỮ, theo dõi thêm", note: "Có tín hiệu bán nhưng vùng tích lũy dùng để tính đã quá cũ, không còn liên quan giá hiện tại. " + plText };
+    }
+    // neutral
+    if(unrealizedPct <= -15){
+      return { cls: "rec-hold", label: "GIỮ, theo dõi chặt", note: "Chưa có tín hiệu kỹ thuật rõ ràng, nhưng đang lỗ khá sâu (" + fmtNum(unrealizedPct,1) + "%) - cân nhắc mức chấp nhận lỗ của bạn." };
+    }
+    if(unrealizedPct >= 20){
+      return { cls: "rec-hold", label: "CÓ THỂ CHỐT LỜI 1 PHẦN", note: "Chưa có tín hiệu đảo chiều rõ ràng nhưng đang lãi khá tốt (+" + fmtNum(unrealizedPct,1) + "%) - cân nhắc chốt bớt để giảm rủi ro." };
+    }
+    return { cls: "rec-hold", label: "GIỮ NGUYÊN", note: "Chưa khớp mẫu hình mua/bán nào trong bộ quy tắc hiện tại. " + plText };
+  }
+
+  function renderAnalysis(){
+    var wrap = document.getElementById("analysisWrap");
+    var holdings = portfolio.holdings;
+    var totalCapital = parseFloat(portfolio.totalCapital);
+    if(!holdings.length || !(totalCapital > 0)){ wrap.hidden = true; return; }
+    wrap.hidden = false;
+
+    var investedTrieu = 0;
+    var sectorTotals = {};
+    var maxStockPct = 0, maxStockSym = "";
+    var rows = holdings.map(function(h){
+      var data = findSymbolData(h.symbol);
+      var valueTrieu = (h.quantity * h.buyPrice) / 1000;
+      investedTrieu += valueTrieu;
+      var sector = (data && data.sector) ? data.sector : "Chưa rõ ngành";
+      sectorTotals[sector] = (sectorTotals[sector] || 0) + valueTrieu;
+      var pctOfCapital = (valueTrieu / totalCapital) * 100;
+      if(pctOfCapital > maxStockPct){ maxStockPct = pctOfCapital; maxStockSym = h.symbol; }
+      return { h: h, data: data, valueTrieu: valueTrieu, pctOfCapital: pctOfCapital };
+    });
+
+    var maxSectorPct = 0, maxSectorName = "";
+    Object.keys(sectorTotals).forEach(function(s){
+      var pct = investedTrieu > 0 ? (sectorTotals[s] / investedTrieu) * 100 : 0;
+      if(pct > maxSectorPct){ maxSectorPct = pct; maxSectorName = s; }
+    });
+
+    var investedPct = (investedTrieu / totalCapital) * 100;
+    var cashTrieu = totalCapital - investedTrieu;
+    var risk = computeRisk(investedPct, maxStockPct, maxStockSym, maxSectorPct, maxSectorName);
+
+    document.getElementById("riskStats").innerHTML =
+      '<div class="risk-stat"><b><span class="badge ' + RISK_BADGE_CLASS[risk.tier] + '">' + RISK_LABEL[risk.tier] + '</span></b><span>Khẩu vị rủi ro</span></div>' +
+      '<div class="risk-stat"><b class="tabular">' + fmtNum(investedPct,1) + '%</b><span>Đã dùng vốn</span></div>' +
+      '<div class="risk-stat"><b class="tabular' + (cashTrieu < 0 ? ' down' : '') + '">' + fmtNum(cashTrieu,1) + '</b><span>Tiền mặt còn (triệu)</span></div>' +
+      '<div class="risk-stat"><b class="tabular">' + fmtNum(maxStockPct,1) + '%</b><span>Mã lớn nhất (' + (maxStockSym||"—") + ')</span></div>' +
+      '<div class="risk-stat"><b class="tabular">' + fmtNum(maxSectorPct,1) + '%</b><span>Ngành lớn nhất (' + (maxSectorName||"—") + ')</span></div>';
+
+    var noteHtml = '<ul>' + risk.reasons.map(function(r){ return '<li>' + r + '</li>'; }).join('') + '</ul>';
+    if(cashTrieu < 0){ noteHtml += '<p style="color:var(--bad);margin:8px 0 0;">⚠ Tổng giá trị đã mua (' + fmtNum(investedTrieu,1) + ' triệu) vượt tổng vốn khai báo (' + fmtNum(totalCapital,1) + ' triệu) - kiểm tra lại số liệu đã nhập.</p>'; }
+    document.getElementById("riskNote").innerHTML = noteHtml;
+
+    var recBody = document.getElementById("recBody");
+    recBody.innerHTML = "";
+    rows.forEach(function(r){
+      var rec = recommendFor(r.h, r.data, r.pctOfCapital, investedPct);
+      var tr = document.createElement("tr");
+
+      var tdSym = document.createElement("td");
+      var symSpan = document.createElement("span"); symSpan.className = "sym"; symSpan.textContent = r.h.symbol;
+      tdSym.appendChild(symSpan);
+      tr.appendChild(tdSym);
+
+      var tdBuy = document.createElement("td"); tdBuy.className = "num tabular"; tdBuy.textContent = fmtNum(r.h.buyPrice,2);
+      tr.appendChild(tdBuy);
+
+      var tdCur = document.createElement("td"); tdCur.className = "num tabular";
+      tdCur.textContent = r.data ? fmtNum(r.data.lastClose,2) : "—";
+      tr.appendChild(tdCur);
+
+      var tdPl = document.createElement("td"); tdPl.className = "num tabular";
+      if(r.data){
+        var pl = ((r.data.lastClose - r.h.buyPrice) / r.h.buyPrice) * 100;
+        tdPl.className += pl >= 0 ? " up" : " down";
+        tdPl.textContent = (pl >= 0 ? "+" : "") + fmtNum(pl,1) + "%";
+      } else { tdPl.textContent = "—"; }
+      tr.appendChild(tdPl);
+
+      var tdPct = document.createElement("td"); tdPct.className = "num tabular"; tdPct.textContent = fmtNum(r.pctOfCapital,1) + "%";
+      tr.appendChild(tdPct);
+
+      var tdRec = document.createElement("td");
+      var badge = document.createElement("span"); badge.className = "badge " + rec.cls; badge.textContent = rec.label;
+      tdRec.appendChild(badge);
+      var noteDiv = document.createElement("span"); noteDiv.className = "rec-note"; noteDiv.textContent = rec.note;
+      tdRec.appendChild(noteDiv);
+      tr.appendChild(tdRec);
+
+      recBody.appendChild(tr);
+    });
+  }
+
+  function renderAll(){
+    renderHoldingsTable();
+    renderAnalysis();
+  }
+
+  document.getElementById("totalCapitalInput").value = portfolio.totalCapital != null ? portfolio.totalCapital : "";
+  document.getElementById("totalCapitalInput").addEventListener("change", function(){
+    var v = parseFloat(this.value);
+    portfolio.totalCapital = (v > 0) ? v : null;
+    savePortfolio();
+    renderAll();
+  });
+  document.getElementById("addBtn").addEventListener("click", addHolding);
+  document.getElementById("clearBtn").addEventListener("click", function(){
+    if(!confirm("Xoá toàn bộ vốn và danh mục đã nhập? Không thể hoàn tác.")) return;
+    portfolio = { totalCapital: null, holdings: [] };
+    savePortfolio();
+    document.getElementById("totalCapitalInput").value = "";
+    renderAll();
+  });
+
+  async function init(){
+    try{
+      var res = await fetch("screener.json?_=" + Date.now());
+      if(res.ok) screener = await res.json();
+    }catch(e){ /* van cho nhap lieu duoc, chi la khong co tin hieu ky thuat de doi chieu */ }
+    renderAll();
+  }
+  init();
+})();
+</script>
+</body>
+</html>
