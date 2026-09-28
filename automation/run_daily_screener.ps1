@@ -78,8 +78,11 @@ try {
   Write-Log "Recomputing screener..."
   & (Join-Path $PSScriptRoot "compute_screener.ps1")
 
+  Write-Log "Updating track record (log new signals, resolve open ones)..."
+  & (Join-Path $PSScriptRoot "track_record.ps1")
+
   Set-Location $root
-  git add screener.json screener_charts.json
+  git add screener.json screener_charts.json track_record.json automation/data/signal_log.json
 
   $prevEAP = $ErrorActionPreference
   $ErrorActionPreference = "Continue"

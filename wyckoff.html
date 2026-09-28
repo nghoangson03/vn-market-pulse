@@ -253,6 +253,17 @@
   .macro-chip .m-value{ color:var(--ink-2); }
   .macro-chip .m-note{ color:var(--muted); display:block; font-size:10.5px; }
 
+  .tr-card{ margin-bottom:22px; }
+  .tr-blocks{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:2px; }
+  @media (max-width:720px){ .tr-blocks{ grid-template-columns:1fr; } }
+  .tr-block h4{ font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); margin:0 0 8px; font-weight:600; }
+  .tr-empty{ font-size:12px; color:var(--muted); margin:0; line-height:1.5; }
+  .tr-phase-wrap{ margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
+  .tr-recent{ margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
+  .tr-recent summary{ cursor:pointer; font-size:12px; font-weight:600; color:var(--accent); list-style:none; }
+  .tr-recent summary::-webkit-details-marker{ display:none; }
+  .tr-recent .table-scroll{ margin-top:10px; }
+
   table.sector-table{ width:100%; border-collapse:collapse; font-size:12px; }
   table.sector-table th{ text-align:left; padding:7px 10px; color:var(--ink-2); font-weight:600; border-bottom:1px solid var(--border); }
   table.sector-table th.num, table.sector-table td.num{ text-align:right; font-family:"IBM Plex Mono", monospace; }
@@ -415,12 +426,19 @@
       </div>
 
       <div class="guide-section">
+        <h4>Đối chiếu khuyến nghị thực tế</h4>
+        <p style="margin:0;">Mỗi tín hiệu MUA/BÁN xuất hiện trên trang được ghi lại tự động (ngày, giá, target/cắt lỗ) vào một sổ nhật ký riêng, rồi mỗi ngày được đối chiếu với giá thật: chạm target trước = "đúng", dính cắt lỗ trước = "sai" (nếu 1 phiên chạm cả 2 mốc thì tính là "sai" cho chắc), quá ~40 phiên (~2 tháng) không chạm mốc nào thì tính "hết hạn theo dõi". Tín hiệu BÁN cũng được đối chiếu tương tự nhưng theo chiều ngược lại (giá giảm về mốc đo lường = "đúng", giá hồi phục qua mốc đảo chiều = "sai"). Đây là số liệu THẬT theo thời gian, không phải điểm số lý thuyết - mới bắt đầu ghi nhận nên cần vài tuần mới đủ mẫu để tin cậy.</p>
+      </div>
+
+      <div class="guide-section">
         <h4>Độ rộng thị trường &amp; Sức mạnh nhóm ngành</h4>
         <p style="margin:0;">"Stage 2 / Stage 4" đếm trên toàn bộ số mã đang quét (không chỉ mã có tín hiệu) để đo dòng tiền chung đang nghiêng phe nào. Bảng ngành xếp hạng theo RS trung bình + %mã Stage 2/4 + số tín hiệu mua/bán của các mã cùng ngành (chỉ hiện ngành có ≥2 mã) - tier <span class="badge sector-manh">Mạnh</span>/<span class="badge sector-trung_binh">Trung bình</span>/<span class="badge sector-yeu">Yếu</span> phản ánh dòng tiền đang chảy vào hay ra khỏi ngành đó. Bấm vào 1 dòng ngành để xem danh sách mã cụ thể trong ngành kèm bối cảnh vĩ mô riêng của ngành đó (nếu có) - phần này là ghi chú vĩ mô/tin tức được cập nhật thủ công định kỳ, KHÔNG phải tín hiệu Wyckoff.</p>
       </div>
 
     </div>
   </details>
+
+  <div id="trackRecordWrap" hidden></div>
 
   <div class="overview-grid" id="overviewGrid" hidden></div>
 
@@ -470,6 +488,7 @@
 
   var screener = null;
   var chartsData = null;
+  var trackRecord = null;
   var filterText = "";
   var openSymbol = null;
 
@@ -641,6 +660,63 @@
       return;
     }
     filtered.forEach(function(item){ buildRow(item, tbody, opts); });
+  }
+
+  function trStatBlock(label, stats){
+    stats = stats || { closedCount:0, openCount:0 };
+    if(stats.closedCount === 0){
+      return '<div class="tr-block"><h4>'+label+'</h4><p class="tr-empty">Chưa có tín hiệu nào đóng (đang theo dõi '+stats.openCount+' tín hiệu mở) - cần thêm thời gian để đủ số liệu.</p></div>';
+    }
+    var wr = stats.winRatePct;
+    var wrCls = wr==null ? "" : (wr>=55 ? "up" : (wr<45 ? "down" : ""));
+    var retCls = stats.avgReturnPct>=0 ? "up" : "down";
+    return '<div class="tr-block"><h4>'+label+'</h4>'+
+      '<div class="breadth-row">'+
+        '<div class="breadth-stat"><b class="'+wrCls+'">'+(wr!=null?fmtNum(wr)+"%":"—")+'</b><span>Đúng ('+stats.wins+'/'+(stats.wins+stats.losses)+')</span></div>'+
+        '<div class="breadth-stat"><b class="'+retCls+'">'+(stats.avgReturnPct>=0?"+":"")+fmtNum(stats.avgReturnPct)+'%</b><span>TB/lệnh đóng</span></div>'+
+        '<div class="breadth-stat"><b>'+stats.closedCount+'</b><span>Đã đóng ('+stats.openCount+' mở)</span></div>'+
+      '</div></div>';
+  }
+
+  function renderTrackRecord(){
+    var wrap = document.getElementById("trackRecordWrap");
+    var tr = trackRecord;
+    if(!tr || !tr.overall){ wrap.hidden = true; return; }
+    wrap.hidden = false;
+
+    var html = '<div class="overview-card tr-card">'+
+      '<h3>📊 Đối chiếu khuyến nghị thực tế <span class="asof">Theo dõi từ '+fmtDateFull(tr.startedTracking)+'</span></h3>'+
+      '<p>Tín hiệu MUA/BÁN trên trang được ghi lại kèm target/cắt lỗ rồi đối chiếu với giá thật mỗi ngày - "đúng" khi chạm target (bên bán: giá giảm về mốc đo lường), "sai" khi dính cắt lỗ (bên bán: giá hồi phục qua mốc đảo chiều). Xem mục "Đối chiếu khuyến nghị thực tế" trong Sổ tay để rõ cách tính.</p>'+
+      '<div class="tr-blocks">'+ trStatBlock("Tín hiệu MUA", tr.overall.buy) + trStatBlock("Tín hiệu BÁN", tr.overall.sell) +'</div>';
+
+    if(tr.byPhase && tr.byPhase.length){
+      var rows = tr.byPhase.map(function(p){
+        var retCls = p.avgReturnPct>=0 ? "up" : "down";
+        return '<tr><td>'+(PHASE_LABEL[p.phase]||p.phase)+'</td>'+
+          '<td class="num tabular">'+p.closedCount+'</td>'+
+          '<td class="num tabular">'+(p.winRatePct!=null?fmtNum(p.winRatePct)+"%":"—")+'</td>'+
+          '<td class="num tabular '+retCls+'">'+(p.avgReturnPct>=0?"+":"")+fmtNum(p.avgReturnPct)+'%</td></tr>';
+      }).join("");
+      html += '<div class="tr-phase-wrap"><table class="sector-table"><thead><tr><th>Mẫu hình</th><th class="num">Đã đóng</th><th class="num">Tỉ lệ đúng</th><th class="num">TB lợi nhuận</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+    }
+
+    if(tr.recentClosed && tr.recentClosed.length){
+      var closedRows = tr.recentClosed.map(function(c){
+        var cls = c.status==="hit_target" ? "up" : (c.status==="hit_stop" ? "down" : "");
+        var statusLabel = c.status==="hit_target" ? "Đúng" : (c.status==="hit_stop" ? "Sai" : "Hết hạn");
+        var retCls = c.actualReturnPct>=0 ? "up" : "down";
+        return '<tr><td><span class="sym mono">'+c.symbol+'</span></td>'+
+          '<td>'+(PHASE_LABEL[c.phase]||c.phase)+' ('+(c.direction==="buy"?"Mua":"Bán")+')</td>'+
+          '<td>'+fmtDateFull(c.entryDate)+' → '+fmtDateFull(c.resolvedDate)+'</td>'+
+          '<td class="'+cls+'">'+statusLabel+'</td>'+
+          '<td class="num tabular '+retCls+'">'+(c.actualReturnPct>=0?"+":"")+fmtNum(c.actualReturnPct)+'%</td></tr>';
+      }).join("");
+      html += '<details class="tr-recent"><summary>Xem '+tr.recentClosed.length+' tín hiệu đóng gần nhất</summary>'+
+        '<div class="table-scroll"><table class="screen-table"><thead><tr><th>Mã</th><th>Mẫu hình</th><th>Thời gian</th><th>Kết quả</th><th class="num">Lãi/lỗ</th></tr></thead><tbody>'+closedRows+'</tbody></table></div></details>';
+    }
+
+    html += '</div>';
+    wrap.innerHTML = html;
   }
 
   var REGIME_INFO = {
@@ -873,6 +949,11 @@
         var res2 = await fetch("screener_charts.json?_=" + Date.now());
         if(res2.ok) chartsData = await res2.json();
       }catch(e){ /* bieu do chi tiet la tinh nang phu, khong chan trang chinh */ }
+
+      try{
+        var res3 = await fetch("track_record.json?_=" + Date.now());
+        if(res3.ok){ trackRecord = await res3.json(); renderTrackRecord(); }
+      }catch(e){ /* doi chieu khuyen nghi la tinh nang phu, khong chan trang chinh */ }
     }catch(e){
       showEmpty("Có lỗi khi tải dữ liệu: "+(e&&e.message?e.message:"không rõ"));
     }
