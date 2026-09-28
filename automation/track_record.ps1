@@ -18,6 +18,10 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding $false
 # (~2 thang giao dich) - du rong cho muc tieu do luong (chieu cao vung tich luy/phan phoi)
 # thuong mat vai tuan de hien thuc hoa, nhung van co diem dung de khong "open" mai mai.
 $MAX_HOLD_SESSIONS = 40
+# T+2,5: mua xong phai doi ~2-3 phien lo moi ve tai khoan de ban duoc - neu gia cham
+# target/stop ngay trong thoi gian nay thi nguoi mua VAN CHUA THE ban duoc gia do that su.
+# Chi khoa chieu MUA (ban hang dang cam thi ban duoc ngay, khong bi khoa).
+$T_PLUS_LOCK_SESSIONS = 2
 
 $logDir = Join-Path $root "automation\logs"
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
@@ -106,7 +110,8 @@ foreach ($e in $entries) {
   $pts = Get-History $e.symbol
   $future = @($pts | Where-Object { $_.d -gt $e.entryDate } | Sort-Object d)
   if ($future.Count -eq 0) { continue }
-  $res = Resolve-Entry $e.direction $e.entryPrice $e.badLevel $e.goodLevel $future $MAX_HOLD_SESSIONS
+  $lockSessions = if ($e.direction -eq "buy") { $T_PLUS_LOCK_SESSIONS } else { 0 }
+  $res = Resolve-Entry $e.direction $e.entryPrice $e.badLevel $e.goodLevel $future $MAX_HOLD_SESSIONS $lockSessions
   if ($null -eq $res) { continue }
   $e.status = $res.status
   $e.resolvedDate = $res.resolvedDate
