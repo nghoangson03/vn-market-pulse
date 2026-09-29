@@ -433,7 +433,7 @@
 
       <div class="guide-section">
         <h4>Đối chiếu khuyến nghị thực tế</h4>
-        <p style="margin:0;">Mỗi tín hiệu MUA/BÁN xuất hiện trên trang được ghi lại tự động (ngày, giá, target/cắt lỗ) vào một sổ nhật ký riêng, rồi mỗi ngày được đối chiếu với giá thật: chạm target trước = "đúng", dính cắt lỗ trước = "sai" (nếu 1 phiên chạm cả 2 mốc thì tính là "sai" cho chắc), quá ~40 phiên (~2 tháng) không chạm mốc nào thì tính "hết hạn theo dõi". Tín hiệu BÁN cũng được đối chiếu tương tự nhưng theo chiều ngược lại (giá giảm về mốc đo lường = "đúng", giá hồi phục qua mốc đảo chiều = "sai"). Riêng tín hiệu MUA, <b>2 phiên đầu tiên sau ngày vào lệnh KHÔNG được tính là "chạm" dù giá có xuyên qua target/cắt lỗ</b> - đặc thù T+2,5 của TTCK Việt Nam, mua xong phải đợi ~2-3 phiên cổ phiếu mới về tài khoản để bán được, nên chạm giá trong lúc này cũng chưa thể chốt lời/cắt lỗ thật; tín hiệu BÁN thì tính ngay từ phiên đầu vì bán hàng đang cầm không bị khóa T+2,5. Đây là số liệu THẬT theo thời gian, không phải điểm số lý thuyết - mới bắt đầu ghi nhận nên cần vài tuần mới đủ mẫu để tin cậy.</p>
+        <p style="margin:0;">Mỗi tín hiệu MUA/BÁN xuất hiện trên trang được ghi lại tự động (ngày, giá, target/cắt lỗ) vào một sổ nhật ký riêng, rồi mỗi ngày được đối chiếu với giá thật: chạm target trước = "đúng", dính cắt lỗ trước = "sai" (nếu 1 phiên chạm cả 2 mốc thì tính là "sai" cho chắc), quá ~40 phiên (~2 tháng) không chạm mốc nào thì tính "hết hạn theo dõi". Tín hiệu BÁN cũng được đối chiếu tương tự nhưng theo chiều ngược lại (giá giảm về mốc đo lường = "đúng", giá hồi phục qua mốc đảo chiều = "sai"). Riêng tín hiệu MUA, <b>2 phiên đầu tiên sau ngày vào lệnh KHÔNG được tính là "chạm" dù giá có xuyên qua target/cắt lỗ</b> - đặc thù T+2,5 của TTCK Việt Nam, mua xong phải đợi ~2-3 phiên cổ phiếu mới về tài khoản để bán được, nên chạm giá trong lúc này cũng chưa thể chốt lời/cắt lỗ thật; tín hiệu BÁN thì tính ngay từ phiên đầu vì bán hàng đang cầm không bị khóa T+2,5. Mỗi mã chỉ tính <b>1 tín hiệu đang mở tại 1 thời điểm</b>: tín hiệu cùng chiều lặp lại khi lệnh cũ còn mở không được đếm thêm; nếu xuất hiện tín hiệu NGƯỢC chiều (đang mua lại ra tín hiệu bán hoặc ngược lại) thì lệnh cũ được đóng ở giá lúc đảo chiều với kết quả "Đảo chiều" (không tính vào tỉ lệ đúng/sai nhưng có tính vào lãi/lỗ trung bình). Ngày vào lệnh là ngày giao dịch của giá đóng cửa dùng làm giá vào. Đây là số liệu THẬT theo thời gian, không phải điểm số lý thuyết - mới bắt đầu ghi nhận nên cần vài tuần mới đủ mẫu để tin cậy.</p>
       </div>
 
       <div class="guide-section">
@@ -709,7 +709,7 @@
     if(tr.recentClosed && tr.recentClosed.length){
       var closedRows = tr.recentClosed.map(function(c){
         var cls = c.status==="hit_target" ? "up" : (c.status==="hit_stop" ? "down" : "");
-        var statusLabel = c.status==="hit_target" ? "Đúng" : (c.status==="hit_stop" ? "Sai" : "Hết hạn");
+        var statusLabel = c.status==="hit_target" ? "Đúng" : (c.status==="hit_stop" ? "Sai" : (c.status==="reversed" ? "Đảo chiều" : "Hết hạn"));
         var retCls = c.actualReturnPct>=0 ? "up" : "down";
         return '<tr><td><span class="sym mono">'+c.symbol+'</span></td>'+
           '<td>'+(PHASE_LABEL[c.phase]||c.phase)+' ('+(c.direction==="buy"?"Mua":"Bán")+')</td>'+
@@ -719,6 +719,26 @@
       }).join("");
       html += '<details class="tr-recent"><summary>Xem '+tr.recentClosed.length+' tín hiệu đóng gần nhất</summary>'+
         '<div class="table-scroll"><table class="screen-table"><thead><tr><th>Mã</th><th>Mẫu hình</th><th>Thời gian</th><th>Kết quả</th><th class="num">Lãi/lỗ</th></tr></thead><tbody>'+closedRows+'</tbody></table></div></details>';
+    }
+
+    if(tr.openPositions && tr.openPositions.length){
+      // Gan cat lo nhat len dau (pctToBad nho nhat) - vi the chua co pctToBad (thieu gia) xuong cuoi.
+      var openSorted = tr.openPositions.slice().sort(function(a,b){
+        var x = a.pctToBad==null ? Infinity : a.pctToBad, y = b.pctToBad==null ? Infinity : b.pctToBad;
+        return x - y;
+      });
+      var openRows = openSorted.map(function(p){
+        var retCls = p.unrealizedPct==null ? "" : (p.unrealizedPct>=0 ? "up" : "down");
+        var badCls = p.pctToBad==null ? "" : (p.pctToBad<3 ? "down" : "");
+        return '<tr><td><span class="sym mono">'+p.symbol+'</span></td>'+
+          '<td>'+(PHASE_LABEL[p.phase]||p.phase)+' ('+(p.direction==="buy"?"Mua":"Bán")+')</td>'+
+          '<td>'+fmtDateFull(p.entryDate)+' @ '+fmtNum(p.entryPrice)+'</td>'+
+          '<td class="num tabular '+retCls+'">'+(p.unrealizedPct==null?"—":(p.unrealizedPct>=0?"+":"")+fmtNum(p.unrealizedPct)+'%')+'</td>'+
+          '<td class="num tabular '+badCls+'">'+(p.pctToBad==null?"—":fmtNum(p.pctToBad)+'%')+'</td>'+
+          '<td class="num tabular">'+(p.pctToGood==null?"—":fmtNum(p.pctToGood)+'%')+'</td></tr>';
+      }).join("");
+      html += '<details class="tr-recent"><summary>Xem '+tr.openPositions.length+' tín hiệu đang mở (gần cắt lỗ nhất lên đầu)</summary>'+
+        '<div class="table-scroll"><table class="screen-table"><thead><tr><th>Mã</th><th>Mẫu hình</th><th>Vào lệnh</th><th class="num">Lãi/lỗ</th><th class="num">Cách cắt lỗ</th><th class="num">Cách target</th></tr></thead><tbody>'+openRows+'</tbody></table></div></details>';
     }
 
     html += '</div>';

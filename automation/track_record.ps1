@@ -34,9 +34,39 @@ function Write-Log($msg) {
 
 $screenerPath = Join-Path $root "screener.json"
 $screener = Get-Content -Path $screenerPath -Raw -Encoding UTF8 | ConvertFrom-Json
-# Cung quy uoc voi wyckoff.html (screener.generatedAt.slice(0,10)): ngay UTC cua lan chay
-# nay lam "ngay vao so" cho moi tin hieu moi phat hien hom nay.
+# Ngay UTC cua lan chay nay - chi dung lam du phong khi khong doc duoc lich su gia cua ma
+# (xem Get-PriceDate: "ngay vao so" phai la ngay cua gia dong cua dung lam entryPrice).
 $today = $screener.generatedAt.Substring(0, 10)
+
+$histCache = @{}
+function Get-History($symbol) {
+  if ($histCache.ContainsKey($symbol)) { return $histCache[$symbol] }
+  $p = Join-Path $histDir "$symbol.json"
+  $pts = if (Test-Path $p) { @((Get-Content -Path $p -Raw -Encoding UTF8 | ConvertFrom-Json).points) } else { @() }
+  $histCache[$symbol] = $pts
+  return $pts
+}
+
+# 🚨 Ngay vao so = ngay GIAO DICH cua gia dong cua dung lam entryPrice, KHONG phai ngay chay
+# script: lan chay Chu nhat 27/09 lay gia dong cua thu Sau 25/09 nhung truoc day lai ghi
+# entryDate = 27/09 (ngay khong co phien). Tra ve phien cuoi cung co gia <= $onOrBefore
+# (bo trong = phien moi nhat), hoac $null neu chua co lich su.
+function Get-PriceDate($symbol, $onOrBefore) {
+  $pts = Get-History $symbol
+  for ($i = $pts.Count - 1; $i -ge 0; $i--) {
+    if (-not $onOrBefore -or $pts[$i].d -le $onOrBefore) { return $pts[$i].d }
+  }
+  return $null
+}
+
+# So phien giao dich tu ngay kich hoat tin hieu den ngay vao so - de sau nay do xem vao
+# lenh tre (tin hieu da cu vai tuan) co lam giam ty le dung khong.
+function Get-SessionsBetween($symbol, $fromDate, $toDate) {
+  if (-not $fromDate -or -not $toDate) { return $null }
+  $pts = Get-History $symbol
+  if ($pts.Count -eq 0) { return $null }
+  return @($pts | Where-Object { $_.d -gt $fromDate -and $_.d -le $toDate }).Count
+}
 
 $logPath = Join-Path $root "automation\data\signal_log.json"
 $log = if (Test-Path $logPath) { Get-Content -Path $logPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
@@ -44,6 +74,62 @@ $entries = New-Object System.Collections.Generic.List[object]
 if ($log -and $log.entries) { foreach ($e in @($log.entries)) { $entries.Add($e) | Out-Null } }
 $existingIds = @{}
 foreach ($e in $entries) { $existingIds[$e.id] = $true }
+
+# Gan them property neu entry cu (ghi truoc khi co truong nay) chua co - ConvertFrom-Json
+# tra ve PSCustomObject co dinh truong, gan thang $e.x = ... se loi neu x chua ton tai.
+function Set-EntryField($entry, $name, $value) {
+  if ($entry.PSObject.Properties[$name]) { $entry.$name = $value }
+  else { $entry | Add-Member -NotePropertyName $name -NotePropertyValue $value }
+}
+
+# --- 0) Moi ma chi giu 1 vi the "dang theo doi" tai 1 thoi diem ---
+# $activeBySymbol: ma -> entry dang mo (chua bi dao chieu). Truoc day moi lan tin hieu cu
+# duoc kich hoat lai (khac triggerDate/phase) la ghi them 1 lenh moi du lenh cu con mo, nen
+# 1 lan khuyen nghi bi dem nhieu lan (DXS, TCM, CTD, MWG, ACB...). Quy tac moi:
+# - Cung chieu voi vi the dang mo -> ghi status "duplicate" (van luu id de khong ghi lai
+#   lan sau, nhung KHONG tinh vao thong ke/vi the mo).
+# - Nguoc chieu (dang MUA ma xuat hien tin hieu BAN hoac nguoc lai, VD AAA, VDS) -> danh
+#   dau vi the cu reversedOn/reversedPrice = ngay/gia cua tin hieu moi; buoc 2 van doi chieu
+#   vi the cu voi gia that TOI ngay do (neu da cham stop/target truoc thi giu ket qua do),
+#   con chua cham gi thi dong o trang thai "reversed" tai gia luc dao chieu.
+$activeBySymbol = @{}
+function Register-Entry($entry) {
+  $cur = $activeBySymbol[$entry.symbol]
+  if ($cur -and $cur.direction -eq $entry.direction) {
+    $entry.status = "duplicate"
+    Set-EntryField $entry "duplicateOf" $cur.id
+    return
+  }
+  if ($cur) {
+    Set-EntryField $cur "reversedOn" $entry.entryDate
+    Set-EntryField $cur "reversedPrice" $entry.entryPrice
+  }
+  $activeBySymbol[$entry.symbol] = $entry
+}
+
+# Chuan hoa so nhat ky da co (idempotent - chay lai nhieu lan van ra cung ket qua): sua
+# entryDate ve ngay giao dich that, roi xet trung lap/dao chieu theo thu tu thoi gian.
+$fixedDates = 0
+foreach ($e in $entries) {
+  if ($e.status -eq "duplicate") { continue }
+  $pd = Get-PriceDate $e.symbol $e.entryDate
+  if ($pd -and $pd -ne $e.entryDate) { $e.entryDate = $pd; $fixedDates++ }
+}
+$openSorted = @($entries | Where-Object { $_.status -eq "open" -and -not $_.reversedOn } | Sort-Object -Property entryDate, id)
+$dupBefore = @($entries | Where-Object { $_.status -eq "duplicate" }).Count
+foreach ($e in $openSorted) { Register-Entry $e }
+Write-Log "Normalized log: entryDate fixed=$fixedDates, duplicates marked=$(@($entries | Where-Object { $_.status -eq 'duplicate' }).Count - $dupBefore)"
+
+# Boi canh thi truong/nganh luc phat tin hieu - luu kem moi entry de sau nay phan tich yeu
+# to nao lam tang/giam ty le dung (tra cuu 1 lan cho ca lan chay).
+$sectorInfo = @{}
+foreach ($s in @($screener.sectorStrength)) { if ($s.sector) { $sectorInfo[$s.sector] = $s } }
+$breadth = $screener.marketBreadth
+$breadthStage2Pct = $null; $breadthStage4Pct = $null
+if ($breadth -and $breadth.screenedCount -gt 0) {
+  $breadthStage2Pct = [Math]::Round(($breadth.stage2Count / $breadth.screenedCount) * 100, 1)
+  $breadthStage4Pct = [Math]::Round(($breadth.stage4Count / $breadth.screenedCount) * 100, 1)
+}
 
 # --- 1) Ghi tin hieu MOI (chua tung xuat hien - phan biet theo ma+ngay kich hoat+mau hinh) ---
 $beforeCount = $entries.Count
@@ -67,7 +153,11 @@ foreach ($db in $directionBuckets) {
       $badLevel = $item.invalidation; $goodLevel = $item.downTarget
     }
 
-    $entries.Add([PSCustomObject]@{
+    $entryDate = Get-PriceDate $item.symbol $null
+    if (-not $entryDate) { $entryDate = $today }
+    $sec = if ($item.sector) { $sectorInfo[$item.sector] } else { $null }
+
+    $newEntry = [PSCustomObject]@{
       id                  = $id
       symbol              = $item.symbol
       name                = $item.name
@@ -76,7 +166,7 @@ foreach ($db in $directionBuckets) {
       signalAtEntry       = $item.signal
       phase               = $item.phase
       triggerDate         = $item.triggerDate
-      entryDate           = $today
+      entryDate           = $entryDate
       entryPrice          = $item.lastClose
       badLevel            = $badLevel
       goodLevel           = $goodLevel
@@ -84,35 +174,50 @@ foreach ($db in $directionBuckets) {
       marketRegimeAtEntry = $screener.marketRegime.status
       stageAtEntry        = $item.stage
       rsAtEntry           = $item.rs
+      # Cac yeu to luc phat tin hieu - nguyen lieu de phan tich nguyen nhan dung/sai
+      rawScoreAtEntry      = $item.rawScore
+      volRatioAtEntry      = $item.volRatio
+      supportAtEntry       = $item.support
+      resistanceAtEntry    = $item.resistance
+      rewardPctAtEntry     = $item.rewardPct
+      riskRewardAtEntry    = $item.riskRewardRatio
+      extensionPctAtEntry  = $item.extensionPct
+      chaseWarningAtEntry  = [bool]$item.chaseWarning
+      sessionsSinceTrigger = Get-SessionsBetween $item.symbol $item.triggerDate $entryDate
+      sectorTierAtEntry    = if ($sec) { $sec.tier } else { $null }
+      sectorScoreAtEntry   = if ($sec) { $sec.strengthScore } else { $null }
+      sectorAvgRsAtEntry   = if ($sec) { $sec.avgRs } else { $null }
+      breadthStage2Pct     = $breadthStage2Pct
+      breadthStage4Pct     = $breadthStage4Pct
+      vnCloseAtEntry       = $screener.marketRegime.vnClose
+      vnMa50AtEntry        = $screener.marketRegime.ma50
       status              = "open"
       resolvedDate        = $null
       resolvedPrice       = $null
       actualReturnPct     = $null
       sessionsToResolve   = $null
-    }) | Out-Null
+    }
+    Register-Entry $newEntry
+    $entries.Add($newEntry) | Out-Null
     $existingIds[$id] = $true
   }
 }
-Write-Log "New entries logged: $($entries.Count - $beforeCount)"
+$newOnes = @($entries | Select-Object -Skip $beforeCount)
+Write-Log "New entries logged: $($newOnes.Count) (duplicate of an open position: $(@($newOnes | Where-Object { $_.status -eq 'duplicate' }).Count))"
 
 # --- 2) Doi chieu (resolve) cac tin hieu dang "open" voi gia that ---
-$histCache = @{}
-function Get-History($symbol) {
-  if ($histCache.ContainsKey($symbol)) { return $histCache[$symbol] }
-  $p = Join-Path $histDir "$symbol.json"
-  $pts = if (Test-Path $p) { @((Get-Content -Path $p -Raw -Encoding UTF8 | ConvertFrom-Json).points) } else { @() }
-  $histCache[$symbol] = $pts
-  return $pts
-}
-
 $resolvedCount = 0
 foreach ($e in $entries) {
   if ($e.status -ne "open") { continue }
   $pts = Get-History $e.symbol
   $future = @($pts | Where-Object { $_.d -gt $e.entryDate } | Sort-Object d)
-  if ($future.Count -eq 0) { continue }
+  # Vi the da bi dao chieu: chi doi chieu toi ngay xuat hien tin hieu nguoc chieu.
+  if ($e.reversedOn) { $future = @($future | Where-Object { $_.d -le $e.reversedOn }) }
   $lockSessions = if ($e.direction -eq "buy") { $T_PLUS_LOCK_SESSIONS } else { 0 }
-  $res = Resolve-Entry $e.direction $e.entryPrice $e.badLevel $e.goodLevel $future $MAX_HOLD_SESSIONS $lockSessions
+  $res = if ($future.Count -gt 0) { Resolve-Entry $e.direction $e.entryPrice $e.badLevel $e.goodLevel $future $MAX_HOLD_SESSIONS $lockSessions } else { $null }
+  if ($null -eq $res -and $e.reversedOn) {
+    $res = [PSCustomObject]@{ status = "reversed"; resolvedDate = $e.reversedOn; resolvedPrice = $e.reversedPrice; sessionsToResolve = $future.Count }
+  }
   if ($null -eq $res) { continue }
   $e.status = $res.status
   $e.resolvedDate = $res.resolvedDate
@@ -143,6 +248,7 @@ function Get-Stats($items) {
   $wins = @($closed | Where-Object { $_.status -eq "hit_target" })
   $losses = @($closed | Where-Object { $_.status -eq "hit_stop" })
   $expired = @($closed | Where-Object { $_.status -eq "expired_neutral" })
+  $reversed = @($closed | Where-Object { $_.status -eq "reversed" })
   $decided = $wins.Count + $losses.Count
   $winRate = if ($decided -gt 0) { [Math]::Round(($wins.Count / $decided) * 100, 1) } else { $null }
   $avgReturn = if ($closed.Count -gt 0) { [Math]::Round((($closed | Measure-Object -Property actualReturnPct -Average).Average), 2) } else { $null }
@@ -154,6 +260,7 @@ function Get-Stats($items) {
     wins         = $wins.Count
     losses       = $losses.Count
     expired      = $expired.Count
+    reversed     = $reversed.Count
     winRatePct   = $winRate
     avgReturnPct = $avgReturn
     avgWinPct    = $avgWin
@@ -161,13 +268,15 @@ function Get-Stats($items) {
   }
 }
 
-$buyEntries = @($entries | Where-Object { $_.direction -eq "buy" })
-$sellEntries = @($entries | Where-Object { $_.direction -eq "sell" })
+# Tin hieu trung lap chi luu de khong ghi lai - khong tinh vao bat ky thong ke nao.
+$tracked = @($entries | Where-Object { $_.status -ne "duplicate" })
+$buyEntries = @($tracked | Where-Object { $_.direction -eq "buy" })
+$sellEntries = @($tracked | Where-Object { $_.direction -eq "sell" })
 
 # Xep theo mau hinh cau truc (SOS/Spring/Upthrust/SOW) - noi de sau nay xem mau hinh nao
 # dang tin cay hon trong thuc te tren TTCK VN, lam co so dieu chinh trong so cham diem.
 $byPhase = @()
-foreach ($g in ($entries | Group-Object -Property phase)) {
+foreach ($g in ($tracked | Group-Object -Property phase)) {
   $closed = @($g.Group | Where-Object { $_.status -ne "open" })
   if ($closed.Count -eq 0) { continue }
   $stats = Get-Stats $g.Group
@@ -180,7 +289,28 @@ foreach ($g in ($entries | Group-Object -Property phase)) {
   }
 }
 
-$recentClosed = @($entries | Where-Object { $_.status -ne "open" } | Sort-Object -Property resolvedDate -Descending | Select-Object -First 15)
+# Ty le dung theo tung yeu to luc phat tin hieu (tier, Stage, thi truong chung, suc manh
+# nganh) - de biet yeu to nao thuc su lam tang ty le dung, lam co so chinh trong so cham
+# diem trong Get-LayerAdjustment thay vi doan. Chi tinh nhom da co lenh dong.
+$byFactor = [ordered]@{}
+foreach ($factor in @("signalAtEntry", "stageAtEntry", "marketRegimeAtEntry", "sectorTierAtEntry")) {
+  $rows = @()
+  foreach ($g in ($tracked | Group-Object -Property direction, $factor)) {
+    $closed = @($g.Group | Where-Object { $_.status -ne "open" })
+    if ($closed.Count -eq 0) { continue }
+    $stats = Get-Stats $g.Group
+    $rows += [PSCustomObject]@{
+      value        = $g.Group[0].$factor
+      direction    = $g.Group[0].direction
+      closedCount  = $stats.closedCount
+      winRatePct   = $stats.winRatePct
+      avgReturnPct = $stats.avgReturnPct
+    }
+  }
+  $byFactor[$factor] = @($rows)
+}
+
+$recentClosed = @($tracked | Where-Object { $_.status -ne "open" } | Sort-Object -Property resolvedDate -Descending | Select-Object -First 15)
 
 $latestPriceCache = @{}
 function Get-LatestPrice($symbol) {
@@ -196,16 +326,34 @@ $openPositions = @($entries | Where-Object { $_.status -eq "open" } | ForEach-Ob
     if ($_.direction -eq "buy") { [Math]::Round((($latest - $_.entryPrice) / $_.entryPrice) * 100, 2) }
     else { [Math]::Round((($_.entryPrice - $latest) / $_.entryPrice) * 100, 2) }
   } else { $null }
+  # Khoang cach (% tren gia hien tai) con lai toi muc cat lo / target, theo chieu cua tin
+  # hieu: duong = chua cham, am = gia da vuot qua muc do (VD dang trong 2 phien khoa T+2,5).
+  $pctToBad = $null; $pctToGood = $null
+  if ($null -ne $latest -and $latest -gt 0) {
+    if ($_.direction -eq "buy") {
+      if ($null -ne $_.badLevel) { $pctToBad = [Math]::Round((($latest - $_.badLevel) / $latest) * 100, 2) }
+      if ($null -ne $_.goodLevel) { $pctToGood = [Math]::Round((($_.goodLevel - $latest) / $latest) * 100, 2) }
+    } else {
+      if ($null -ne $_.badLevel) { $pctToBad = [Math]::Round((($_.badLevel - $latest) / $latest) * 100, 2) }
+      if ($null -ne $_.goodLevel) { $pctToGood = [Math]::Round((($latest - $_.goodLevel) / $latest) * 100, 2) }
+    }
+  }
   [PSCustomObject]@{
     symbol        = $_.symbol
     name          = $_.name
     sector        = $_.sector
     direction     = $_.direction
+    signalAtEntry = $_.signalAtEntry
     phase         = $_.phase
+    triggerDate   = $_.triggerDate
     entryDate     = $_.entryDate
     entryPrice    = $_.entryPrice
+    badLevel      = $_.badLevel
+    goodLevel     = $_.goodLevel
     latestPrice   = $latest
     unrealizedPct = $unrealized
+    pctToBad      = $pctToBad
+    pctToGood     = $pctToGood
   }
 } | Sort-Object -Property entryDate -Descending)
 
@@ -214,6 +362,7 @@ $trackRecord = [PSCustomObject]@{
   startedTracking = "2026-09-28"
   overall         = [PSCustomObject]@{ buy = (Get-Stats $buyEntries); sell = (Get-Stats $sellEntries) }
   byPhase         = @($byPhase)
+  byFactor        = [PSCustomObject]$byFactor
   recentClosed    = $recentClosed
   openPositions   = $openPositions
 }
