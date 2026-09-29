@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-09-28T09:12:40.7482211Z",
+    "generatedAt":  "2026-09-29T09:00:24.7024922Z",
     "startedTracking":  "2026-09-28",
     "overall":  {
                     "buy":  {
-                                "openCount":  44,
+                                "openCount":  60,
                                 "closedCount":  0,
                                 "wins":  0,
                                 "losses":  0,
@@ -14,7 +14,7 @@
                                 "avgLossPct":  null
                             },
                     "sell":  {
-                                 "openCount":  29,
+                                 "openCount":  34,
                                  "closedCount":  0,
                                  "wins":  0,
                                  "losses":  0,
@@ -33,6 +33,237 @@
                      ],
     "openPositions":  [
                           {
+                              "symbol":  "VTP",
+                              "name":  "Bưu chính Viettel",
+                              "sector":  "Vận tải biển - Logistics",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  52.6,
+                              "latestPrice":  52.6,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "PAN",
+                              "name":  "CTCP Tập đoàn PAN",
+                              "sector":  "Nông nghiệp",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  18,
+                              "latestPrice":  18,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "GEL",
+                              "name":  "GELEX INFRASTRUCTURE JSC",
+                              "sector":  "Điện - Năng lượng",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  29.1,
+                              "latestPrice":  29.1,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "CII",
+                              "name":  "H.tầng KT HCM",
+                              "sector":  "Đầu tư công",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  12.4,
+                              "latestPrice":  12.4,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "VIX",
+                              "name":  "CHỨNG KHOÁN VIX",
+                              "sector":  "Chứng khoán",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  12.45,
+                              "latestPrice":  12.45,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "BCM",
+                              "name":  "Tập đoàn Đầu tư và Phát triển Công nghiệp Becamex",
+                              "sector":  "BĐS KCN",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  39.6,
+                              "latestPrice":  39.6,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "GEE",
+                              "name":  "Gelex Electric",
+                              "sector":  "Điện - Năng lượng",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  72,
+                              "latestPrice":  72,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "BVH",
+                              "name":  "Tập đoàn Bảo Việt",
+                              "sector":  "Bảo hiểm",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  74.2,
+                              "latestPrice":  74.2,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "VVS",
+                              "name":  "Đầu tư phát triển máy Việt Nam",
+                              "sector":  "Khác",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  86.4,
+                              "latestPrice":  86.4,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "DXS",
+                              "name":  "CTCP Dịch vụ Bất động sản Đất Xanh",
+                              "sector":  "BĐS",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  5.21,
+                              "latestPrice":  5.21,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "DPG",
+                              "name":  "Công ty Đạt Phương",
+                              "sector":  "Xây dựng - VLXD",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  27.5,
+                              "latestPrice":  27.5,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "LPB",
+                              "name":  "Ngân hàng Lộc Phát",
+                              "sector":  "Bank",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  43.5,
+                              "latestPrice":  43.5,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "NVL",
+                              "name":  "Địa ốc Novaland",
+                              "sector":  "BĐS",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  10.3,
+                              "latestPrice":  10.3,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "GVR",
+                              "name":  "Cao su Việt Nam",
+                              "sector":  "Cao su",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  33.3,
+                              "latestPrice":  33.3,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "ACB",
+                              "name":  "Ngân hàng Á Châu",
+                              "sector":  "Bank",
+                              "direction":  "sell",
+                              "phase":  "watch_top",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  21.05,
+                              "latestPrice":  21.05,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "OCB",
+                              "name":  "Ngân hàng Phương Đông",
+                              "sector":  "Bank",
+                              "direction":  "sell",
+                              "phase":  "watch_top",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  10.05,
+                              "latestPrice":  10.05,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "DIG",
+                              "name":  "TCT ĐTPT Xây dựng",
+                              "sector":  "BĐS",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  9.53,
+                              "latestPrice":  9.53,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "HVN",
+                              "name":  "Vietnam Airlines",
+                              "sector":  "Hàng không",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  21.1,
+                              "latestPrice":  21.1,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "CTD",
+                              "name":  "Xây dựng Coteccons",
+                              "sector":  "Xây dựng - VLXD",
+                              "direction":  "buy",
+                              "phase":  "watch_range",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  59.7,
+                              "latestPrice":  59.7,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "TCM",
+                              "name":  "May Thành Công",
+                              "sector":  "Dệt may",
+                              "direction":  "buy",
+                              "phase":  "watch_range",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  15.6,
+                              "latestPrice":  15.6,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "MWG",
+                              "name":  "Thế Giới Di Động",
+                              "sector":  "Bán lẻ công nghệ",
+                              "direction":  "buy",
+                              "phase":  "watch_range",
+                              "entryDate":  "2026-09-29",
+                              "entryPrice":  71.9,
+                              "latestPrice":  71.9,
+                              "unrealizedPct":  0
+                          },
+                          {
                               "symbol":  "CTD",
                               "name":  "Xây dựng Coteccons",
                               "sector":  "Xây dựng - VLXD",
@@ -40,8 +271,8 @@
                               "phase":  "watch_range",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  59.4,
-                              "latestPrice":  59.4,
-                              "unrealizedPct":  0
+                              "latestPrice":  59.7,
+                              "unrealizedPct":  0.51
                           },
                           {
                               "symbol":  "MWG",
@@ -51,8 +282,8 @@
                               "phase":  "watch_range",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  72,
-                              "latestPrice":  72,
-                              "unrealizedPct":  0
+                              "latestPrice":  71.9,
+                              "unrealizedPct":  -0.14
                           },
                           {
                               "symbol":  "TCM",
@@ -62,8 +293,8 @@
                               "phase":  "watch_range",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  15.65,
-                              "latestPrice":  15.65,
-                              "unrealizedPct":  0
+                              "latestPrice":  15.6,
+                              "unrealizedPct":  -0.32
                           },
                           {
                               "symbol":  "DBC",
@@ -73,8 +304,8 @@
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  15.55,
-                              "latestPrice":  15.55,
-                              "unrealizedPct":  0
+                              "latestPrice":  15.5,
+                              "unrealizedPct":  -0.32
                           },
                           {
                               "symbol":  "AAA",
@@ -84,8 +315,8 @@
                               "phase":  "markup_confirmed",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  7.17,
-                              "latestPrice":  7.17,
-                              "unrealizedPct":  0
+                              "latestPrice":  7.26,
+                              "unrealizedPct":  1.26
                           },
                           {
                               "symbol":  "SSB",
@@ -95,8 +326,8 @@
                               "phase":  "markup_confirmed",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  18.85,
-                              "latestPrice":  18.85,
-                              "unrealizedPct":  0
+                              "latestPrice":  19.1,
+                              "unrealizedPct":  1.33
                           },
                           {
                               "symbol":  "DXS",
@@ -106,8 +337,8 @@
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  5.3,
-                              "latestPrice":  5.3,
-                              "unrealizedPct":  0
+                              "latestPrice":  5.21,
+                              "unrealizedPct":  -1.70
                           },
                           {
                               "symbol":  "TCX",
@@ -117,8 +348,8 @@
                               "phase":  "markdown_confirmed",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  29.15,
-                              "latestPrice":  29.15,
-                              "unrealizedPct":  0
+                              "latestPrice":  29.2,
+                              "unrealizedPct":  -0.17
                           },
                           {
                               "symbol":  "OCB",
@@ -128,8 +359,8 @@
                               "phase":  "watch_top",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  10.1,
-                              "latestPrice":  10.1,
-                              "unrealizedPct":  0
+                              "latestPrice":  10.05,
+                              "unrealizedPct":  0.50
                           },
                           {
                               "symbol":  "ACB",
@@ -139,8 +370,8 @@
                               "phase":  "watch_top",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  21.1,
-                              "latestPrice":  21.1,
-                              "unrealizedPct":  0
+                              "latestPrice":  21.05,
+                              "unrealizedPct":  0.24
                           },
                           {
                               "symbol":  "NTL",
@@ -150,8 +381,8 @@
                               "phase":  "markdown_confirmed",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  11.7,
-                              "latestPrice":  11.7,
-                              "unrealizedPct":  0
+                              "latestPrice":  11.35,
+                              "unrealizedPct":  2.99
                           },
                           {
                               "symbol":  "VDS",
@@ -161,8 +392,8 @@
                               "phase":  "markdown_confirmed",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  9.8,
-                              "latestPrice":  9.8,
-                              "unrealizedPct":  0
+                              "latestPrice":  9.85,
+                              "unrealizedPct":  -0.51
                           },
                           {
                               "symbol":  "HDC",
@@ -172,41 +403,41 @@
                               "phase":  "markdown_confirmed",
                               "entryDate":  "2026-09-28",
                               "entryPrice":  10.6,
-                              "latestPrice":  10.6,
-                              "unrealizedPct":  0
+                              "latestPrice":  10.55,
+                              "unrealizedPct":  0.47
                           },
                           {
-                              "symbol":  "GEX",
-                              "name":  "Tập đoàn Gelex",
-                              "sector":  "Điện - Năng lượng",
+                              "symbol":  "VPL",
+                              "name":  "CTCP Vinpearl",
+                              "sector":  "Du lịch - Nghỉ dưỡng",
                               "direction":  "sell",
-                              "phase":  "markdown_confirmed",
+                              "phase":  "distribution_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  24,
-                              "latestPrice":  23.9,
-                              "unrealizedPct":  0.42
+                              "entryPrice":  79.7,
+                              "latestPrice":  79.3,
+                              "unrealizedPct":  0.50
                           },
                           {
-                              "symbol":  "VND",
-                              "name":  "VNDIRECT",
-                              "sector":  "Chứng khoán",
+                              "symbol":  "FPT",
+                              "name":  "CTCP FPT",
+                              "sector":  "Công nghệ",
                               "direction":  "sell",
-                              "phase":  "markdown_confirmed",
+                              "phase":  "distribution_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  14.35,
-                              "latestPrice":  13.9,
-                              "unrealizedPct":  3.14
+                              "entryPrice":  64.7,
+                              "latestPrice":  63.2,
+                              "unrealizedPct":  2.32
                           },
                           {
-                              "symbol":  "KBC",
-                              "name":  "Đô thị Kinh Bắc",
-                              "sector":  "BĐS KCN",
+                              "symbol":  "DPM",
+                              "name":  "Đạm Phú Mỹ",
+                              "sector":  "Phân bón - Hóa chất",
                               "direction":  "sell",
-                              "phase":  "markdown_confirmed",
+                              "phase":  "distribution_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  25.95,
-                              "latestPrice":  25.8,
-                              "unrealizedPct":  0.58
+                              "entryPrice":  22.6,
+                              "latestPrice":  23,
+                              "unrealizedPct":  -1.77
                           },
                           {
                               "symbol":  "GEE",
@@ -216,118 +447,74 @@
                               "phase":  "markdown_confirmed",
                               "entryDate":  "2026-09-27",
                               "entryPrice":  73.9,
-                              "latestPrice":  72.8,
-                              "unrealizedPct":  1.49
+                              "latestPrice":  72,
+                              "unrealizedPct":  2.57
                           },
                           {
-                              "symbol":  "VSC",
-                              "name":  "Container Việt Nam",
-                              "sector":  "Vận tải biển - Logistics",
+                              "symbol":  "VVS",
+                              "name":  "Đầu tư phát triển máy Việt Nam",
+                              "sector":  "Khác",
                               "direction":  "sell",
                               "phase":  "markdown_confirmed",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  13.25,
-                              "latestPrice":  13.6,
-                              "unrealizedPct":  -2.64
+                              "entryPrice":  85.1,
+                              "latestPrice":  86.4,
+                              "unrealizedPct":  -1.53
                           },
                           {
-                              "symbol":  "GEL",
-                              "name":  "GELEX INFRASTRUCTURE JSC",
-                              "sector":  "Điện - Năng lượng",
+                              "symbol":  "PLX",
+                              "name":  "Xăng dầu Việt Nam",
+                              "sector":  "Dầu khí",
                               "direction":  "sell",
-                              "phase":  "markdown_confirmed",
+                              "phase":  "distribution_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  29.3,
-                              "latestPrice":  29.2,
-                              "unrealizedPct":  0.34
+                              "entryPrice":  35,
+                              "latestPrice":  36.45,
+                              "unrealizedPct":  -4.14
                           },
                           {
-                              "symbol":  "VCG",
-                              "name":  "XNK \u0026 Xây dựng VN",
-                              "sector":  "Đầu tư công",
+                              "symbol":  "TLG",
+                              "name":  "Thiên Long Group",
+                              "sector":  "Hàng tiêu dùng",
                               "direction":  "sell",
-                              "phase":  "markdown_confirmed",
+                              "phase":  "distribution_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  14.05,
-                              "latestPrice":  13.7,
-                              "unrealizedPct":  2.49
+                              "entryPrice":  53,
+                              "latestPrice":  52.6,
+                              "unrealizedPct":  0.75
                           },
                           {
-                              "symbol":  "HHV",
-                              "name":  "Hạ tầng giao thông Đèo Cả",
-                              "sector":  "Đầu tư công",
-                              "direction":  "sell",
-                              "phase":  "markdown_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  9.11,
-                              "latestPrice":  8.99,
-                              "unrealizedPct":  1.32
-                          },
-                          {
-                              "symbol":  "HVN",
-                              "name":  "Vietnam Airlines",
-                              "sector":  "Hàng không",
-                              "direction":  "sell",
-                              "phase":  "markdown_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  20.3,
-                              "latestPrice":  20.5,
-                              "unrealizedPct":  -0.99
-                          },
-                          {
-                              "symbol":  "VHC",
-                              "name":  "CTCP Vĩnh Hoàn",
-                              "sector":  "Thủy sản",
-                              "direction":  "sell",
-                              "phase":  "markdown_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  49.55,
-                              "latestPrice":  48.65,
-                              "unrealizedPct":  1.82
-                          },
-                          {
-                              "symbol":  "BVB",
-                              "name":  "Ngân hàng Bản Việt",
+                              "symbol":  "ACB",
+                              "name":  "Ngân hàng Á Châu",
                               "sector":  "Bank",
                               "direction":  "sell",
-                              "phase":  "markdown_confirmed",
+                              "phase":  "watch_top",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  10.5,
-                              "latestPrice":  10.55,
-                              "unrealizedPct":  -0.48
+                              "entryPrice":  21.4,
+                              "latestPrice":  21.05,
+                              "unrealizedPct":  1.64
                           },
                           {
-                              "symbol":  "IJC",
-                              "name":  "P.triển H.tầng KT",
-                              "sector":  "BĐS KCN",
+                              "symbol":  "DCL",
+                              "name":  "Dược phẩm Cửu Long",
+                              "sector":  "Dược phẩm",
                               "direction":  "sell",
-                              "phase":  "markdown_confirmed",
+                              "phase":  "distribution_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  6.72,
-                              "latestPrice":  6.57,
-                              "unrealizedPct":  2.23
+                              "entryPrice":  46.45,
+                              "latestPrice":  45.75,
+                              "unrealizedPct":  1.51
                           },
                           {
-                              "symbol":  "AAA",
-                              "name":  "Nhựa An Phát Xanh",
+                              "symbol":  "HII",
+                              "name":  "An Tiến Industries",
                               "sector":  "Nhựa - Bao bì",
-                              "direction":  "sell",
-                              "phase":  "distribution_setup",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  7.47,
-                              "latestPrice":  7.17,
-                              "unrealizedPct":  4.02
-                          },
-                          {
-                              "symbol":  "HDB",
-                              "name":  "HDBank",
-                              "sector":  "Bank",
-                              "direction":  "sell",
-                              "phase":  "distribution_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  27.8,
-                              "latestPrice":  27.5,
-                              "unrealizedPct":  1.08
+                              "entryPrice":  10.55,
+                              "latestPrice":  9.81,
+                              "unrealizedPct":  -7.01
                           },
                           {
                               "symbol":  "MCH",
@@ -341,191 +528,37 @@
                               "unrealizedPct":  2.13
                           },
                           {
-                              "symbol":  "HII",
-                              "name":  "An Tiến Industries",
-                              "sector":  "Nhựa - Bao bì",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  10.55,
-                              "latestPrice":  9.82,
-                              "unrealizedPct":  -6.92
-                          },
-                          {
-                              "symbol":  "DCL",
-                              "name":  "Dược phẩm Cửu Long",
-                              "sector":  "Dược phẩm",
-                              "direction":  "sell",
-                              "phase":  "distribution_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  46.45,
-                              "latestPrice":  46.1,
-                              "unrealizedPct":  0.75
-                          },
-                          {
-                              "symbol":  "ACB",
-                              "name":  "Ngân hàng Á Châu",
+                              "symbol":  "HDB",
+                              "name":  "HDBank",
                               "sector":  "Bank",
                               "direction":  "sell",
-                              "phase":  "watch_top",
+                              "phase":  "distribution_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  21.4,
-                              "latestPrice":  21.1,
-                              "unrealizedPct":  1.40
+                              "entryPrice":  27.8,
+                              "latestPrice":  27.4,
+                              "unrealizedPct":  1.44
                           },
                           {
-                              "symbol":  "VPL",
-                              "name":  "CTCP Vinpearl",
-                              "sector":  "Du lịch - Nghỉ dưỡng",
+                              "symbol":  "AAA",
+                              "name":  "Nhựa An Phát Xanh",
+                              "sector":  "Nhựa - Bao bì",
                               "direction":  "sell",
                               "phase":  "distribution_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  79.7,
-                              "latestPrice":  80,
-                              "unrealizedPct":  -0.38
+                              "entryPrice":  7.47,
+                              "latestPrice":  7.26,
+                              "unrealizedPct":  2.81
                           },
                           {
-                              "symbol":  "PLX",
-                              "name":  "Xăng dầu Việt Nam",
-                              "sector":  "Dầu khí",
-                              "direction":  "sell",
-                              "phase":  "distribution_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  35,
-                              "latestPrice":  35.6,
-                              "unrealizedPct":  -1.71
-                          },
-                          {
-                              "symbol":  "VVS",
-                              "name":  "Đầu tư phát triển máy Việt Nam",
-                              "sector":  "Khác",
+                              "symbol":  "VSC",
+                              "name":  "Container Việt Nam",
+                              "sector":  "Vận tải biển - Logistics",
                               "direction":  "sell",
                               "phase":  "markdown_confirmed",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  85.1,
-                              "latestPrice":  81.4,
-                              "unrealizedPct":  4.35
-                          },
-                          {
-                              "symbol":  "TLG",
-                              "name":  "Thiên Long Group",
-                              "sector":  "Hàng tiêu dùng",
-                              "direction":  "sell",
-                              "phase":  "distribution_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  53,
-                              "latestPrice":  53,
-                              "unrealizedPct":  0
-                          },
-                          {
-                              "symbol":  "DPM",
-                              "name":  "Đạm Phú Mỹ",
-                              "sector":  "Phân bón - Hóa chất",
-                              "direction":  "sell",
-                              "phase":  "distribution_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  22.6,
-                              "latestPrice":  22.9,
-                              "unrealizedPct":  -1.33
-                          },
-                          {
-                              "symbol":  "FPT",
-                              "name":  "CTCP FPT",
-                              "sector":  "Công nghệ",
-                              "direction":  "sell",
-                              "phase":  "distribution_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  64.7,
-                              "latestPrice":  63.7,
-                              "unrealizedPct":  1.55
-                          },
-                          {
-                              "symbol":  "VOS",
-                              "name":  "Vận tải biển VN",
-                              "sector":  "Vận tải biển - Logistics",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  12.5,
-                              "latestPrice":  12.7,
-                              "unrealizedPct":  1.60
-                          },
-                          {
-                              "symbol":  "GVR",
-                              "name":  "Cao su Việt Nam",
-                              "sector":  "Cao su",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  32.9,
-                              "latestPrice":  32.2,
-                              "unrealizedPct":  -2.13
-                          },
-                          {
-                              "symbol":  "VGC",
-                              "name":  "TCT Viglacera",
-                              "sector":  "Xây dựng - VLXD",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  42.75,
-                              "latestPrice":  42.75,
-                              "unrealizedPct":  0
-                          },
-                          {
-                              "symbol":  "HAH",
-                              "name":  "Vận tải Hải An",
-                              "sector":  "Vận tải biển - Logistics",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  51.7,
-                              "latestPrice":  52.3,
-                              "unrealizedPct":  1.16
-                          },
-                          {
-                              "symbol":  "NT2",
-                              "name":  "Nhơn Trạch 2",
-                              "sector":  "Điện - Năng lượng",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  20.85,
-                              "latestPrice":  20.8,
-                              "unrealizedPct":  -0.24
-                          },
-                          {
-                              "symbol":  "DXS",
-                              "name":  "CTCP Dịch vụ Bất động sản Đất Xanh",
-                              "sector":  "BĐS",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  5.46,
-                              "latestPrice":  5.3,
-                              "unrealizedPct":  -2.93
-                          },
-                          {
-                              "symbol":  "LPB",
-                              "name":  "Ngân hàng Lộc Phát",
-                              "sector":  "Bank",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  46.45,
-                              "latestPrice":  45.5,
-                              "unrealizedPct":  -2.05
-                          },
-                          {
-                              "symbol":  "FRT",
-                              "name":  "Bán lẻ KTS FPT",
-                              "sector":  "Bán lẻ công nghệ",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  141.9,
-                              "latestPrice":  140,
-                              "unrealizedPct":  -1.34
+                              "entryPrice":  13.25,
+                              "latestPrice":  13.55,
+                              "unrealizedPct":  -2.26
                           },
                           {
                               "symbol":  "EVF",
@@ -535,217 +568,63 @@
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-27",
                               "entryPrice":  11.6,
-                              "latestPrice":  11.45,
-                              "unrealizedPct":  -1.29
+                              "latestPrice":  11.5,
+                              "unrealizedPct":  -0.86
                           },
                           {
-                              "symbol":  "HHP",
-                              "name":  "HHP Global",
-                              "sector":  "Nhựa - Bao bì",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  17.7,
-                              "latestPrice":  17.8,
-                              "unrealizedPct":  0.56
-                          },
-                          {
-                              "symbol":  "MSB",
-                              "name":  "Ngân hàng MSB",
-                              "sector":  "Bank",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  14.05,
-                              "latestPrice":  14.15,
-                              "unrealizedPct":  0.71
-                          },
-                          {
-                              "symbol":  "DGW",
-                              "name":  "CTCP Thế giới Số",
-                              "sector":  "Bán lẻ công nghệ",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  44.5,
-                              "latestPrice":  45.55,
-                              "unrealizedPct":  2.36
-                          },
-                          {
-                              "symbol":  "DHC",
-                              "name":  "Đông Hải Bến Tre",
-                              "sector":  "Nhựa - Bao bì",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  39,
-                              "latestPrice":  38.7,
-                              "unrealizedPct":  -0.77
-                          },
-                          {
-                              "symbol":  "STB",
-                              "name":  "Ngân hàng Sài Gòn Tài Lộc",
-                              "sector":  "Bank",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  76.5,
-                              "latestPrice":  77.2,
-                              "unrealizedPct":  0.92
-                          },
-                          {
-                              "symbol":  "GAS",
-                              "name":  "TCT Khí Việt Nam",
-                              "sector":  "Dầu khí",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  80.5,
-                              "latestPrice":  83.5,
-                              "unrealizedPct":  3.73
-                          },
-                          {
-                              "symbol":  "BVH",
-                              "name":  "Tập đoàn Bảo Việt",
-                              "sector":  "Bảo hiểm",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  68.8,
-                              "latestPrice":  73.6,
-                              "unrealizedPct":  6.98
-                          },
-                          {
-                              "symbol":  "VPB",
-                              "name":  "Ng.hàng Thịnh Vượng",
-                              "sector":  "Bank",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  23,
-                              "latestPrice":  22.95,
-                              "unrealizedPct":  -0.22
-                          },
-                          {
-                              "symbol":  "PVT",
-                              "name":  "TCT V.tải dầu khí",
-                              "sector":  "Vận tải biển - Logistics",
-                              "direction":  "buy",
-                              "phase":  "markup_confirmed",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  23.1,
-                              "latestPrice":  23.45,
-                              "unrealizedPct":  1.52
-                          },
-                          {
-                              "symbol":  "CII",
-                              "name":  "H.tầng KT HCM",
-                              "sector":  "Đầu tư công",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  12.6,
-                              "latestPrice":  12.25,
-                              "unrealizedPct":  -2.78
-                          },
-                          {
-                              "symbol":  "NVL",
-                              "name":  "Địa ốc Novaland",
+                              "symbol":  "DXS",
+                              "name":  "CTCP Dịch vụ Bất động sản Đất Xanh",
                               "sector":  "BĐS",
                               "direction":  "buy",
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  11.85,
-                              "latestPrice":  11.05,
-                              "unrealizedPct":  -6.75
+                              "entryPrice":  5.46,
+                              "latestPrice":  5.21,
+                              "unrealizedPct":  -4.58
                           },
                           {
-                              "symbol":  "POW",
-                              "name":  "PVPOWER",
+                              "symbol":  "FRT",
+                              "name":  "Bán lẻ KTS FPT",
+                              "sector":  "Bán lẻ công nghệ",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  141.9,
+                              "latestPrice":  142,
+                              "unrealizedPct":  0.07
+                          },
+                          {
+                              "symbol":  "GVR",
+                              "name":  "Cao su Việt Nam",
+                              "sector":  "Cao su",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  32.9,
+                              "latestPrice":  33.3,
+                              "unrealizedPct":  1.22
+                          },
+                          {
+                              "symbol":  "NT2",
+                              "name":  "Nhơn Trạch 2",
                               "sector":  "Điện - Năng lượng",
                               "direction":  "buy",
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  12.45,
-                              "latestPrice":  12.65,
-                              "unrealizedPct":  1.61
+                              "entryPrice":  20.85,
+                              "latestPrice":  21.1,
+                              "unrealizedPct":  1.20
                           },
                           {
-                              "symbol":  "PDR",
-                              "name":  "Công ty Phát Đạt",
-                              "sector":  "BĐS",
+                              "symbol":  "LPB",
+                              "name":  "Ngân hàng Lộc Phát",
+                              "sector":  "Bank",
                               "direction":  "buy",
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  11.3,
-                              "latestPrice":  11.3,
-                              "unrealizedPct":  0
-                          },
-                          {
-                              "symbol":  "NKG",
-                              "name":  "Thép Nam Kim",
-                              "sector":  "Thép",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  9.7,
-                              "latestPrice":  9.46,
-                              "unrealizedPct":  -2.47
-                          },
-                          {
-                              "symbol":  "CTD",
-                              "name":  "Xây dựng Coteccons",
-                              "sector":  "Xây dựng - VLXD",
-                              "direction":  "buy",
-                              "phase":  "watch_range",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  58.2,
-                              "latestPrice":  59.4,
-                              "unrealizedPct":  2.06
-                          },
-                          {
-                              "symbol":  "TCM",
-                              "name":  "May Thành Công",
-                              "sector":  "Dệt may",
-                              "direction":  "buy",
-                              "phase":  "watch_range",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  15.8,
-                              "latestPrice":  15.65,
-                              "unrealizedPct":  -0.95
-                          },
-                          {
-                              "symbol":  "MWG",
-                              "name":  "Thế Giới Di Động",
-                              "sector":  "Bán lẻ công nghệ",
-                              "direction":  "buy",
-                              "phase":  "watch_range",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  73.4,
-                              "latestPrice":  72,
-                              "unrealizedPct":  -1.91
-                          },
-                          {
-                              "symbol":  "VRE",
-                              "name":  "Vincom Retail",
-                              "sector":  "BĐS",
-                              "direction":  "buy",
-                              "phase":  "watch_range",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  24.5,
-                              "latestPrice":  24.4,
-                              "unrealizedPct":  -0.41
-                          },
-                          {
-                              "symbol":  "BCM",
-                              "name":  "Tập đoàn Đầu tư và Phát triển Công nghiệp Becamex",
-                              "sector":  "BĐS KCN",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  40.2,
-                              "latestPrice":  39.05,
-                              "unrealizedPct":  -2.86
+                              "entryPrice":  46.45,
+                              "latestPrice":  43.5,
+                              "unrealizedPct":  -6.35
                           },
                           {
                               "symbol":  "EIB",
@@ -755,30 +634,8 @@
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-27",
                               "entryPrice":  16.7,
-                              "latestPrice":  16.75,
-                              "unrealizedPct":  0.30
-                          },
-                          {
-                              "symbol":  "VDS",
-                              "name":  "CK Rồng Việt",
-                              "sector":  "Chứng khoán",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  10.3,
-                              "latestPrice":  9.8,
-                              "unrealizedPct":  -4.85
-                          },
-                          {
-                              "symbol":  "VTP",
-                              "name":  "Bưu chính Viettel",
-                              "sector":  "Vận tải biển - Logistics",
-                              "direction":  "buy",
-                              "phase":  "accumulation_setup",
-                              "entryDate":  "2026-09-27",
-                              "entryPrice":  52.8,
-                              "latestPrice":  51.5,
-                              "unrealizedPct":  -2.46
+                              "latestPrice":  17.1,
+                              "unrealizedPct":  2.40
                           },
                           {
                               "symbol":  "VCI",
@@ -792,15 +649,301 @@
                               "unrealizedPct":  -1.77
                           },
                           {
-                              "symbol":  "DPG",
-                              "name":  "Công ty Đạt Phương",
-                              "sector":  "Xây dựng - VLXD",
+                              "symbol":  "BCM",
+                              "name":  "Tập đoàn Đầu tư và Phát triển Công nghiệp Becamex",
+                              "sector":  "BĐS KCN",
                               "direction":  "buy",
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-27",
-                              "entryPrice":  28,
-                              "latestPrice":  27.8,
-                              "unrealizedPct":  -0.71
+                              "entryPrice":  40.2,
+                              "latestPrice":  39.6,
+                              "unrealizedPct":  -1.49
+                          },
+                          {
+                              "symbol":  "VDS",
+                              "name":  "CK Rồng Việt",
+                              "sector":  "Chứng khoán",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  10.3,
+                              "latestPrice":  9.85,
+                              "unrealizedPct":  -4.37
+                          },
+                          {
+                              "symbol":  "VTP",
+                              "name":  "Bưu chính Viettel",
+                              "sector":  "Vận tải biển - Logistics",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  52.8,
+                              "latestPrice":  52.6,
+                              "unrealizedPct":  -0.38
+                          },
+                          {
+                              "symbol":  "VOS",
+                              "name":  "Vận tải biển VN",
+                              "sector":  "Vận tải biển - Logistics",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  12.5,
+                              "latestPrice":  13.1,
+                              "unrealizedPct":  4.80
+                          },
+                          {
+                              "symbol":  "MSB",
+                              "name":  "Ngân hàng MSB",
+                              "sector":  "Bank",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  14.05,
+                              "latestPrice":  14.05,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "STB",
+                              "name":  "Ngân hàng Sài Gòn Tài Lộc",
+                              "sector":  "Bank",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  76.5,
+                              "latestPrice":  75.8,
+                              "unrealizedPct":  -0.92
+                          },
+                          {
+                              "symbol":  "HHP",
+                              "name":  "HHP Global",
+                              "sector":  "Nhựa - Bao bì",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  17.7,
+                              "latestPrice":  17.75,
+                              "unrealizedPct":  0.28
+                          },
+                          {
+                              "symbol":  "DGW",
+                              "name":  "CTCP Thế giới Số",
+                              "sector":  "Bán lẻ công nghệ",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  44.5,
+                              "latestPrice":  45.8,
+                              "unrealizedPct":  2.92
+                          },
+                          {
+                              "symbol":  "DHC",
+                              "name":  "Đông Hải Bến Tre",
+                              "sector":  "Nhựa - Bao bì",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  39,
+                              "latestPrice":  39.9,
+                              "unrealizedPct":  2.31
+                          },
+                          {
+                              "symbol":  "VPB",
+                              "name":  "Ng.hàng Thịnh Vượng",
+                              "sector":  "Bank",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  23,
+                              "latestPrice":  22.95,
+                              "unrealizedPct":  -0.22
+                          },
+                          {
+                              "symbol":  "VGC",
+                              "name":  "TCT Viglacera",
+                              "sector":  "Xây dựng - VLXD",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  42.75,
+                              "latestPrice":  43,
+                              "unrealizedPct":  0.58
+                          },
+                          {
+                              "symbol":  "HAH",
+                              "name":  "Vận tải Hải An",
+                              "sector":  "Vận tải biển - Logistics",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  51.7,
+                              "latestPrice":  52.9,
+                              "unrealizedPct":  2.32
+                          },
+                          {
+                              "symbol":  "BVH",
+                              "name":  "Tập đoàn Bảo Việt",
+                              "sector":  "Bảo hiểm",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  68.8,
+                              "latestPrice":  74.2,
+                              "unrealizedPct":  7.85
+                          },
+                          {
+                              "symbol":  "PVT",
+                              "name":  "TCT V.tải dầu khí",
+                              "sector":  "Vận tải biển - Logistics",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  23.1,
+                              "latestPrice":  24.95,
+                              "unrealizedPct":  8.01
+                          },
+                          {
+                              "symbol":  "GAS",
+                              "name":  "TCT Khí Việt Nam",
+                              "sector":  "Dầu khí",
+                              "direction":  "buy",
+                              "phase":  "markup_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  80.5,
+                              "latestPrice":  84.9,
+                              "unrealizedPct":  5.47
+                          },
+                          {
+                              "symbol":  "VCG",
+                              "name":  "XNK \u0026 Xây dựng VN",
+                              "sector":  "Đầu tư công",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  14.05,
+                              "latestPrice":  13.65,
+                              "unrealizedPct":  2.85
+                          },
+                          {
+                              "symbol":  "IJC",
+                              "name":  "P.triển H.tầng KT",
+                              "sector":  "BĐS KCN",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  6.72,
+                              "latestPrice":  6.69,
+                              "unrealizedPct":  0.45
+                          },
+                          {
+                              "symbol":  "HHV",
+                              "name":  "Hạ tầng giao thông Đèo Cả",
+                              "sector":  "Đầu tư công",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  9.11,
+                              "latestPrice":  9.07,
+                              "unrealizedPct":  0.44
+                          },
+                          {
+                              "symbol":  "TCM",
+                              "name":  "May Thành Công",
+                              "sector":  "Dệt may",
+                              "direction":  "buy",
+                              "phase":  "watch_range",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  15.8,
+                              "latestPrice":  15.6,
+                              "unrealizedPct":  -1.27
+                          },
+                          {
+                              "symbol":  "HVN",
+                              "name":  "Vietnam Airlines",
+                              "sector":  "Hàng không",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  20.3,
+                              "latestPrice":  21.1,
+                              "unrealizedPct":  -3.94
+                          },
+                          {
+                              "symbol":  "BVB",
+                              "name":  "Ngân hàng Bản Việt",
+                              "sector":  "Bank",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  10.5,
+                              "latestPrice":  10.55,
+                              "unrealizedPct":  -0.48
+                          },
+                          {
+                              "symbol":  "GEX",
+                              "name":  "Tập đoàn Gelex",
+                              "sector":  "Điện - Năng lượng",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  24,
+                              "latestPrice":  23.9,
+                              "unrealizedPct":  0.42
+                          },
+                          {
+                              "symbol":  "GEL",
+                              "name":  "GELEX INFRASTRUCTURE JSC",
+                              "sector":  "Điện - Năng lượng",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  29.3,
+                              "latestPrice":  29.1,
+                              "unrealizedPct":  0.68
+                          },
+                          {
+                              "symbol":  "VND",
+                              "name":  "VNDIRECT",
+                              "sector":  "Chứng khoán",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  14.35,
+                              "latestPrice":  14,
+                              "unrealizedPct":  2.44
+                          },
+                          {
+                              "symbol":  "VHC",
+                              "name":  "CTCP Vĩnh Hoàn",
+                              "sector":  "Thủy sản",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  49.55,
+                              "latestPrice":  48.25,
+                              "unrealizedPct":  2.62
+                          },
+                          {
+                              "symbol":  "KBC",
+                              "name":  "Đô thị Kinh Bắc",
+                              "sector":  "BĐS KCN",
+                              "direction":  "sell",
+                              "phase":  "markdown_confirmed",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  25.95,
+                              "latestPrice":  25.5,
+                              "unrealizedPct":  1.73
+                          },
+                          {
+                              "symbol":  "CTD",
+                              "name":  "Xây dựng Coteccons",
+                              "sector":  "Xây dựng - VLXD",
+                              "direction":  "buy",
+                              "phase":  "watch_range",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  58.2,
+                              "latestPrice":  59.7,
+                              "unrealizedPct":  2.58
                           },
                           {
                               "symbol":  "VHM",
@@ -810,8 +953,30 @@
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-27",
                               "entryPrice":  69.1,
-                              "latestPrice":  69.5,
-                              "unrealizedPct":  0.58
+                              "latestPrice":  69.8,
+                              "unrealizedPct":  1.01
+                          },
+                          {
+                              "symbol":  "POW",
+                              "name":  "PVPOWER",
+                              "sector":  "Điện - Năng lượng",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  12.45,
+                              "latestPrice":  12.7,
+                              "unrealizedPct":  2.01
+                          },
+                          {
+                              "symbol":  "DPG",
+                              "name":  "Công ty Đạt Phương",
+                              "sector":  "Xây dựng - VLXD",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  28,
+                              "latestPrice":  27.5,
+                              "unrealizedPct":  -1.79
                           },
                           {
                               "symbol":  "VPX",
@@ -821,8 +986,8 @@
                               "phase":  "accumulation_setup",
                               "entryDate":  "2026-09-27",
                               "entryPrice":  25.45,
-                              "latestPrice":  24.95,
-                              "unrealizedPct":  -1.96
+                              "latestPrice":  25.45,
+                              "unrealizedPct":  0
                           },
                           {
                               "symbol":  "PAN",
@@ -834,6 +999,72 @@
                               "entryPrice":  18.4,
                               "latestPrice":  18,
                               "unrealizedPct":  -2.17
+                          },
+                          {
+                              "symbol":  "PDR",
+                              "name":  "Công ty Phát Đạt",
+                              "sector":  "BĐS",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  11.3,
+                              "latestPrice":  11.3,
+                              "unrealizedPct":  0
+                          },
+                          {
+                              "symbol":  "MWG",
+                              "name":  "Thế Giới Di Động",
+                              "sector":  "Bán lẻ công nghệ",
+                              "direction":  "buy",
+                              "phase":  "watch_range",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  73.4,
+                              "latestPrice":  71.9,
+                              "unrealizedPct":  -2.04
+                          },
+                          {
+                              "symbol":  "VRE",
+                              "name":  "Vincom Retail",
+                              "sector":  "BĐS",
+                              "direction":  "buy",
+                              "phase":  "watch_range",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  24.5,
+                              "latestPrice":  24.15,
+                              "unrealizedPct":  -1.43
+                          },
+                          {
+                              "symbol":  "NKG",
+                              "name":  "Thép Nam Kim",
+                              "sector":  "Thép",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  9.7,
+                              "latestPrice":  9.5,
+                              "unrealizedPct":  -2.06
+                          },
+                          {
+                              "symbol":  "CII",
+                              "name":  "H.tầng KT HCM",
+                              "sector":  "Đầu tư công",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  12.6,
+                              "latestPrice":  12.4,
+                              "unrealizedPct":  -1.59
+                          },
+                          {
+                              "symbol":  "NVL",
+                              "name":  "Địa ốc Novaland",
+                              "sector":  "BĐS",
+                              "direction":  "buy",
+                              "phase":  "accumulation_setup",
+                              "entryDate":  "2026-09-27",
+                              "entryPrice":  11.85,
+                              "latestPrice":  10.3,
+                              "unrealizedPct":  -13.08
                           }
                       ]
 }
