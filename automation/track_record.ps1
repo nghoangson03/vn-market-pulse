@@ -12,6 +12,7 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $histDir = Join-Path $root "automation\cache\history"
 . (Join-Path $root "automation\lib\track_record_lib.ps1")
+. (Join-Path $root "automation\lib\wyckoff_engine.ps1")
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding $false
 # So phien toi da giu 1 tin hieu o trang thai "open" truoc khi coi la het han theo doi
@@ -136,6 +137,9 @@ $beforeCount = $entries.Count
 $directionBuckets = @(
   @{ items = @($screener.buckets.buy_confirmed);  direction = "buy" },
   @{ items = @($screener.buckets.buy_watch);       direction = "buy" },
+  # Bat day nguoc xu huong: khong phai khuyen nghi mua nhung van ghi so (thong ke rieng
+  # overall.buyCounterTrend) de kiem chung quy tac tach nhom nay theo thoi gian.
+  @{ items = @($screener.buckets.buy_counter_trend); direction = "buy" },
   @{ items = @($screener.buckets.sell_confirmed);  direction = "sell" },
   @{ items = @($screener.buckets.sell_watch);      direction = "sell" }
 )
@@ -211,14 +215,28 @@ foreach ($e in $entries) {
   if ($e.status -ne "open") { continue }
   $pts = Get-History $e.symbol
   $future = @($pts | Where-Object { $_.d -gt $e.entryDate } | Sort-Object d)
-  # Vi the da bi dao chieu: chi doi chieu toi ngay xuat hien tin hieu nguoc chieu.
-  if ($e.reversedOn) { $future = @($future | Where-Object { $_.d -le $e.reversedOn }) }
   $lockSessions = if ($e.direction -eq "buy") { $T_PLUS_LOCK_SESSIONS } else { 0 }
-  $res = if ($future.Count -gt 0) { Resolve-Entry $e.direction $e.entryPrice $e.badLevel $e.goodLevel $future $MAX_HOLD_SESSIONS $lockSessions } else { $null }
-  if ($null -eq $res -and $e.reversedOn) {
-    $res = [PSCustomObject]@{ status = "reversed"; resolvedDate = $e.reversedOn; resolvedPrice = $e.reversedPrice; sessionsToResolve = $future.Count }
+  # Vi the da bi dao chieu: chi doi chieu toi ngay xuat hien tin hieu nguoc chieu, roi dong
+  # o gia luc dao chieu. Rieng MUA dao chieu ngay trong luc khoa T+2,5 (VD NVL mua 25/09,
+  # 29/09 da ra tin hieu ban): nguoi mua chua ban duoc, nen doi chieu toi phien DAU TIEN ban
+  # duoc va thoat o gia mo cua phien do (Resolve-Entry tinh "sai" neu da thung stop luc khoa).
+  $reversalExit = $null
+  if ($e.reversedOn) {
+    $upTo = @($future | Where-Object { $_.d -le $e.reversedOn })
+    if ($lockSessions -gt 0 -and $upTo.Count -le $lockSessions) {
+      if ($future.Count -le $lockSessions) { continue }  # chua toi phien ban duoc - cho them
+      $future = @($future | Select-Object -First ($lockSessions + 1))
+      $exitBar = $future[$lockSessions]
+      $reversalExit = [PSCustomObject]@{ status = "reversed"; resolvedDate = $exitBar.d; resolvedPrice = $exitBar.o; sessionsToResolve = $lockSessions + 1 }
+    } else {
+      $future = $upTo
+      $reversalExit = [PSCustomObject]@{ status = "reversed"; resolvedDate = $e.reversedOn; resolvedPrice = $e.reversedPrice; sessionsToResolve = $upTo.Count }
+    }
   }
+  $res = if ($future.Count -gt 0) { Resolve-Entry $e.direction $e.entryPrice $e.badLevel $e.goodLevel $future $MAX_HOLD_SESSIONS $lockSessions } else { $null }
+  if ($null -eq $res) { $res = $reversalExit }
   if ($null -eq $res) { continue }
+  if ($res.exitRule) { Set-EntryField $e "exitRule" $res.exitRule }
   $e.status = $res.status
   $e.resolvedDate = $res.resolvedDate
   $e.resolvedPrice = $res.resolvedPrice
@@ -270,7 +288,14 @@ function Get-Stats($items) {
 
 # Tin hieu trung lap chi luu de khong ghi lai - khong tinh vao bat ky thong ke nao.
 $tracked = @($entries | Where-Object { $_.status -ne "duplicate" })
-$buyEntries = @($tracked | Where-Object { $_.direction -eq "buy" })
+# Tin hieu "bat day nguoc xu huong" (buy_counter_trend - hoac buy_watch ghi so TRUOC khi co
+# quy tac nay nhung thoa cung dieu kien) tach khoi thong ke MUA chinh, de overall.buy phan
+# anh dung nhung gi bang Tiem nang MUA hien tai khuyen nghi.
+function Test-CounterTrendEntry($e) {
+  return ($e.direction -eq "buy" -and (Test-CounterTrendBuy $e.signalAtEntry $e.phase $e.stageAtEntry $e.rsAtEntry))
+}
+$counterTrendEntries = @($tracked | Where-Object { Test-CounterTrendEntry $_ })
+$buyEntries = @($tracked | Where-Object { $_.direction -eq "buy" -and -not (Test-CounterTrendEntry $_) })
 $sellEntries = @($tracked | Where-Object { $_.direction -eq "sell" })
 
 # Xep theo mau hinh cau truc (SOS/Spring/Upthrust/SOW) - noi de sau nay xem mau hinh nao
@@ -344,6 +369,7 @@ $openPositions = @($entries | Where-Object { $_.status -eq "open" } | ForEach-Ob
     sector        = $_.sector
     direction     = $_.direction
     signalAtEntry = $_.signalAtEntry
+    counterTrend  = [bool](Test-CounterTrendEntry $_)
     phase         = $_.phase
     triggerDate   = $_.triggerDate
     entryDate     = $_.entryDate
@@ -360,7 +386,7 @@ $openPositions = @($entries | Where-Object { $_.status -eq "open" } | ForEach-Ob
 $trackRecord = [PSCustomObject]@{
   generatedAt     = (Get-Date).ToUniversalTime().ToString("o")
   startedTracking = "2026-09-28"
-  overall         = [PSCustomObject]@{ buy = (Get-Stats $buyEntries); sell = (Get-Stats $sellEntries) }
+  overall         = [PSCustomObject]@{ buy = (Get-Stats $buyEntries); sell = (Get-Stats $sellEntries); buyCounterTrend = (Get-Stats $counterTrendEntries) }
   byPhase         = @($byPhase)
   byFactor        = [PSCustomObject]$byFactor
   recentClosed    = $recentClosed

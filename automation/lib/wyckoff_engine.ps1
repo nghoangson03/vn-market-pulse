@@ -369,6 +369,20 @@ function Get-LayerAdjustment($signal, $baseScore, $marketStatus, $stage, $rs) {
   }
 }
 
+# --- Tin hieu MUA "bat day nguoc xu huong": Spring / vung tich luy (chua co SOS xac nhan)
+# o ma dang Stage 4 (duoi MA100 doc xuong) VA yeu hon VN-Index tu $COUNTER_TREND_RS_MAX tro
+# xuong. Cau truc Wyckoff co the van dung, nhung doi chieu thuc te cho thay nhom nay lo
+# nhieu hon han (xem compute_screener.ps1) nen khong dua vao bang MUA. Dung chung cho
+# compute_screener.ps1 (tach bucket) va track_record.ps1 (xep loai lai tin hieu da ghi so
+# truoc khi co quy tac nay) de 2 noi luon cung 1 dinh nghia.
+$COUNTER_TREND_RS_MAX = -5
+function Test-CounterTrendBuy($signal, $phase, $stage, $rs) {
+  if ($signal -ne "buy_watch" -and $signal -ne "buy_counter_trend") { return $false }
+  if ($phase -ne "accumulation_setup" -and $phase -ne "watch_range") { return $false }
+  if ($stage -ne "stage4" -or $null -eq $rs) { return $false }
+  return ([double]$rs -le $COUNTER_TREND_RS_MAX)
+}
+
 # --- Canh bao "mua duoi" rieng cho dac thu T+2,5 cua thi truong VN: mua xong phai
 # doi ~2-3 phien lo moi ve tai khoan de ban duoc, nen neu vao lenh khi gia da chay
 # qua xa diem pha (resistance) thi luc gia dao chieu trong luc cho ve la KHONG THE

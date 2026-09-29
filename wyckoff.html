@@ -216,6 +216,7 @@
   }
   .badge.tier-strong-buy{ background:var(--good-wash); color:var(--good); }
   .badge.tier-watch-buy{ background:var(--surface-2); color:var(--good); border:1px solid var(--good); }
+  .badge.tier-counter-buy{ background:var(--surface-2); color:var(--warn); border:1px solid var(--warn); }
   .badge.tier-strong-sell{ background:var(--bad-wash); color:var(--bad); }
   .badge.tier-watch-sell{ background:var(--surface-2); color:var(--bad); border:1px solid var(--bad); }
   .badge.tier-neutral{ background:var(--surface-2); color:var(--muted); border:1px solid var(--border); }
@@ -256,7 +257,7 @@
   .macro-chip .m-note{ color:var(--muted); display:block; font-size:10.5px; }
 
   .tr-card{ margin-bottom:22px; }
-  .tr-blocks{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:2px; }
+  .tr-blocks{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px; margin-top:2px; }
   @media (max-width:720px){ .tr-blocks{ grid-template-columns:1fr; } }
   .tr-block h4{ font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); margin:0 0 8px; font-weight:600; }
   .tr-empty{ font-size:12px; color:var(--muted); margin:0; line-height:1.5; }
@@ -290,6 +291,7 @@
   .sector-chip .c-tag{ font-size:9.5px; font-weight:700; padding:1px 5px; border-radius:100px; }
   .sector-chip .c-tag.tier-strong-buy{ background:var(--good-wash); color:var(--good); }
   .sector-chip .c-tag.tier-watch-buy{ background:var(--surface-2); color:var(--good); border:1px solid var(--good); }
+  .sector-chip .c-tag.tier-counter-buy{ background:var(--surface-2); color:var(--warn); border:1px solid var(--warn); }
   .sector-chip .c-tag.tier-strong-sell{ background:var(--bad-wash); color:var(--bad); }
   .sector-chip .c-tag.tier-watch-sell{ background:var(--surface-2); color:var(--bad); border:1px solid var(--bad); }
   .sector-chip .c-tag.tier-neutral{ background:var(--surface-2); color:var(--muted); border:1px solid var(--border); }
@@ -370,6 +372,10 @@
             <p><b>Tiềm năng MUA - đang theo dõi.</b> Giá xuyên thủng đáy vùng tích lũy rồi bật lại đóng cửa trên đáy đó, khối lượng lại cạn (≤1,3 lần TB20) - dấu hiệu "rũ hàng" trước khi tăng, chưa chắc chắn bằng SOS.</p>
           </div>
           <div class="term-card">
+            <div class="term-head"><span class="badge tier-counter-buy">Bắt đáy ngược xu hướng</span></div>
+            <p><b>Không tính là khuyến nghị mua.</b> Spring/vùng tích lũy nhưng mã đang Stage 4 (xu hướng giảm) và yếu hơn VN-Index (RS ≤ -5%) - "bắt dao rơi". Tách riêng vì đối chiếu thực tế cho thấy nhóm này lỗ nhiều hơn hẳn; vẫn ghi sổ riêng để kiểm chứng.</p>
+          </div>
+          <div class="term-card">
             <div class="term-head"><span class="badge chase-warn">Đã giãn, mua đuổi rủi ro</span></div>
             <p><b>Cảnh báo đi kèm</b>, không phải khu riêng. Tín hiệu mua thật nhưng giá đã chạy xa điểm phá - xem mục T+2,5 bên dưới.</p>
           </div>
@@ -433,7 +439,7 @@
 
       <div class="guide-section">
         <h4>Đối chiếu khuyến nghị thực tế</h4>
-        <p style="margin:0;">Mỗi tín hiệu MUA/BÁN xuất hiện trên trang được ghi lại tự động (ngày, giá, target/cắt lỗ) vào một sổ nhật ký riêng, rồi mỗi ngày được đối chiếu với giá thật: chạm target trước = "đúng", dính cắt lỗ trước = "sai" (nếu 1 phiên chạm cả 2 mốc thì tính là "sai" cho chắc), quá ~40 phiên (~2 tháng) không chạm mốc nào thì tính "hết hạn theo dõi". Tín hiệu BÁN cũng được đối chiếu tương tự nhưng theo chiều ngược lại (giá giảm về mốc đo lường = "đúng", giá hồi phục qua mốc đảo chiều = "sai"). Riêng tín hiệu MUA, <b>2 phiên đầu tiên sau ngày vào lệnh KHÔNG được tính là "chạm" dù giá có xuyên qua target/cắt lỗ</b> - đặc thù T+2,5 của TTCK Việt Nam, mua xong phải đợi ~2-3 phiên cổ phiếu mới về tài khoản để bán được, nên chạm giá trong lúc này cũng chưa thể chốt lời/cắt lỗ thật; tín hiệu BÁN thì tính ngay từ phiên đầu vì bán hàng đang cầm không bị khóa T+2,5. Mỗi mã chỉ tính <b>1 tín hiệu đang mở tại 1 thời điểm</b>: tín hiệu cùng chiều lặp lại khi lệnh cũ còn mở không được đếm thêm; nếu xuất hiện tín hiệu NGƯỢC chiều (đang mua lại ra tín hiệu bán hoặc ngược lại) thì lệnh cũ được đóng ở giá lúc đảo chiều với kết quả "Đảo chiều" (không tính vào tỉ lệ đúng/sai nhưng có tính vào lãi/lỗ trung bình). Ngày vào lệnh là ngày giao dịch của giá đóng cửa dùng làm giá vào. Đây là số liệu THẬT theo thời gian, không phải điểm số lý thuyết - mới bắt đầu ghi nhận nên cần vài tuần mới đủ mẫu để tin cậy.</p>
+        <p style="margin:0;">Mỗi tín hiệu MUA/BÁN xuất hiện trên trang được ghi lại tự động (ngày, giá, target/cắt lỗ) vào một sổ nhật ký riêng, rồi mỗi ngày được đối chiếu với giá thật: chạm target trước = "đúng", dính cắt lỗ trước = "sai" (nếu 1 phiên chạm cả 2 mốc thì tính là "sai" cho chắc), quá ~40 phiên (~2 tháng) không chạm mốc nào thì tính "hết hạn theo dõi". Tín hiệu BÁN cũng được đối chiếu tương tự nhưng theo chiều ngược lại (giá giảm về mốc đo lường = "đúng", giá hồi phục qua mốc đảo chiều = "sai"). Riêng tín hiệu MUA, <b>2 phiên đầu tiên sau ngày vào lệnh chưa bán được</b> - đặc thù T+2,5 của TTCK Việt Nam, mua xong phải đợi ~2-3 phiên cổ phiếu mới về tài khoản. Chạm target trong 2 phiên này KHÔNG được tính (chưa chốt lời được), nhưng nếu giá đã thủng cắt lỗ trong lúc khóa thì vẫn tính là "sai" và thoát ở giá mở cửa phiên đầu tiên bán được (có thể lỗ sâu hơn mức cắt lỗ); tín hiệu BÁN thì tính ngay từ phiên đầu vì bán hàng đang cầm không bị khóa T+2,5. Mỗi mã chỉ tính <b>1 tín hiệu đang mở tại 1 thời điểm</b>: tín hiệu cùng chiều lặp lại khi lệnh cũ còn mở không được đếm thêm; nếu xuất hiện tín hiệu NGƯỢC chiều (đang mua lại ra tín hiệu bán hoặc ngược lại) thì lệnh cũ được đóng ở giá lúc đảo chiều với kết quả "Đảo chiều" (không tính vào tỉ lệ đúng/sai nhưng có tính vào lãi/lỗ trung bình). Ngày vào lệnh là ngày giao dịch của giá đóng cửa dùng làm giá vào. Đây là số liệu THẬT theo thời gian, không phải điểm số lý thuyết - mới bắt đầu ghi nhận nên cần vài tuần mới đủ mẫu để tin cậy.</p>
       </div>
 
       <div class="guide-section">
@@ -488,6 +494,7 @@
   var TIER_CLASS = {
     buy_confirmed:  "tier-strong-buy",
     buy_watch:      "tier-watch-buy",
+    buy_counter_trend: "tier-counter-buy",
     sell_confirmed: "tier-strong-sell",
     sell_watch:     "tier-watch-sell"
   };
@@ -693,7 +700,8 @@
     var html = '<div class="overview-card tr-card">'+
       '<h3>📊 Đối chiếu khuyến nghị thực tế <span class="asof">Theo dõi từ '+fmtDateFull(tr.startedTracking)+'</span></h3>'+
       '<p>Tín hiệu MUA/BÁN trên trang được ghi lại kèm target/cắt lỗ rồi đối chiếu với giá thật mỗi ngày - "đúng" khi chạm target (bên bán: giá giảm về mốc đo lường), "sai" khi dính cắt lỗ (bên bán: giá hồi phục qua mốc đảo chiều). Xem mục "Đối chiếu khuyến nghị thực tế" trong Sổ tay để rõ cách tính.</p>'+
-      '<div class="tr-blocks">'+ trStatBlock("Tín hiệu MUA", tr.overall.buy) + trStatBlock("Tín hiệu BÁN", tr.overall.sell) +'</div>';
+      '<div class="tr-blocks">'+ trStatBlock("Tín hiệu MUA", tr.overall.buy) + trStatBlock("Tín hiệu BÁN", tr.overall.sell) +
+        (tr.overall.buyCounterTrend && (tr.overall.buyCounterTrend.openCount + tr.overall.buyCounterTrend.closedCount) > 0 ? trStatBlock("Bắt đáy ngược xu hướng (không khuyến nghị)", tr.overall.buyCounterTrend) : "") +'</div>';
 
     if(tr.byPhase && tr.byPhase.length){
       var rows = tr.byPhase.map(function(p){
@@ -731,7 +739,7 @@
         var retCls = p.unrealizedPct==null ? "" : (p.unrealizedPct>=0 ? "up" : "down");
         var badCls = p.pctToBad==null ? "" : (p.pctToBad<3 ? "down" : "");
         return '<tr><td><span class="sym mono">'+p.symbol+'</span></td>'+
-          '<td>'+(PHASE_LABEL[p.phase]||p.phase)+' ('+(p.direction==="buy"?"Mua":"Bán")+')</td>'+
+          '<td>'+(PHASE_LABEL[p.phase]||p.phase)+' ('+(p.direction==="buy"?(p.counterTrend?"Bắt đáy":"Mua"):"Bán")+')</td>'+
           '<td>'+fmtDateFull(p.entryDate)+' @ '+fmtNum(p.entryPrice)+'</td>'+
           '<td class="num tabular '+retCls+'">'+(p.unrealizedPct==null?"—":(p.unrealizedPct>=0?"+":"")+fmtNum(p.unrealizedPct)+'%')+'</td>'+
           '<td class="num tabular '+badCls+'">'+(p.pctToBad==null?"—":fmtNum(p.pctToBad)+'%')+'</td>'+
@@ -915,6 +923,7 @@
       '<span><b class="tabular">'+neutralItems.length+'</b> mã trung lập</span>';
 
     renderSection("buyBody", buyItems, "Không có mã nào khớp bộ lọc hiện tại.", {colspan:9, showLevels:true});
+    renderSection("counterBody", b.buy_counter_trend || [], "Không có mã nào khớp bộ lọc hiện tại.", {colspan:8, showLevels:true});
     renderSection("expiredBody", b.buy_expired || [], "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5, clickable:false});
     renderSection("sellBody", b.sell_confirmed.concat(b.sell_watch), "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5});
     renderSection("sellExpiredBody", b.sell_expired || [], "Không có mã nào khớp bộ lọc hiện tại.", {colspan:5, clickable:false});
@@ -932,6 +941,13 @@
         '<div class="table-scroll tall"><table class="screen-table"><thead><tr>'+
           '<th class="num">#</th><th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th class="num">Target</th><th class="num">Cắt lỗ</th><th class="num">R:R</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="buyBody"></tbody></table></div>'+
+      '</section>'+
+      '<section class="screen-section">'+
+        '<h2><span class="sec-icon" style="background:var(--warn);"></span>Bắt đáy ngược xu hướng (rủi ro cao)</h2>'+
+        '<div class="sec-sub">Spring / vùng tích lũy ở mã đang Stage 4 (xu hướng giảm) VÀ yếu hơn VN-Index (RS ≤ -5%) - cấu trúc Wyckoff có thể vẫn đúng nhưng đối chiếu thực tế cho thấy nhóm này lỗ nhiều hơn hẳn, nên KHÔNG tính là khuyến nghị mua. Vẫn được ghi sổ đối chiếu riêng để kiểm chứng.</div>'+
+        '<div class="table-scroll tall"><table class="screen-table"><thead><tr>'+
+          '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th class="num">Target</th><th class="num">Cắt lỗ</th><th class="num">R:R</th><th>Ghi chú</th>'+
+        '</tr></thead><tbody id="counterBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+
         '<h2><span class="sec-icon" style="background:var(--warn);"></span>Đã hết dư địa lãi (bỏ qua)</h2>'+

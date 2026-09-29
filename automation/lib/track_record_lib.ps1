@@ -18,12 +18,23 @@
 # ve tai khoan de ban duoc, nen neu gia cham target/stop ngay phien dau thi nguoi mua VAN
 # CHUA THE BAN duoc gia do (xem cung ly do o Get-ExtensionRisk trong wyckoff_engine.ps1).
 # Chi ap dung cho MUA (0 cho BAN - ban hang dang cam thi ban duoc ngay). Cac phien trong
-# thoi gian khoa VAN duoc tinh vao dong ho $maxHoldSessions, chi khong duoc dung de "cham"
-# muc nao ca.
+# thoi gian khoa VAN duoc tinh vao dong ho $maxHoldSessions.
+#
+# 🚨 Gia THUNG cat lo trong luc khoa van la "sai" (sua 30/09/2026): truoc day cac phien khoa
+# bi bo qua hoan toan, nen NVL/LPB/DXS/VDS thung stop ngay 2 phien dau nhung neu phien thu 3
+# hoi lai tren stop thi "thoat" khong bi tinh sai. Nay: neu trong luc khoa co phien low <=
+# stop thi o phien DAU TIEN ban duoc se tinh "hit_stop", gia thoat = gia MO CUA phien do
+# (gia that nguoi mua co the ban, co the thap hoac cao hon stop). Cham TARGET trong luc
+# khoa van khong tinh (chua ban duoc de chot loi) - lech ve phia than trong.
 function Resolve-Entry($direction, $entryPrice, $badLevel, $goodLevel, $futurePoints, $maxHoldSessions, $lockSessions) {
+  $breachedInLock = $false
   for ($i = 0; $i -lt $futurePoints.Count; $i++) {
     $p = $futurePoints[$i]
-    if ($i -ge $lockSessions) {
+    if ($i -lt $lockSessions) {
+      if ($direction -eq "buy" -and $p.l -le $badLevel) { $breachedInLock = $true }
+    } elseif ($breachedInLock) {
+      return [PSCustomObject]@{ status = "hit_stop"; resolvedDate = $p.d; resolvedPrice = $p.o; sessionsToResolve = $i + 1; exitRule = "stop_breached_in_lock" }
+    } else {
       $hitBad  = if ($direction -eq "buy") { $p.l -le $badLevel }  else { $p.h -ge $badLevel }
       $hitGood = if ($direction -eq "buy") { $p.h -ge $goodLevel } else { $p.l -le $goodLevel }
 

@@ -135,6 +135,7 @@ $buckets = @{
   buy_confirmed  = New-Object System.Collections.Generic.List[object]
   buy_watch      = New-Object System.Collections.Generic.List[object]
   buy_expired    = New-Object System.Collections.Generic.List[object]
+  buy_counter_trend = New-Object System.Collections.Generic.List[object]
   sell_confirmed = New-Object System.Collections.Generic.List[object]
   sell_watch     = New-Object System.Collections.Generic.List[object]
   sell_expired   = New-Object System.Collections.Generic.List[object]
@@ -216,6 +217,17 @@ foreach ($f in $targetFiles) {
       $result | Add-Member -NotePropertyName target -NotePropertyValue $levels.target
       $result | Add-Member -NotePropertyName riskRewardRatio -NotePropertyValue $levels.riskRewardRatio
       $result | Add-Member -NotePropertyName rewardPct -NotePropertyValue $levels.rewardPct
+
+      # Bat day nguoc xu huong: Spring/vung tich luy (chua co SOS xac nhan) o ma dang
+      # Stage 4 VA yeu hon VN-Index (RS <= -5) - tach khoi bang MUA sang bucket rieng
+      # buy_counter_trend. Can cu tu doi chieu thuc te 29/09/2026: nhom nay 3 lai/13 lo,
+      # TB -1,21% sau 2 phien (NVL, DXS, VDS, PAN, NKG...), trong khi Spring/tich luy con
+      # lai TB -0,36% va SOS da xac nhan TB +1,7%. Van ghi so doi chieu rieng de sau nay
+      # xem quy tac nay dung hay can noi/siet lai.
+      if (Test-CounterTrendBuy $result.signal $result.phase $stage $rs) {
+        $result.note = "$($result.note) Bắt đáy ngược xu hướng: mã đang Stage 4 và yếu hơn VN-Index (RS $rs%) - rủi ro cao, KHÔNG tính là khuyến nghị mua."
+        $result.signal = "buy_counter_trend"
+      }
     }
 
     # Doi xung y het khoi MUA o tren nhung cho tin hieu BAN: Get-TradingRange khong gioi han
@@ -259,7 +271,7 @@ foreach ($k in @($buckets.Keys)) {
 }
 
 Write-Log "totalUniverse=$totalUniverse screened=$screened flagged=$flagged neutral=$($buckets.neutral.Count)"
-Write-Log "buy_confirmed=$($buckets.buy_confirmed.Count) buy_watch=$($buckets.buy_watch.Count) buy_expired=$($buckets.buy_expired.Count) sell_confirmed=$($buckets.sell_confirmed.Count) sell_watch=$($buckets.sell_watch.Count) sell_expired=$($buckets.sell_expired.Count)"
+Write-Log "buy_confirmed=$($buckets.buy_confirmed.Count) buy_watch=$($buckets.buy_watch.Count) buy_expired=$($buckets.buy_expired.Count) buy_counter_trend=$($buckets.buy_counter_trend.Count) sell_confirmed=$($buckets.sell_confirmed.Count) sell_watch=$($buckets.sell_watch.Count) sell_expired=$($buckets.sell_expired.Count)"
 
 # --- Do rong thi truong (breadth) tren toan bo $screened ma da quet ---
 $stage2Count = ($breadthList | Where-Object { $_.stage -eq "stage2" }).Count
@@ -284,10 +296,12 @@ foreach ($g in $sectorGroups) {
   if ($items.Count -lt 2) { continue }
   $rsVals = $items | Where-Object { $null -ne $_.rs } | ForEach-Object { $_.rs }
   $avgRs = if ($rsVals.Count -gt 0) { ($rsVals | Measure-Object -Average).Average } else { $null }
-  $buyCount = ($items | Where-Object { $_.signal -eq "buy_confirmed" -or $_.signal -eq "buy_watch" }).Count
-  $sellCount = ($items | Where-Object { $_.signal -eq "sell_confirmed" -or $_.signal -eq "sell_watch" }).Count
-  $stage2Pct = (($items | Where-Object { $_.stage -eq "stage2" }).Count / $items.Count) * 100
-  $stage4Pct = (($items | Where-Object { $_.stage -eq "stage4" }).Count / $items.Count) * 100
+  # @(...) bat buoc: tren PS 5.1, Where-Object khong khop phan tu nao tra $null va ($null).Count
+  # ra $null (khong phai 0) - truoc day buyCount/sellCount = null lam bang nganh hien "null".
+  $buyCount = @($items | Where-Object { $_.signal -eq "buy_confirmed" -or $_.signal -eq "buy_watch" }).Count
+  $sellCount = @($items | Where-Object { $_.signal -eq "sell_confirmed" -or $_.signal -eq "sell_watch" }).Count
+  $stage2Pct = (@($items | Where-Object { $_.stage -eq "stage2" }).Count / $items.Count) * 100
+  $stage4Pct = (@($items | Where-Object { $_.stage -eq "stage4" }).Count / $items.Count) * 100
   $rsScore = if ($null -ne $avgRs) { $avgRs } else { 0 }
   $strengthScore = [Math]::Round($rsScore + ($stage2Pct - $stage4Pct) * 0.3 + (($buyCount - $sellCount) * 5), 1)
   $tier = if ($strengthScore -ge 8) { "manh" } elseif ($strengthScore -le -8) { "yeu" } else { "trung_binh" }
@@ -326,6 +340,7 @@ $screener = [PSCustomObject]@{
     buy_confirmed  = $buckets.buy_confirmed
     buy_watch      = $buckets.buy_watch
     buy_expired    = $buckets.buy_expired
+    buy_counter_trend = $buckets.buy_counter_trend
     sell_confirmed = $buckets.sell_confirmed
     sell_watch     = $buckets.sell_watch
     sell_expired   = $buckets.sell_expired
