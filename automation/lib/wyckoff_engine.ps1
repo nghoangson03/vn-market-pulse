@@ -370,17 +370,94 @@ function Get-LayerAdjustment($signal, $baseScore, $marketStatus, $stage, $rs) {
 }
 
 # --- Tin hieu MUA "bat day nguoc xu huong": Spring / vung tich luy (chua co SOS xac nhan)
-# o ma dang Stage 4 (duoi MA100 doc xuong) VA yeu hon VN-Index tu $COUNTER_TREND_RS_MAX tro
-# xuong. Cau truc Wyckoff co the van dung, nhung doi chieu thuc te cho thay nhom nay lo
-# nhieu hon han (xem compute_screener.ps1) nen khong dua vao bang MUA. Dung chung cho
+# o ma dang Stage 4 (duoi MA100 doc xuong). Cau truc Wyckoff co the van dung, nhung doi
+# chieu thuc te cho thay nhom nay lo nhieu hon han nen khong dua vao bang MUA. Dung chung cho
 # compute_screener.ps1 (tach bucket) va track_record.ps1 (xep loai lai tin hieu da ghi so
 # truoc khi co quy tac nay) de 2 noi luon cung 1 dinh nghia.
-$COUNTER_TREND_RS_MAX = -5
+# 01/10/2026: bo dieu kien RS <= -5 (truoc chi tach Stage 4 + RS yeu). Backtest 2,5 nam top-120
+# (03/2024-09/2026): Spring Stage 4 TB -0,38%/lenh (406 lenh) vs Stage 2 +0,66%; doi chieu that
+# 25/09-01/10: 29 lenh mua Stage 4 chi 6 ma tang. $rs giu lai trong chu ky ham cho tuong thich.
 function Test-CounterTrendBuy($signal, $phase, $stage, $rs) {
   if ($signal -ne "buy_watch" -and $signal -ne "buy_counter_trend") { return $false }
   if ($phase -ne "accumulation_setup" -and $phase -ne "watch_range") { return $false }
-  if ($stage -ne "stage4" -or $null -eq $rs) { return $false }
-  return ([double]$rs -le $COUNTER_TREND_RS_MAX)
+  return ($stage -eq "stage4")
+}
+
+# --- Danh sach CHO "sap pha vo" (nhan dien SOM, truoc khi gia vuot khang cu) ---
+# User 01/10/2026: "toi ki vong tool nhan biet som co phieu se tang chu khong phai tang roi moi
+# ra tin hieu". Compute-WyckoffForSymbol chi tim vung tich luy ket thuc >=15 phien truoc nen
+# ma DANG tich luy sat khang cu khong bao gio hien len cho toi khi da pha vo (va SOS duoc phep
+# cu toi 14 phien). Ham nay tim nen gia dang dien ra TOI HOM NAY: >=20 phien, gia cach dinh nen
+# <=5%, 10 phien gan nhat sit chat (bien do <=8%) va KL can (TB10 <=85% TB ca nen).
+# 🚨 Backtest 2,5 nam: MUA NGAY khi vao danh sach KHONG co loi the (~ngang mua ngau nhien) - loi
+# the nam o phien PHA VO: mua ATC khi phien do dong cua tren khang cu voi KL >=1,5x TB20 la
+# +0,46%/lenh (121 lenh voi dung bo loc o duoi; +0,63% neu chi can "cach dinh nen <=5%", 587 lenh) vs SOS mua o gia mo cua phien sau (cach trang dang lam truoc day) -0,06%.
+# Vi vay day la DANH SACH CHO kem dieu kien kich hoat, KHONG phai khuyen nghi mua ngay.
+function Get-PreBreakout($points) {
+  $n = $points.Count
+  if ($n -lt 60) { return $null }
+  $lastIdx = $n - 1
+  $tr = Get-TradingRange $points $lastIdx
+  if ($null -eq $tr -or $tr.end -lt ($lastIdx - 1) -or $tr.len -lt 20) { return $null }
+
+  $last = $points[$lastIdx]
+  $hi = $tr.high; $lo = $tr.low
+  $distPct = (($hi - $last.c) / $hi) * 100
+  if ($distPct -gt 5) { return $null }
+
+  $h10 = [double]::MinValue; $l10 = [double]::MaxValue; $v10 = 0.0
+  for ($i = $lastIdx - 9; $i -le $lastIdx; $i++) {
+    if ($points[$i].h -gt $h10) { $h10 = $points[$i].h }
+    if ($points[$i].l -lt $l10) { $l10 = $points[$i].l }
+    $v10 += $points[$i].v
+  }
+  $v10 /= 10
+  $vBase = 0.0
+  for ($i = $tr.start; $i -le $tr.end; $i++) { $vBase += $points[$i].v }
+  $vBase /= $tr.len
+  $tightPct = (($h10 - $l10) / $last.c) * 100
+  if ($tightPct -gt 8 -or $vBase -le 0) { return $null }
+  # Bien do 10 phien < 2% = gia bi "neo" (VD NAF 01/10/2026 dung yen 47,8-48,1 suot nhieu tuan -
+  # dau hieu chao mua cong khai/sap huy niem yet), khong phai nen tich luy that.
+  if ($tightPct -lt 2) { return $null }
+  $dry = $v10 / $vBase
+  if ($dry -gt 0.85) { return $null }
+
+  $avgVol20 = Get-AvgVol $points 20
+  $prev = $points[$lastIdx - 1]
+  $changePct = if ($prev.c -gt 0) { (($last.c - $prev.c) / $prev.c) * 100 } else { 0 }
+  # Muc gia dung khop dung cach backtest: kich hoat = dong cua tren khang cu; cat lo = min(97%
+  # khang cu, 95% gia vao) - gia vao chua biet truoc nen tinh theo khang cu (gia vao ~ khang cu).
+  $trigger = [Math]::Round($hi * 1.005, 2)
+  $stopLoss = [Math]::Round([Math]::Min($hi * 0.97, $trigger * 0.95), 2)
+  $target = [Math]::Round($hi + ($hi - $lo), 2)
+  $rewardPct = [Math]::Round((($target - $trigger) / $trigger) * 100, 1)
+  $rr = [Math]::Round(($target - $trigger) / ($trigger - $stopLoss), 1)
+  $note = "Đang tích lũy $($tr.len) phiên trong vùng $([Math]::Round($lo,2))-$([Math]::Round($hi,2)), giá cách đỉnh nền $([Math]::Round($distPct,1))%, 10 phiên gần nhất siết chặt (biên độ $([Math]::Round($tightPct,1))%), khối lượng cạn còn $([Math]::Round($dry*100))% so với cả nền. CHƯA MUA: chỉ mua khi có phiên đóng cửa trên $([Math]::Round($hi,2)) với khối lượng ≥1,5 lần TB20 (đặt lệnh ATC khi thấy giá vượt $trigger kèm khối lượng lớn trong phiên); nếu vượt rồi tụt lại dưới đỉnh nền lúc đóng cửa thì bỏ qua."
+
+  return [PSCustomObject]@{
+    symbol       = $null
+    phase        = "pre_breakout"
+    signal       = "buy_early"
+    score        = $null
+    lastClose    = $last.c
+    changePct    = [Math]::Round($changePct, 2)
+    volRatio     = if ($avgVol20 -gt 0) { [Math]::Round($last.v / $avgVol20, 2) } else { 0 }
+    support      = [Math]::Round($lo, 2)
+    resistance   = [Math]::Round($hi, 2)
+    triggerDate  = $last.d
+    triggerIdx   = $lastIdx
+    triggerPrice = $trigger
+    distPct      = [Math]::Round($distPct, 1)
+    tightPct     = [Math]::Round($tightPct, 1)
+    volDryPct    = [Math]::Round($dry * 100)
+    baseLen      = $tr.len
+    stopLoss     = $stopLoss
+    target       = $target
+    rewardPct    = $rewardPct
+    riskRewardRatio = $rr
+    note         = $note
+  }
 }
 
 # --- Canh bao "mua duoi" rieng cho dac thu T+2,5 cua thi truong VN: mua xong phai

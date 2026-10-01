@@ -215,7 +215,8 @@
     watch_range:        "Tích lũy, cung cạn dần",
     markdown_confirmed: "Sign of Weakness",
     distribution_setup: "Upthrust",
-    watch_top:          "Phân phối, theo dõi đỉnh"
+    watch_top:          "Phân phối, theo dõi đỉnh",
+    pre_breakout:       "Sắp phá vỡ (chờ)"
   };
 
   var screener = null;
@@ -237,7 +238,7 @@
 
   function findSymbolData(symbol){
     if(!screener || !screener.buckets) return null;
-    var order = ["buy_confirmed","buy_watch","buy_counter_trend","buy_expired","sell_confirmed","sell_watch","sell_expired","neutral"];
+    var order = ["buy_confirmed","buy_watch","buy_counter_trend","buy_early","buy_expired","sell_confirmed","sell_watch","sell_expired","neutral"];
     for(var i=0;i<order.length;i++){
       var arr = screener.buckets[order[i]] || [];
       for(var j=0;j<arr.length;j++){
@@ -393,11 +394,14 @@
       if(data.target != null && data.stopLoss != null) lv = " Target " + fmtNum(data.target,2) + ", cắt lỗ " + fmtNum(data.stopLoss,2) + (data.riskRewardRatio!=null ? (", R:R " + fmtNum(data.riskRewardRatio,1) + "x") : "") + ".";
       return { cls: "rec-buy", label: "CÓ THỂ MUA THÊM", note: "Tín hiệu " + (PHASE_LABEL[data.phase]||"mua") + "." + lv + " " + plText };
     }
+    if(data.signal === "buy_early"){
+      return { cls: "rec-hold", label: "GIỮ, CHỜ ĐIỂM PHÁ", note: "Mã đang tích lũy sát kháng cự " + fmtNum(data.resistance,2) + " - chỉ mua thêm nếu có phiên đóng cửa vượt mức này với khối lượng ≥1,5 lần TB20 (lệnh ATC), cắt lỗ " + fmtNum(data.stopLoss,2) + ". " + plText };
+    }
     if(data.signal === "buy_counter_trend"){
-      return { cls: "rec-hold", label: "GIỮ, không mua thêm", note: "Có tín hiệu " + (PHASE_LABEL[data.phase]||"tích lũy") + " nhưng mã đang trong xu hướng giảm (Stage 4) và yếu hơn VN-Index - bắt đáy rủi ro cao. " + plText };
+      return { cls: "rec-hold", label: "GIỮ, không mua thêm", note: "Có tín hiệu " + (PHASE_LABEL[data.phase]||"tích lũy") + " nhưng mã đang trong xu hướng giảm (Stage 4) - bắt đáy rủi ro cao. " + plText };
     }
     if(data.signal === "buy_expired"){
-      return { cls: "rec-hold", label: "GIỮ, không mua thêm", note: "Tín hiệu mua thật nhưng đã hết dư địa lãi ở vùng giá này (dưới 5% hoặc đã vượt target). " + plText };
+      return { cls: "rec-hold", label: "GIỮ, không mua thêm", note: "Tín hiệu mua thật nhưng không còn đáng mua ở vùng giá này (lãi tiềm năng dưới 5%, đã vượt target, hoặc điểm phá đã quá 2 phiên - mua lúc này là trễ). " + plText };
     }
     if(data.signal === "sell_expired"){
       return { cls: "rec-hold", label: "GIỮ, theo dõi thêm", note: "Có tín hiệu bán nhưng vùng tích lũy dùng để tính đã quá cũ, không còn liên quan giá hiện tại. " + plText };

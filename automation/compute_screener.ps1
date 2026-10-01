@@ -12,6 +12,9 @@ $topNPath = Join-Path $cacheDir "topN_symbols.json"
 . (Join-Path $root "automation\lib\wyckoff_engine.ps1")
 
 $TOP_N = 120
+# SOS (vuot khang cu) chi tinh la tin hieu MUA trong so phien nay ke tu phien pha vo; cu hon
+# -> buy_expired (xem giai thich o cho dung ben duoi).
+$MAX_SOS_AGE_SESSIONS = 2
 # Only screen HOSE (the VN-Index universe) - HNX and UPCOM are excluded per request.
 $ALLOWED_EXCHANGES = @("HOSE")
 
@@ -136,6 +139,7 @@ $buckets = @{
   buy_watch      = New-Object System.Collections.Generic.List[object]
   buy_expired    = New-Object System.Collections.Generic.List[object]
   buy_counter_trend = New-Object System.Collections.Generic.List[object]
+  buy_early      = New-Object System.Collections.Generic.List[object]
   sell_confirmed = New-Object System.Collections.Generic.List[object]
   sell_watch     = New-Object System.Collections.Generic.List[object]
   sell_expired   = New-Object System.Collections.Generic.List[object]
@@ -161,6 +165,22 @@ foreach ($f in $targetFiles) {
   $stageAll = if ($vnPoints) { Get-StageContext $pts } else { "unknown" }
 
   $result = Compute-WyckoffForSymbol $doc.symbol $cleanName $doc.exchange $pts
+  # Danh sach cho "sap pha vo" - chi xet ma CHUA co tin hieu Wyckoff nao (xem Get-PreBreakout).
+  $early = if ($null -eq $result -and $vnPoints) { Get-PreBreakout $pts } else { $null }
+  if ($early) {
+    $earlyRs = Get-RelativeStrength $pts $vnPoints 20
+    $early.symbol = $doc.symbol
+    $early | Add-Member -NotePropertyName exchange -NotePropertyValue $doc.exchange
+    $early | Add-Member -NotePropertyName name -NotePropertyValue $cleanName
+    $early | Add-Member -NotePropertyName sector -NotePropertyValue $sector
+    $early | Add-Member -NotePropertyName stage -NotePropertyValue $stageAll
+    $early | Add-Member -NotePropertyName rs -NotePropertyValue $earlyRs
+    $buckets.buy_early.Add($early) | Out-Null
+    $breadthList.Add([PSCustomObject]@{ symbol = $doc.symbol; name = $cleanName; lastClose = $early.lastClose; changePct = $early.changePct; sector = $sector; stage = $stageAll; signal = "buy_early"; rs = $earlyRs }) | Out-Null
+    $chartPts = $pts | Select-Object -Last 120 | ForEach-Object { [PSCustomObject]@{ d=$_.d; o=$_.o; h=$_.h; l=$_.l; c=$_.c; v=$_.v } }
+    $charts[$doc.symbol] = [PSCustomObject]@{ symbol = $doc.symbol; support = $early.support; resistance = $early.resistance; triggerDate = $early.triggerDate; points = $chartPts }
+    continue
+  }
   if ($null -eq $result) {
     $q = Get-BasicQuote $pts
     $buckets.neutral.Add([PSCustomObject]@{
@@ -203,12 +223,19 @@ foreach ($f in $targetFiles) {
     }
 
     $levels = Get-TradeLevels $result.signal $result.phase $result.lastClose $result.support $result.resistance
+    # SOS da cu: backtest 2,5 nam top-120 - mua SOS o gia dong cua phien pha vo TB +0,83%/lenh,
+    # nhung loi the mat rat nhanh: tre 3 phien +0,43%, 6 phien -0,06%, 10 phien -0,29%. Truoc day
+    # SOS duoc hien toi 14 phien sau diem pha (HII/PVT/VOS 25/09 vao tre 8-11 phien, deu thua).
+    $sosLate = ($result.phase -eq "markup_confirmed" -and $sessionsSinceTrigger -gt $MAX_SOS_AGE_SESSIONS)
+    if ($levels -and $levels.hasEdge -and $sosLate) {
+      $levels = [PSCustomObject]@{ hasEdge = $false; rewardPct = $levels.rewardPct; reason = "điểm phá đã cách đây $sessionsSinceTrigger phiên (quá $MAX_SOS_AGE_SESSIONS phiên) - vào lúc này là mua trễ, lợi thế của nhịp phá vỡ đã hết" }
+    }
     if ($levels -and -not $levels.hasEdge) {
       # Tin hieu MUA that (SOS/Spring da xay ra) nhung khong con dang mua LUC NAY - chuyen
       # sang bucket rieng buy_expired, KHONG tinh vao buy_confirmed/buy_watch (breadth, xep
       # hang nganh, thong ke "so ma co tin hieu" deu tu dong loai no ra vi khop chinh xac
       # "buy_confirmed"/"buy_watch", khong dung wildcard "buy*").
-      $result.note = "$($result.note) Đã có tín hiệu mua nhưng $($levels.reason) - KHÔNG khuyến nghị mua ở vùng giá này (chỉ hiện tín hiệu tiềm năng lãi ≥5%)."
+      $result.note = "$($result.note) Đã có tín hiệu mua nhưng $($levels.reason) - KHÔNG khuyến nghị mua ở vùng giá này (chỉ hiện tín hiệu tiềm năng lãi ≥5% và SOS trong $MAX_SOS_AGE_SESSIONS phiên gần nhất)."
       $result | Add-Member -NotePropertyName tradeSetupBroken -NotePropertyValue $true
       $result | Add-Member -NotePropertyName rewardPct -NotePropertyValue $levels.rewardPct
       $result.signal = $result.signal -replace "^buy_(confirmed|watch)$", "buy_expired"
@@ -264,6 +291,8 @@ foreach ($f in $targetFiles) {
 foreach ($k in @($buckets.Keys)) {
   if ($k -eq "neutral") {
     $sorted2 = $buckets[$k] | Sort-Object -Property symbol
+  } elseif ($k -eq "buy_early") {
+    $sorted2 = $buckets[$k] | Sort-Object -Property distPct
   } else {
     $sorted2 = $buckets[$k] | Sort-Object -Property score -Descending
   }
@@ -341,6 +370,7 @@ $screener = [PSCustomObject]@{
     buy_watch      = $buckets.buy_watch
     buy_expired    = $buckets.buy_expired
     buy_counter_trend = $buckets.buy_counter_trend
+    buy_early      = $buckets.buy_early
     sell_confirmed = $buckets.sell_confirmed
     sell_watch     = $buckets.sell_watch
     sell_expired   = $buckets.sell_expired

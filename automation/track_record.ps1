@@ -94,11 +94,29 @@ function Set-EntryField($entry, $name, $value) {
 #   vi the cu voi gia that TOI ngay do (neu da cham stop/target truoc thi giu ket qua do),
 #   con chua cham gi thi dong o trang thai "reversed" tai gia luc dao chieu.
 $activeBySymbol = @{}
+function Get-SignalTier($entry) {
+  if ($entry.phase -eq "pre_breakout") { return 2 }  # da kich hoat = vuot khang cu that
+  if ($entry.signalAtEntry -like "*_confirmed") { return 2 }
+  return 1
+}
+function Test-CanReverse($cur, $new) {
+  if ($new.signalAtEntry -eq "buy_counter_trend") { return $false }
+  return ((Get-SignalTier $new) -ge (Get-SignalTier $cur))
+}
 function Register-Entry($entry) {
   $cur = $activeBySymbol[$entry.symbol]
   if ($cur -and $cur.direction -eq $entry.direction) {
     $entry.status = "duplicate"
     Set-EntryField $entry "duplicateOf" $cur.id
+    return
+  }
+  # Chong "lat keo" (them 01/10/2026): doi chieu 25/09-01/10 co 8/9 lenh BAN dong vi bi 1 tin hieu
+  # MUA yeu hon (Spring/tich luy - thuong ngay sau SOW tren cung vung gia) dao chieu chi sau 1-4
+  # phien. Nay chi dao chieu khi tin hieu moi MANH ngang hoac hon (xac nhan > theo doi), va tin
+  # hieu bat day nguoc xu huong (khong phai khuyen nghi) khong bao gio dao chieu lenh dang mo.
+  if ($cur -and -not (Test-CanReverse $cur $entry)) {
+    $entry.status = "conflict"
+    Set-EntryField $entry "conflictWith" $cur.id
     return
   }
   if ($cur) {
@@ -206,6 +224,52 @@ foreach ($db in $directionBuckets) {
     $existingIds[$id] = $true
   }
 }
+# --- 1b) Danh sach CHO "sap pha vo" (buy_early): KHONG vao lenh o gia hom nay. Ghi "pending",
+# chi thanh lenh MUA that khi trong $EARLY_TRIGGER_WINDOW phien tiep theo co phien dong cua tren
+# khang cu voi KL >= 1,5x TB20 (vao o gia dong cua phien do = lenh ATC); het han ma khong kich
+# hoat -> "not_triggered" (khong tinh vao thong ke lai/lo). Moi ma chi 1 lenh cho tai 1 thoi diem.
+$EARLY_TRIGGER_WINDOW = 10
+foreach ($item in @($screener.buckets.buy_early)) {
+  if (-not $item) { continue }
+  $hasPending = @($entries | Where-Object { $_.symbol -eq $item.symbol -and $_.status -eq "pending" }).Count -gt 0
+  if ($hasPending) { continue }
+  $id = "$($item.symbol)_$($item.triggerDate)_pre_breakout"
+  if ($existingIds.ContainsKey($id)) { continue }
+  $sec = if ($item.sector) { $sectorInfo[$item.sector] } else { $null }
+  $entries.Add([PSCustomObject]@{
+    id = $id; symbol = $item.symbol; name = $item.name; sector = $item.sector; direction = "buy"
+    signalAtEntry = "buy_early"; phase = "pre_breakout"; triggerDate = $item.triggerDate
+    watchDate = $item.triggerDate; entryDate = $item.triggerDate; entryPrice = $null
+    badLevel = $null; goodLevel = $item.target; scoreAtEntry = $null
+    marketRegimeAtEntry = $screener.marketRegime.status; stageAtEntry = $item.stage; rsAtEntry = $item.rs
+    supportAtEntry = $item.support; resistanceAtEntry = $item.resistance; triggerPriceAtWatch = $item.triggerPrice
+    sectorTierAtEntry = if ($sec) { $sec.tier } else { $null }
+    status = "pending"; resolvedDate = $null; resolvedPrice = $null; actualReturnPct = $null; sessionsToResolve = $null
+  }) | Out-Null
+  $existingIds[$id] = $true
+}
+foreach ($e in @($entries | Where-Object { $_.status -eq "pending" })) {
+  $pts = Get-History $e.symbol
+  $idxWatch = -1
+  for ($i = 0; $i -lt $pts.Count; $i++) { if ($pts[$i].d -eq $e.watchDate) { $idxWatch = $i; break } }
+  if ($idxWatch -lt 0) { continue }
+  $R = [double]$e.resistanceAtEntry
+  for ($k = 1; $k -le $EARLY_TRIGGER_WINDOW; $k++) {
+    $j = $idxWatch + $k
+    if ($j -ge $pts.Count) { break }
+    $q = $pts[$j]
+    $avg = 0.0; for ($t = $j - 20; $t -lt $j; $t++) { $avg += $pts[$t].v }; $avg /= 20
+    if ($q.c -gt $R -and $avg -gt 0 -and $q.v -ge 1.5 * $avg) {
+      Set-EntryField $e "status" "open"; Set-EntryField $e "entryDate" $q.d; Set-EntryField $e "entryPrice" $q.c
+      Set-EntryField $e "badLevel" ([Math]::Round([Math]::Min($R * 0.97, $q.c * 0.95), 2))
+      Set-EntryField $e "sessionsSinceTrigger" $k
+      Register-Entry $e
+      break
+    }
+    if ($k -eq $EARLY_TRIGGER_WINDOW) { Set-EntryField $e "status" "not_triggered"; Set-EntryField $e "resolvedDate" $q.d }
+  }
+}
+
 $newOnes = @($entries | Select-Object -Skip $beforeCount)
 Write-Log "New entries logged: $($newOnes.Count) (duplicate of an open position: $(@($newOnes | Where-Object { $_.status -eq 'duplicate' }).Count))"
 
@@ -267,8 +331,10 @@ function Get-Stats($items) {
   $losses = @($closed | Where-Object { $_.status -eq "hit_stop" })
   $expired = @($closed | Where-Object { $_.status -eq "expired_neutral" })
   $reversed = @($closed | Where-Object { $_.status -eq "reversed" })
-  $decided = $wins.Count + $losses.Count
-  $winRate = if ($decided -gt 0) { [Math]::Round(($wins.Count / $decided) * 100, 1) } else { $null }
+  # Ty le thang = so lenh DONG CO LAI / tong so lenh da dong (ke ca dao chieu, het han). Truoc
+  # 01/10/2026 chi tinh tren hit_target+hit_stop nen BAN hien "100%" khi 7/8 lenh la dao chieu.
+  $profitable = @($closed | Where-Object { $_.actualReturnPct -gt 0 })
+  $winRate = if ($closed.Count -gt 0) { [Math]::Round(($profitable.Count / $closed.Count) * 100, 1) } else { $null }
   $avgReturn = if ($closed.Count -gt 0) { [Math]::Round((($closed | Measure-Object -Property actualReturnPct -Average).Average), 2) } else { $null }
   $avgWin = if ($wins.Count -gt 0) { [Math]::Round((($wins | Measure-Object -Property actualReturnPct -Average).Average), 2) } else { $null }
   $avgLoss = if ($losses.Count -gt 0) { [Math]::Round((($losses | Measure-Object -Property actualReturnPct -Average).Average), 2) } else { $null }
@@ -279,6 +345,7 @@ function Get-Stats($items) {
     losses       = $losses.Count
     expired      = $expired.Count
     reversed     = $reversed.Count
+    profitable   = $profitable.Count
     winRatePct   = $winRate
     avgReturnPct = $avgReturn
     avgWinPct    = $avgWin
@@ -287,7 +354,7 @@ function Get-Stats($items) {
 }
 
 # Tin hieu trung lap chi luu de khong ghi lai - khong tinh vao bat ky thong ke nao.
-$tracked = @($entries | Where-Object { $_.status -ne "duplicate" })
+$tracked = @($entries | Where-Object { @("duplicate", "conflict", "pending", "not_triggered") -notcontains $_.status })
 # Tin hieu "bat day nguoc xu huong" (buy_counter_trend - hoac buy_watch ghi so TRUOC khi co
 # quy tac nay nhung thoa cung dieu kien) tach khoi thong ke MUA chinh, de overall.buy phan
 # anh dung nhung gi bang Tiem nang MUA hien tai khuyen nghi.
@@ -295,7 +362,8 @@ function Test-CounterTrendEntry($e) {
   return ($e.direction -eq "buy" -and (Test-CounterTrendBuy $e.signalAtEntry $e.phase $e.stageAtEntry $e.rsAtEntry))
 }
 $counterTrendEntries = @($tracked | Where-Object { Test-CounterTrendEntry $_ })
-$buyEntries = @($tracked | Where-Object { $_.direction -eq "buy" -and -not (Test-CounterTrendEntry $_) })
+$earlyEntries = @($tracked | Where-Object { $_.phase -eq "pre_breakout" })
+$buyEntries = @($tracked | Where-Object { $_.direction -eq "buy" -and $_.phase -ne "pre_breakout" -and -not (Test-CounterTrendEntry $_) })
 $sellEntries = @($tracked | Where-Object { $_.direction -eq "sell" })
 
 # Xep theo mau hinh cau truc (SOS/Spring/Upthrust/SOW) - noi de sau nay xem mau hinh nao
@@ -386,7 +454,12 @@ $openPositions = @($entries | Where-Object { $_.status -eq "open" } | ForEach-Ob
 $trackRecord = [PSCustomObject]@{
   generatedAt     = (Get-Date).ToUniversalTime().ToString("o")
   startedTracking = "2026-09-28"
-  overall         = [PSCustomObject]@{ buy = (Get-Stats $buyEntries); sell = (Get-Stats $sellEntries); buyCounterTrend = (Get-Stats $counterTrendEntries) }
+  overall         = [PSCustomObject]@{ buy = (Get-Stats $buyEntries); sell = (Get-Stats $sellEntries); buyCounterTrend = (Get-Stats $counterTrendEntries); buyEarly = (Get-Stats $earlyEntries) }
+  earlyWatch      = [PSCustomObject]@{
+    pending      = @($entries | Where-Object { $_.status -eq "pending" }).Count
+    triggered    = $earlyEntries.Count
+    notTriggered = @($entries | Where-Object { $_.status -eq "not_triggered" }).Count
+  }
   byPhase         = @($byPhase)
   byFactor        = [PSCustomObject]$byFactor
   recentClosed    = $recentClosed

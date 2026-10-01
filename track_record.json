@@ -1,15 +1,16 @@
 {
-    "generatedAt":  "2026-10-01T09:00:38.2293055Z",
+    "generatedAt":  "2026-10-01T10:56:30.1937762Z",
     "startedTracking":  "2026-09-28",
     "overall":  {
                     "buy":  {
-                                "openCount":  29,
+                                "openCount":  18,
                                 "closedCount":  6,
                                 "wins":  1,
                                 "losses":  4,
                                 "expired":  0,
                                 "reversed":  1,
-                                "winRatePct":  20,
+                                "profitable":  2,
+                                "winRatePct":  33.3,
                                 "avgReturnPct":  -2.59,
                                 "avgWinPct":  5.84,
                                 "avgLossPct":  -5.99
@@ -21,24 +22,44 @@
                                  "losses":  0,
                                  "expired":  0,
                                  "reversed":  7,
-                                 "winRatePct":  100,
+                                 "profitable":  5,
+                                 "winRatePct":  62.5,
                                  "avgReturnPct":  0.56,
                                  "avgWinPct":  2.43,
                                  "avgLossPct":  null
                              },
                     "buyCounterTrend":  {
-                                            "openCount":  16,
+                                            "openCount":  27,
                                             "closedCount":  6,
                                             "wins":  0,
                                             "losses":  5,
                                             "expired":  0,
                                             "reversed":  1,
+                                            "profitable":  0,
                                             "winRatePct":  0,
                                             "avgReturnPct":  -5.72,
                                             "avgWinPct":  null,
                                             "avgLossPct":  -6.16
-                                        }
+                                        },
+                    "buyEarly":  {
+                                     "openCount":  0,
+                                     "closedCount":  0,
+                                     "wins":  0,
+                                     "losses":  0,
+                                     "expired":  0,
+                                     "reversed":  0,
+                                     "profitable":  0,
+                                     "winRatePct":  null,
+                                     "avgReturnPct":  null,
+                                     "avgWinPct":  null,
+                                     "avgLossPct":  null
+                                 }
                 },
+    "earlyWatch":  {
+                       "pending":  1,
+                       "triggered":  0,
+                       "notTriggered":  0
+                   },
     "byPhase":  [
                     {
                         "phase":  "markup_confirmed",
@@ -51,21 +72,21 @@
                         "phase":  "accumulation_setup",
                         "direction":  "buy",
                         "closedCount":  8,
-                        "winRatePct":  0,
+                        "winRatePct":  12.5,
                         "avgReturnPct":  -4.6
                     },
                     {
                         "phase":  "markdown_confirmed",
                         "direction":  "sell",
                         "closedCount":  7,
-                        "winRatePct":  100,
+                        "winRatePct":  57.1,
                         "avgReturnPct":  0.06
                     },
                     {
                         "phase":  "distribution_setup",
                         "direction":  "sell",
                         "closedCount":  1,
-                        "winRatePct":  null,
+                        "winRatePct":  100,
                         "avgReturnPct":  4.02
                     }
                 ],
@@ -82,21 +103,21 @@
                                                "value":  "buy_watch",
                                                "direction":  "buy",
                                                "closedCount":  8,
-                                               "winRatePct":  0,
+                                               "winRatePct":  12.5,
                                                "avgReturnPct":  -4.6
                                            },
                                            {
                                                "value":  "sell_confirmed",
                                                "direction":  "sell",
                                                "closedCount":  7,
-                                               "winRatePct":  100,
+                                               "winRatePct":  57.1,
                                                "avgReturnPct":  0.06
                                            },
                                            {
                                                "value":  "sell_watch",
                                                "direction":  "sell",
                                                "closedCount":  1,
-                                               "winRatePct":  null,
+                                               "winRatePct":  100,
                                                "avgReturnPct":  4.02
                                            }
                                        ],
@@ -112,7 +133,7 @@
                                               "value":  "neutral",
                                               "direction":  "buy",
                                               "closedCount":  3,
-                                              "winRatePct":  0,
+                                              "winRatePct":  33.3,
                                               "avgReturnPct":  -3.25
                                           },
                                           {
@@ -126,14 +147,14 @@
                                               "value":  "stage4",
                                               "direction":  "sell",
                                               "closedCount":  6,
-                                              "winRatePct":  100,
+                                              "winRatePct":  66.7,
                                               "avgReturnPct":  0.33
                                           },
                                           {
                                               "value":  "stage2",
                                               "direction":  "sell",
                                               "closedCount":  2,
-                                              "winRatePct":  null,
+                                              "winRatePct":  50,
                                               "avgReturnPct":  1.24
                                           }
                                       ],
@@ -142,14 +163,14 @@
                                                      "value":  "neutral",
                                                      "direction":  "buy",
                                                      "closedCount":  12,
-                                                     "winRatePct":  10,
+                                                     "winRatePct":  16.7,
                                                      "avgReturnPct":  -4.16
                                                  },
                                                  {
                                                      "value":  "neutral",
                                                      "direction":  "sell",
                                                      "closedCount":  8,
-                                                     "winRatePct":  100,
+                                                     "winRatePct":  62.5,
                                                      "avgReturnPct":  0.56
                                                  }
                                              ],
@@ -158,14 +179,14 @@
                                                    "value":  null,
                                                    "direction":  "buy",
                                                    "closedCount":  12,
-                                                   "winRatePct":  10,
+                                                   "winRatePct":  16.7,
                                                    "avgReturnPct":  -4.16
                                                },
                                                {
                                                    "value":  null,
                                                    "direction":  "sell",
                                                    "closedCount":  8,
-                                                   "winRatePct":  100,
+                                                   "winRatePct":  62.5,
                                                    "avgReturnPct":  0.56
                                                }
                                            ]
@@ -548,7 +569,7 @@
                               "sector":  "Vận tải biển - Logistics",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-18",
                               "entryDate":  "2026-10-01",
@@ -590,7 +611,7 @@
                               "entryDate":  "2026-10-01",
                               "entryPrice":  10.2,
                               "badLevel":  9.69,
-                              "goodLevel":  14.10,
+                              "goodLevel":  14.1,
                               "latestPrice":  10.2,
                               "unrealizedPct":  0,
                               "pctToBad":  5.00,
@@ -625,7 +646,7 @@
                               "triggerDate":  "2026-10-01",
                               "entryDate":  "2026-10-01",
                               "entryPrice":  53.9,
-                              "badLevel":  51.20,
+                              "badLevel":  51.2,
                               "goodLevel":  62.03,
                               "latestPrice":  53.9,
                               "unrealizedPct":  0,
@@ -638,7 +659,7 @@
                               "sector":  "BĐS",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-10-01",
                               "entryDate":  "2026-10-01",
@@ -698,7 +719,7 @@
                               "entryDate":  "2026-10-01",
                               "entryPrice":  15,
                               "badLevel":  15.91,
-                              "goodLevel":  12.70,
+                              "goodLevel":  12.7,
                               "latestPrice":  15,
                               "unrealizedPct":  0,
                               "pctToBad":  6.07,
@@ -746,7 +767,7 @@
                               "sector":  "BĐS",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-29",
                               "entryDate":  "2026-09-30",
@@ -818,13 +839,13 @@
                               "sector":  "Điện - Năng lượng",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-16",
                               "entryDate":  "2026-09-29",
                               "entryPrice":  29.1,
                               "badLevel":  26.29,
-                              "goodLevel":  37.00,
+                              "goodLevel":  37,
                               "latestPrice":  28.15,
                               "unrealizedPct":  -3.26,
                               "pctToBad":  6.61,
@@ -1214,7 +1235,7 @@
                               "sector":  "Vận tải biển - Logistics",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-15",
                               "entryDate":  "2026-09-25",
@@ -1232,7 +1253,7 @@
                               "sector":  "BĐS KCN",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-15",
                               "entryDate":  "2026-09-25",
@@ -1286,7 +1307,7 @@
                               "sector":  "Khác",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-17",
                               "entryDate":  "2026-09-25",
@@ -1322,7 +1343,7 @@
                               "sector":  "Bank",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-22",
                               "entryDate":  "2026-09-25",
@@ -1358,7 +1379,7 @@
                               "sector":  "Điện - Năng lượng",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-15",
                               "entryDate":  "2026-09-25",
@@ -1718,7 +1739,7 @@
                               "sector":  "Bán lẻ công nghệ",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "watch_range",
                               "triggerDate":  "2026-09-04",
                               "entryDate":  "2026-09-25",
@@ -1808,7 +1829,7 @@
                               "sector":  "BĐS",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "watch_range",
                               "triggerDate":  "2026-09-04",
                               "entryDate":  "2026-09-25",
