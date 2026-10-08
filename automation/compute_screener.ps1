@@ -15,6 +15,8 @@ $TOP_N = 120
 # SOS (vuot khang cu) chi tinh la tin hieu MUA trong so phien nay ke tu phien pha vo; cu hon
 # -> buy_expired (xem giai thich o cho dung ben duoi).
 $MAX_SOS_AGE_SESSIONS = 2
+# SOS xuat hien trong so phien nay sau 1 tin hieu BAN tren cung ma -> tru 10 diem + canh bao.
+$SELL_COOLDOWN_SESSIONS = 10
 # Only screen HOSE (the VN-Index universe) - HNX and UPCOM are excluded per request.
 $ALLOWED_EXCHANGES = @("HOSE")
 
@@ -251,9 +253,21 @@ foreach ($f in $targetFiles) {
       # TB -1,21% sau 2 phien (NVL, DXS, VDS, PAN, NKG...), trong khi Spring/tich luy con
       # lai TB -0,36% va SOS da xac nhan TB +1,7%. Van ghi so doi chieu rieng de sau nay
       # xem quy tac nay dung hay can noi/siet lai.
+      # 08/10/2026: ap cho MOI Spring/vung tich luy (khong chi Stage 4) - xem Test-CounterTrendBuy.
       if (Test-CounterTrendBuy $result.signal $result.phase $stage $rs) {
-        $result.note = "$($result.note) Bắt đáy ngược xu hướng: mã đang Stage 4 và yếu hơn VN-Index (RS $rs%) - rủi ro cao, KHÔNG tính là khuyến nghị mua."
+        $ctx = if ($stage -eq "stage4") { "mã đang Stage 4 (xu hướng giảm) - bắt đáy ngược xu hướng, rủi ro cao" } else { "Spring/tích lũy chưa có SOS xác nhận - kiểm chứng 3 năm cho thấy mua ở điểm này thua VN-Index" }
+        $result.note = "$($result.note) CHỜ XÁC NHẬN: $ctx. KHÔNG tính là khuyến nghị mua - chỉ mua khi có phiên vượt kháng cự $([Math]::Round($result.resistance,2)) với khối lượng ≥1,5 lần TB20 (SOS)."
         $result.signal = "buy_counter_trend"
+      }
+
+      # Chong lat keo: SOS ngay sau tin hieu BAN tren cung ma -> tru diem + canh bao (khong loai).
+      if ($result.signal -eq "buy_confirmed" -or ($result.signal -eq "buy_watch" -and $result.phase -eq "markup_confirmed")) {
+        $sinceSell = Get-RecentSellSignal $pts $SELL_COOLDOWN_SESSIONS
+        if ($null -ne $sinceSell) {
+          $result.score = [Math]::Max(0, $result.score - 10)
+          $result.note = "$($result.note) ⚠ Mới có tín hiệu BÁN $sinceSell phiên trước trên chính mã này - tín hiệu đang đảo chiều liên tục, độ tin cậy thấp hơn (kiểm chứng 3 năm: lãi TB +0,5%/lệnh so với +1,4% khi không có tín hiệu bán trước đó)."
+          $result | Add-Member -NotePropertyName recentSellSessions -NotePropertyValue $sinceSell
+        }
       }
     }
 

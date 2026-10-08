@@ -324,6 +324,44 @@ $logJson = ConvertTo-Json -InputObject ([PSCustomObject]@{ entries = $entries.To
 [System.IO.File]::WriteAllText($logPath, $logJson, $utf8NoBom)
 
 # --- 3) Tong hop ra track_record.json ---
+$latestPriceCache = @{}
+function Get-LatestPrice($symbol) {
+  if ($latestPriceCache.ContainsKey($symbol)) { return $latestPriceCache[$symbol] }
+  $pts = Get-History $symbol
+  $price = if ($pts.Count -gt 0) { $pts[$pts.Count - 1].c } else { $null }
+  $latestPriceCache[$symbol] = $price
+  return $price
+}
+# VN-Index lam thuoc do so sanh (them 08/10/2026): win rate chi tren lenh DA DONG bi lech nang vi
+# cat lo (~5%) gan hon target (15-40%) - lenh thua dong nhanh, lenh thang con mo. Nen tinh them
+# lai/lo CA lenh dang mo theo gia moi nhat, va tru di bien dong VN-Index cung khoang thoi gian
+# (alpha) de tach "tool chon dung ma" khoi "ca thi truong len/xuong".
+$vnPts = @()
+$dataPath = Join-Path $root "data.json"
+if (Test-Path $dataPath) { $vnPts = @((Get-Content -Path $dataPath -Raw -Encoding UTF8 | ConvertFrom-Json).vnindex.points) }
+function Get-VnClose($onOrBefore) {
+  for ($i = $vnPts.Count - 1; $i -ge 0; $i--) { if (-not $onOrBefore -or $vnPts[$i].d -le $onOrBefore) { return $vnPts[$i].c } }
+  return $null
+}
+# Lai/lo theo chieu tin hieu (lenh dong: gia dong lenh; lenh mo: gia moi nhat) va bien dong
+# VN-Index cung chieu, cung khoang thoi gian.
+function Get-MarkedReturn($e) {
+  $sign = if ($e.direction -eq "buy") { 1 } else { -1 }
+  if ($e.status -eq "open") {
+    $px = Get-LatestPrice $e.symbol
+    if ($null -eq $px -or -not $e.entryPrice) { return $null }
+    $ret = (($px - $e.entryPrice) / $e.entryPrice) * 100 * $sign
+    $endDate = $null
+  } else {
+    if ($null -eq $e.actualReturnPct) { return $null }
+    $ret = [double]$e.actualReturnPct
+    $endDate = $e.resolvedDate
+  }
+  $v0 = Get-VnClose $e.entryDate; $v1 = Get-VnClose $endDate
+  $bench = if ($v0 -and $v1) { (($v1 - $v0) / $v0) * 100 * $sign } else { 0 }
+  return [PSCustomObject]@{ ret = $ret; bench = $bench }
+}
+
 function Get-Stats($items) {
   $items = @($items)
   $closed = @($items | Where-Object { $_.status -ne "open" })
@@ -337,6 +375,10 @@ function Get-Stats($items) {
   $winRate = if ($closed.Count -gt 0) { [Math]::Round(($profitable.Count / $closed.Count) * 100, 1) } else { $null }
   $avgReturn = if ($closed.Count -gt 0) { [Math]::Round((($closed | Measure-Object -Property actualReturnPct -Average).Average), 2) } else { $null }
   $avgWin = if ($wins.Count -gt 0) { [Math]::Round((($wins | Measure-Object -Property actualReturnPct -Average).Average), 2) } else { $null }
+  $marked = @($items | ForEach-Object { Get-MarkedReturn $_ } | Where-Object { $null -ne $_ })
+  $mtmAvg = if ($marked.Count -gt 0) { [Math]::Round(($marked | Measure-Object -Property ret -Average).Average, 2) } else { $null }
+  $mtmBench = if ($marked.Count -gt 0) { [Math]::Round(($marked | Measure-Object -Property bench -Average).Average, 2) } else { $null }
+  $mtmProfitPct = if ($marked.Count -gt 0) { [Math]::Round((@($marked | Where-Object { $_.ret -gt 0 }).Count / $marked.Count) * 100, 1) } else { $null }
   $avgLoss = if ($losses.Count -gt 0) { [Math]::Round((($losses | Measure-Object -Property actualReturnPct -Average).Average), 2) } else { $null }
   return [PSCustomObject]@{
     openCount    = $items.Count - $closed.Count
@@ -350,6 +392,12 @@ function Get-Stats($items) {
     avgReturnPct = $avgReturn
     avgWinPct    = $avgWin
     avgLossPct   = $avgLoss
+    # Ca lenh dang mo tinh theo gia moi nhat (mark-to-market), so voi VN-Index cung khoang
+    mtmCount         = $marked.Count
+    mtmAvgReturnPct  = $mtmAvg
+    mtmProfitablePct = $mtmProfitPct
+    mtmBenchmarkPct  = $mtmBench
+    mtmAlphaPct      = if ($null -ne $mtmAvg) { [Math]::Round($mtmAvg - $mtmBench, 2) } else { $null }
   }
 }
 
@@ -379,6 +427,8 @@ foreach ($g in ($tracked | Group-Object -Property phase)) {
     closedCount  = $stats.closedCount
     winRatePct   = $stats.winRatePct
     avgReturnPct = $stats.avgReturnPct
+    mtmCount     = $stats.mtmCount
+    mtmAlphaPct  = $stats.mtmAlphaPct
   }
 }
 
@@ -398,6 +448,8 @@ foreach ($factor in @("signalAtEntry", "stageAtEntry", "marketRegimeAtEntry", "s
       closedCount  = $stats.closedCount
       winRatePct   = $stats.winRatePct
       avgReturnPct = $stats.avgReturnPct
+      mtmCount     = $stats.mtmCount
+      mtmAlphaPct  = $stats.mtmAlphaPct
     }
   }
   $byFactor[$factor] = @($rows)
@@ -405,14 +457,6 @@ foreach ($factor in @("signalAtEntry", "stageAtEntry", "marketRegimeAtEntry", "s
 
 $recentClosed = @($tracked | Where-Object { $_.status -ne "open" } | Sort-Object -Property resolvedDate -Descending | Select-Object -First 15)
 
-$latestPriceCache = @{}
-function Get-LatestPrice($symbol) {
-  if ($latestPriceCache.ContainsKey($symbol)) { return $latestPriceCache[$symbol] }
-  $pts = Get-History $symbol
-  $price = if ($pts.Count -gt 0) { $pts[$pts.Count - 1].c } else { $null }
-  $latestPriceCache[$symbol] = $price
-  return $price
-}
 $openPositions = @($entries | Where-Object { $_.status -eq "open" } | ForEach-Object {
   $latest = Get-LatestPrice $_.symbol
   $unrealized = if ($null -ne $latest) {

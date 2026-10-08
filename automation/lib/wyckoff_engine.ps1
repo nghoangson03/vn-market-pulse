@@ -377,10 +377,33 @@ function Get-LayerAdjustment($signal, $baseScore, $marketStatus, $stage, $rs) {
 # 01/10/2026: bo dieu kien RS <= -5 (truoc chi tach Stage 4 + RS yeu). Backtest 2,5 nam top-120
 # (03/2024-09/2026): Spring Stage 4 TB -0,38%/lenh (406 lenh) vs Stage 2 +0,66%; doi chieu that
 # 25/09-01/10: 29 lenh mua Stage 4 chi 6 ma tang. $rs giu lai trong chu ky ham cho tuong thich.
+# 08/10/2026: bo luon dieu kien Stage 4 - MOI Spring / vung tich luy (chua co SOS) deu khong con
+# la khuyen nghi mua, chi la danh sach CHO xac nhan. Backtest 3 nam top-120 (09/2023-10/2026, ban
+# JS khop 64/64 tin hieu that): Spring thua VN-Index sau 20 phien o MOI giai doan (Stage 2 -0,95%,
+# trung tinh -0,36%, Stage 4 -1,13%), co Test -1,17%, RS>=5 -1,81%, am ca 2025 lan 2026; vung tich
+# luy (watch_range) cung am. Doi chieu that 25/09-07/10: 42 lenh Spring chi 9 lenh lai. Chi SOS
+# (markup_confirmed) con loi the: +0,61% so VN-Index, Stage 2 +1,03%.
 function Test-CounterTrendBuy($signal, $phase, $stage, $rs) {
   if ($signal -ne "buy_watch" -and $signal -ne "buy_counter_trend") { return $false }
-  if ($phase -ne "accumulation_setup" -and $phase -ne "watch_range") { return $false }
-  return ($stage -eq "stage4")
+  return ($phase -eq "accumulation_setup" -or $phase -eq "watch_range")
+}
+
+# --- Chong "lat keo": SOS xuat hien ngay sau 1 tin hieu BAN tren cung ma (VD VVS doi mua/ban 6 lan
+# trong 9 phien 25/09-07/10). Tra ve so phien tu tin hieu BAN gan nhat (con du dia, giong dieu kien
+# vao bang BAN) trong $lookback phien truoc hom nay, hoac $null neu khong co.
+# Backtest 3 nam: SOS sach (khong co tin hieu ban 10 phien truoc) +1,43%/lenh (n=440) vs ngay sau
+# tin hieu ban +0,53% (n=643) - tot hon ca 4 nam. Nhung nhom sau van duong nen CHI tru diem + canh
+# bao (xep hang thap hon), KHONG loai khoi bang mua.
+function Get-RecentSellSignal($points, $lookback) {
+  $lastIdx = $points.Count - 1
+  for ($k = $lastIdx - 1; $k -ge [Math]::Max(40, $lastIdx - $lookback); $k--) {
+    $sub = @($points[0..$k])
+    $r = Compute-WyckoffForSymbol "" "" "" $sub
+    if ($null -eq $r -or -not $r.signal.StartsWith("sell")) { continue }
+    $lv = Get-SellLevels $r.signal $r.phase $r.lastClose $r.support $r.resistance
+    if ($lv -and $lv.hasEdge) { return ($lastIdx - $k) }
+  }
+  return $null
 }
 
 # --- Danh sach CHO "sap pha vo" (nhan dien SOM, truoc khi gia vuot khang cu) ---

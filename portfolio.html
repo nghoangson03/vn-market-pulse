@@ -398,7 +398,7 @@
       return { cls: "rec-hold", label: "GIỮ, CHỜ ĐIỂM PHÁ", note: "Mã đang tích lũy sát kháng cự " + fmtNum(data.resistance,2) + " - chỉ mua thêm nếu có phiên đóng cửa vượt mức này với khối lượng ≥1,5 lần TB20 (lệnh ATC), cắt lỗ " + fmtNum(data.stopLoss,2) + ". " + plText };
     }
     if(data.signal === "buy_counter_trend"){
-      return { cls: "rec-hold", label: "GIỮ, không mua thêm", note: "Có tín hiệu " + (PHASE_LABEL[data.phase]||"tích lũy") + " nhưng mã đang trong xu hướng giảm (Stage 4) - bắt đáy rủi ro cao. " + plText };
+      return { cls: "rec-hold", label: "GIỮ, không mua thêm", note: "Có tín hiệu " + (PHASE_LABEL[data.phase]||"tích lũy") + " nhưng chưa có SOS xác nhận" + (data.stage==="stage4" ? ", mã còn đang trong xu hướng giảm (Stage 4)" : "") + " - kiểm chứng 3 năm cho thấy mua ở Spring/tích lũy thua VN-Index; chỉ mua thêm khi giá đóng cửa vượt kháng cự " + fmtNum(data.resistance,2) + " với khối lượng ≥1,5 lần TB20. " + plText };
     }
     if(data.signal === "buy_expired"){
       return { cls: "rec-hold", label: "GIỮ, không mua thêm", note: "Tín hiệu mua thật nhưng không còn đáng mua ở vùng giá này (lãi tiềm năng dưới 5%, đã vượt target, hoặc điểm phá đã quá 2 phiên - mua lúc này là trễ). " + plText };

@@ -369,15 +369,15 @@
           </div>
           <div class="term-card">
             <div class="term-head"><span class="badge tier-watch-buy">Spring</span></div>
-            <p><b>Tiềm năng MUA - đang theo dõi.</b> Giá xuyên thủng đáy vùng tích lũy rồi bật lại đóng cửa trên đáy đó, khối lượng lại cạn (≤1,3 lần TB20) - dấu hiệu "rũ hàng" trước khi tăng, chưa chắc chắn bằng SOS.</p>
+            <p><b>Chờ xác nhận - CHƯA mua.</b> Giá xuyên thủng đáy vùng tích lũy rồi bật lại đóng cửa trên đáy đó, khối lượng lại cạn (≤1,3 lần TB20) - dấu hiệu "rũ hàng" theo lý thuyết. Nhưng kiểm chứng 3 năm cho thấy mua ngay ở Spring thua VN-Index ở mọi giai đoạn, nên từ 08/10/2026 Spring chỉ nằm trong danh sách chờ; mua khi có SOS.</p>
           </div>
           <div class="term-card">
             <div class="term-head"><span class="badge tier-watch-buy">Sắp phá vỡ (chờ)</span></div>
             <p><b>Danh sách chờ - CHƯA mua.</b> Mã đang tích lũy ≥20 phiên, giá cách đỉnh nền ≤5%, 10 phiên gần nhất siết chặt và khối lượng cạn dần - tức là đang "nén" sát kháng cự, TRƯỚC khi bật lên. Chỉ mua khi có phiên đóng cửa vượt đỉnh nền với khối lượng ≥1,5 lần TB20 (đặt lệnh ATC khi thấy giá vượt điểm mua kèm khối lượng lớn trong phiên). Nếu giá vượt rồi tụt lại dưới đỉnh nền lúc đóng cửa thì bỏ qua.</p>
           </div>
           <div class="term-card">
-            <div class="term-head"><span class="badge tier-counter-buy">Bắt đáy ngược xu hướng</span></div>
-            <p><b>Không tính là khuyến nghị mua.</b> Spring/vùng tích lũy nhưng mã đang Stage 4 (xu hướng giảm) - "bắt dao rơi". Tách riêng vì kiểm chứng 2,5 năm cho thấy Spring ở Stage 4 lỗ trung bình −0,38%/lệnh (Stage 2: +0,66%); vẫn ghi sổ riêng để theo dõi.</p>
+            <div class="term-head"><span class="badge tier-counter-buy">Chờ xác nhận</span></div>
+            <p><b>Không tính là khuyến nghị mua.</b> Mọi Spring/vùng tích lũy chưa có SOS (trước 08/10/2026 chỉ áp cho mã Stage 4). Nếu mã đang Stage 4 thì còn là "bắt dao rơi", rủi ro cao hơn nữa. Vẫn ghi sổ riêng để theo dõi.</p>
           </div>
           <div class="term-card">
             <div class="term-head"><span class="badge chase-warn">Đã giãn, mua đuổi rủi ro</span></div>
@@ -684,8 +684,17 @@
 
   function trStatBlock(label, stats){
     stats = stats || { closedCount:0, openCount:0 };
+    var mtmHtml = "";
+    if(stats.mtmCount){
+      var aCls = stats.mtmAlphaPct>=0 ? "up" : "down", mCls = stats.mtmAvgReturnPct>=0 ? "up" : "down";
+      mtmHtml = '<div class="breadth-row">'+
+        '<div class="breadth-stat"><b class="'+mCls+'">'+(stats.mtmAvgReturnPct>=0?"+":"")+fmtNum(stats.mtmAvgReturnPct)+'%</b><span>TB tất cả '+stats.mtmCount+' lệnh (kể cả đang mở, theo giá mới nhất)</span></div>'+
+        '<div class="breadth-stat"><b>'+(stats.mtmBenchmarkPct>=0?"+":"")+fmtNum(stats.mtmBenchmarkPct)+'%</b><span>VN-Index cùng khoảng'+(label.indexOf("BÁN")>=0?" (đảo dấu)":"")+'</span></div>'+
+        '<div class="breadth-stat"><b class="'+aCls+'">'+(stats.mtmAlphaPct>=0?"+":"")+fmtNum(stats.mtmAlphaPct)+'%</b><span>Hơn/kém VN-Index</span></div>'+
+      '</div>';
+    }
     if(stats.closedCount === 0){
-      return '<div class="tr-block"><h4>'+label+'</h4><p class="tr-empty">Chưa có tín hiệu nào đóng (đang theo dõi '+stats.openCount+' tín hiệu mở) - cần thêm thời gian để đủ số liệu.</p></div>';
+      return '<div class="tr-block"><h4>'+label+'</h4><p class="tr-empty">Chưa có tín hiệu nào đóng (đang theo dõi '+stats.openCount+' tín hiệu mở) - cần thêm thời gian để đủ số liệu.</p>'+mtmHtml+'</div>';
     }
     var wr = stats.winRatePct;
     var wrCls = wr==null ? "" : (wr>=55 ? "up" : (wr<45 ? "down" : ""));
@@ -695,7 +704,7 @@
         '<div class="breadth-stat"><b class="'+wrCls+'">'+(wr!=null?fmtNum(wr)+"%":"—")+'</b><span>Có lãi ('+(stats.profitable!=null?stats.profitable:stats.wins)+'/'+stats.closedCount+')</span></div>'+
         '<div class="breadth-stat"><b class="'+retCls+'">'+(stats.avgReturnPct>=0?"+":"")+fmtNum(stats.avgReturnPct)+'%</b><span>TB/lệnh đóng</span></div>'+
         '<div class="breadth-stat"><b>'+stats.closedCount+'</b><span>Đã đóng ('+stats.openCount+' mở)</span></div>'+
-      '</div></div>';
+      '</div>'+mtmHtml+'</div>';
   }
 
   function renderTrackRecord(){
@@ -706,9 +715,9 @@
 
     var html = '<div class="overview-card tr-card">'+
       '<h3>📊 Đối chiếu khuyến nghị thực tế <span class="asof">Theo dõi từ '+fmtDateFull(tr.startedTracking)+'</span></h3>'+
-      '<p>Tín hiệu MUA/BÁN trên trang được ghi lại kèm target/cắt lỗ rồi đối chiếu với giá thật mỗi ngày - "đúng" khi chạm target (bên bán: giá giảm về mốc đo lường), "sai" khi dính cắt lỗ (bên bán: giá hồi phục qua mốc đảo chiều). Xem mục "Đối chiếu khuyến nghị thực tế" trong Sổ tay để rõ cách tính.</p>'+
+      '<p>Tín hiệu MUA/BÁN trên trang được ghi lại kèm target/cắt lỗ rồi đối chiếu với giá thật mỗi ngày - "đúng" khi chạm target (bên bán: giá giảm về mốc đo lường), "sai" khi dính cắt lỗ (bên bán: giá hồi phục qua mốc đảo chiều). Lưu ý: tỉ lệ có lãi chỉ tính lệnh ĐÃ đóng nên bị lệch xấu (cắt lỗ ~5% gần hơn target nên lệnh thua đóng trước, lệnh thắng còn mở) - hãy xem dòng thứ 2 của mỗi khối: lãi/lỗ TB của TẤT CẢ lệnh theo giá mới nhất và chênh lệch so với VN-Index cùng khoảng thời gian. Xem mục "Đối chiếu khuyến nghị thực tế" trong Sổ tay để rõ cách tính.</p>'+
       '<div class="tr-blocks">'+ trStatBlock("Tín hiệu MUA", tr.overall.buy) + trStatBlock("Tín hiệu BÁN", tr.overall.sell) +
-        (tr.overall.buyCounterTrend && (tr.overall.buyCounterTrend.openCount + tr.overall.buyCounterTrend.closedCount) > 0 ? trStatBlock("Bắt đáy ngược xu hướng (không khuyến nghị)", tr.overall.buyCounterTrend) : "") +
+        (tr.overall.buyCounterTrend && (tr.overall.buyCounterTrend.openCount + tr.overall.buyCounterTrend.closedCount) > 0 ? trStatBlock("Spring / tích lũy - chờ xác nhận (không khuyến nghị)", tr.overall.buyCounterTrend) : "") +
         (tr.earlyWatch && (tr.earlyWatch.pending + tr.earlyWatch.triggered + tr.earlyWatch.notTriggered) > 0 ? trStatBlock("Sắp phá vỡ - đã kích hoạt ("+tr.earlyWatch.pending+" đang chờ, "+tr.earlyWatch.notTriggered+" không kích hoạt)", tr.overall.buyEarly) : "") +'</div>';
 
     if(tr.byPhase && tr.byPhase.length){
@@ -747,7 +756,7 @@
         var retCls = p.unrealizedPct==null ? "" : (p.unrealizedPct>=0 ? "up" : "down");
         var badCls = p.pctToBad==null ? "" : (p.pctToBad<3 ? "down" : "");
         return '<tr><td><span class="sym mono">'+p.symbol+'</span></td>'+
-          '<td>'+(PHASE_LABEL[p.phase]||p.phase)+' ('+(p.direction==="buy"?(p.counterTrend?"Bắt đáy":"Mua"):"Bán")+')</td>'+
+          '<td>'+(PHASE_LABEL[p.phase]||p.phase)+' ('+(p.direction==="buy"?(p.counterTrend?"Chờ XN":"Mua"):"Bán")+')</td>'+
           '<td>'+fmtDateFull(p.entryDate)+' @ '+fmtNum(p.entryPrice)+'</td>'+
           '<td class="num tabular '+retCls+'">'+(p.unrealizedPct==null?"—":(p.unrealizedPct>=0?"+":"")+fmtNum(p.unrealizedPct)+'%')+'</td>'+
           '<td class="num tabular '+badCls+'">'+(p.pctToBad==null?"—":fmtNum(p.pctToBad)+'%')+'</td>'+
@@ -953,14 +962,14 @@
       '</section>'+
       '<section class="screen-section">'+
         '<h2><span class="sec-icon buy"></span>Tiềm năng MUA</h2>'+
-        '<div class="sec-sub">Sign of Strength (vượt kháng cự trong 2 phiên gần nhất - nên vào ngay phiên kế tiếp, càng trễ càng mất lợi thế) và Spring (đang hình thành, cần theo dõi thêm) · #1 = tín hiệu mua mạnh nhất · Target/Cắt lỗ tính từ chiều cao vùng tích lũy, KHÔNG phải khuyến nghị đầu tư.</div>'+
+        '<div class="sec-sub">Chỉ Sign of Strength (vượt kháng cự trong 2 phiên gần nhất - nên vào ngay phiên kế tiếp, càng trễ càng mất lợi thế). Spring không còn nằm ở đây từ 08/10/2026 - xem mục "Chờ xác nhận" bên dưới · #1 = tín hiệu mua mạnh nhất · Target/Cắt lỗ tính từ chiều cao vùng tích lũy, KHÔNG phải khuyến nghị đầu tư.</div>'+
         '<div class="table-scroll tall"><table class="screen-table"><thead><tr>'+
           '<th class="num">#</th><th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th class="num">Target</th><th class="num">Cắt lỗ</th><th class="num">R:R</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="buyBody"></tbody></table></div>'+
       '</section>'+
       '<section class="screen-section">'+
-        '<h2><span class="sec-icon" style="background:var(--warn);"></span>Bắt đáy ngược xu hướng (rủi ro cao)</h2>'+
-        '<div class="sec-sub">Spring / vùng tích lũy ở mã đang Stage 4 (xu hướng giảm) - cấu trúc Wyckoff có thể vẫn đúng nhưng kiểm chứng 2,5 năm cho thấy nhóm này lỗ nhiều hơn hẳn, nên KHÔNG tính là khuyến nghị mua. Vẫn được ghi sổ đối chiếu riêng để kiểm chứng.</div>'+
+        '<h2><span class="sec-icon" style="background:var(--warn);"></span>Chờ xác nhận: Spring / tích lũy (CHƯA mua)</h2>'+
+        '<div class="sec-sub">Spring và vùng tích lũy chưa có SOS. Kiểm chứng 3 năm (09/2023-10/2026, top-120 HOSE): mua ngay ở Spring thua VN-Index sau 20 phiên ở MỌI giai đoạn (Stage 2 −0,95%, trung tính −0,36%, Stage 4 −1,13%), kể cả khi đã có phiên Test; thực tế 25/09-07/10 chỉ 9/42 lệnh Spring có lãi. Vì vậy KHÔNG phải khuyến nghị mua - chỉ mua khi mã có phiên đóng cửa vượt kháng cự với khối lượng ≥1,5 lần TB20 (lúc đó mã sẽ chuyển lên bảng Tiềm năng MUA). Target/Cắt lỗ chỉ để tham khảo; vẫn ghi sổ riêng để kiểm chứng.</div>'+
         '<div class="table-scroll tall"><table class="screen-table"><thead><tr>'+
           '<th>Mã</th><th class="num">Giá</th><th class="num">%Δ phiên</th><th class="num">KL/TB20</th><th class="num">Target</th><th class="num">Cắt lỗ</th><th class="num">R:R</th><th>Ghi chú</th>'+
         '</tr></thead><tbody id="counterBody"></tbody></table></div>'+

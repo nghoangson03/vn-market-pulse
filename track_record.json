@@ -1,19 +1,24 @@
 {
-    "generatedAt":  "2026-10-07T09:00:28.1048200Z",
+    "generatedAt":  "2026-10-08T07:29:36.6346559Z",
     "startedTracking":  "2026-09-28",
     "overall":  {
                     "buy":  {
-                                "openCount":  18,
-                                "closedCount":  10,
+                                "openCount":  12,
+                                "closedCount":  7,
                                 "wins":  2,
-                                "losses":  7,
+                                "losses":  5,
                                 "expired":  0,
-                                "reversed":  1,
-                                "profitable":  3,
-                                "winRatePct":  30,
-                                "avgReturnPct":  -3.13,
+                                "reversed":  0,
+                                "profitable":  2,
+                                "winRatePct":  28.6,
+                                "avgReturnPct":  -3.41,
                                 "avgWinPct":  6.08,
-                                "avgLossPct":  -6.58
+                                "avgLossPct":  -7.2,
+                                "mtmCount":  19,
+                                "mtmAvgReturnPct":  0.74,
+                                "mtmProfitablePct":  57.9,
+                                "mtmBenchmarkPct":  -1.35,
+                                "mtmAlphaPct":  2.09
                             },
                     "sell":  {
                                  "openCount":  32,
@@ -26,20 +31,30 @@
                                  "winRatePct":  63.6,
                                  "avgReturnPct":  1.23,
                                  "avgWinPct":  7.32,
-                                 "avgLossPct":  null
+                                 "avgLossPct":  null,
+                                 "mtmCount":  43,
+                                 "mtmAvgReturnPct":  0.88,
+                                 "mtmProfitablePct":  55.8,
+                                 "mtmBenchmarkPct":  1.01,
+                                 "mtmAlphaPct":  -0.13
                              },
                     "buyCounterTrend":  {
-                                            "openCount":  17,
-                                            "closedCount":  21,
+                                            "openCount":  23,
+                                            "closedCount":  24,
                                             "wins":  0,
-                                            "losses":  20,
+                                            "losses":  22,
                                             "expired":  0,
-                                            "reversed":  1,
-                                            "profitable":  0,
-                                            "winRatePct":  0,
-                                            "avgReturnPct":  -5.33,
+                                            "reversed":  2,
+                                            "profitable":  1,
+                                            "winRatePct":  4.2,
+                                            "avgReturnPct":  -4.97,
                                             "avgWinPct":  null,
-                                            "avgLossPct":  -5.42
+                                            "avgLossPct":  -5.38,
+                                            "mtmCount":  47,
+                                            "mtmAvgReturnPct":  -2.23,
+                                            "mtmProfitablePct":  23.4,
+                                            "mtmBenchmarkPct":  -0.97,
+                                            "mtmAlphaPct":  -1.26
                                         },
                     "buyEarly":  {
                                      "openCount":  0,
@@ -52,7 +67,12 @@
                                      "winRatePct":  null,
                                      "avgReturnPct":  null,
                                      "avgWinPct":  null,
-                                     "avgLossPct":  null
+                                     "avgLossPct":  null,
+                                     "mtmCount":  0,
+                                     "mtmAvgReturnPct":  null,
+                                     "mtmProfitablePct":  null,
+                                     "mtmBenchmarkPct":  null,
+                                     "mtmAlphaPct":  null
                                  }
                 },
     "earlyWatch":  {
@@ -66,42 +86,54 @@
                         "direction":  "buy",
                         "closedCount":  7,
                         "winRatePct":  28.6,
-                        "avgReturnPct":  -3.41
+                        "avgReturnPct":  -3.41,
+                        "mtmCount":  19,
+                        "mtmAlphaPct":  2.09
                     },
                     {
                         "phase":  "accumulation_setup",
                         "direction":  "buy",
                         "closedCount":  23,
                         "winRatePct":  4.3,
-                        "avgReturnPct":  -4.9
+                        "avgReturnPct":  -4.9,
+                        "mtmCount":  42,
+                        "mtmAlphaPct":  -1.51
                     },
                     {
                         "phase":  "watch_range",
                         "direction":  "buy",
                         "closedCount":  1,
                         "winRatePct":  0,
-                        "avgReturnPct":  -6.71
+                        "avgReturnPct":  -6.71,
+                        "mtmCount":  5,
+                        "mtmAlphaPct":  0.88
                     },
                     {
                         "phase":  "markdown_confirmed",
                         "direction":  "sell",
                         "closedCount":  8,
                         "winRatePct":  62.5,
-                        "avgReturnPct":  1.58
+                        "avgReturnPct":  1.58,
+                        "mtmCount":  27,
+                        "mtmAlphaPct":  0.55
                     },
                     {
                         "phase":  "distribution_setup",
                         "direction":  "sell",
                         "closedCount":  1,
                         "winRatePct":  100,
-                        "avgReturnPct":  4.02
+                        "avgReturnPct":  4.02,
+                        "mtmCount":  10,
+                        "mtmAlphaPct":  -1.4
                     },
                     {
                         "phase":  "watch_top",
                         "direction":  "sell",
                         "closedCount":  2,
                         "winRatePct":  50,
-                        "avgReturnPct":  -1.6
+                        "avgReturnPct":  -1.6,
+                        "mtmCount":  6,
+                        "mtmAlphaPct":  -1.06
                     }
                 ],
     "byFactor":  {
@@ -111,35 +143,45 @@
                                                "direction":  "buy",
                                                "closedCount":  7,
                                                "winRatePct":  28.6,
-                                               "avgReturnPct":  -3.41
+                                               "avgReturnPct":  -3.41,
+                                               "mtmCount":  19,
+                                               "mtmAlphaPct":  2.09
                                            },
                                            {
                                                "value":  "buy_watch",
                                                "direction":  "buy",
                                                "closedCount":  20,
                                                "winRatePct":  5,
-                                               "avgReturnPct":  -5.19
+                                               "avgReturnPct":  -5.19,
+                                               "mtmCount":  38,
+                                               "mtmAlphaPct":  -1.15
                                            },
                                            {
                                                "value":  "sell_confirmed",
                                                "direction":  "sell",
                                                "closedCount":  8,
                                                "winRatePct":  62.5,
-                                               "avgReturnPct":  1.58
+                                               "avgReturnPct":  1.58,
+                                               "mtmCount":  27,
+                                               "mtmAlphaPct":  0.55
                                            },
                                            {
                                                "value":  "sell_watch",
                                                "direction":  "sell",
                                                "closedCount":  3,
                                                "winRatePct":  66.7,
-                                               "avgReturnPct":  0.27
+                                               "avgReturnPct":  0.27,
+                                               "mtmCount":  16,
+                                               "mtmAlphaPct":  -1.27
                                            },
                                            {
                                                "value":  "buy_counter_trend",
                                                "direction":  "buy",
                                                "closedCount":  4,
                                                "winRatePct":  0,
-                                               "avgReturnPct":  -3.89
+                                               "avgReturnPct":  -3.89,
+                                               "mtmCount":  9,
+                                               "mtmAlphaPct":  -1.71
                                            }
                                        ],
                      "stageAtEntry":  [
@@ -148,42 +190,54 @@
                                               "direction":  "buy",
                                               "closedCount":  6,
                                               "winRatePct":  33.3,
-                                              "avgReturnPct":  -2.74
+                                              "avgReturnPct":  -2.74,
+                                              "mtmCount":  14,
+                                              "mtmAlphaPct":  1.38
                                           },
                                           {
                                               "value":  "neutral",
                                               "direction":  "buy",
                                               "closedCount":  3,
                                               "winRatePct":  33.3,
-                                              "avgReturnPct":  -3.25
+                                              "avgReturnPct":  -3.25,
+                                              "mtmCount":  13,
+                                              "mtmAlphaPct":  2.16
                                           },
                                           {
                                               "value":  "stage4",
                                               "direction":  "buy",
                                               "closedCount":  22,
                                               "winRatePct":  0,
-                                              "avgReturnPct":  -5.32
+                                              "avgReturnPct":  -5.32,
+                                              "mtmCount":  39,
+                                              "mtmAlphaPct":  -1.72
                                           },
                                           {
                                               "value":  "stage4",
                                               "direction":  "sell",
                                               "closedCount":  7,
                                               "winRatePct":  71.4,
-                                              "avgReturnPct":  2.03
+                                              "avgReturnPct":  2.03,
+                                              "mtmCount":  28,
+                                              "mtmAlphaPct":  0.49
                                           },
                                           {
                                               "value":  "stage2",
                                               "direction":  "sell",
                                               "closedCount":  2,
                                               "winRatePct":  50,
-                                              "avgReturnPct":  1.24
+                                              "avgReturnPct":  1.24,
+                                              "mtmCount":  8,
+                                              "mtmAlphaPct":  -2.12
                                           },
                                           {
                                               "value":  "neutral",
                                               "direction":  "sell",
                                               "closedCount":  2,
                                               "winRatePct":  50,
-                                              "avgReturnPct":  -1.6
+                                              "avgReturnPct":  -1.6,
+                                              "mtmCount":  7,
+                                              "mtmAlphaPct":  -0.3
                                           }
                                       ],
                      "marketRegimeAtEntry":  [
@@ -192,28 +246,36 @@
                                                      "direction":  "buy",
                                                      "closedCount":  24,
                                                      "winRatePct":  8.3,
-                                                     "avgReturnPct":  -5.17
+                                                     "avgReturnPct":  -5.17,
+                                                     "mtmCount":  50,
+                                                     "mtmAlphaPct":  -0.25
                                                  },
                                                  {
                                                      "value":  "neutral",
                                                      "direction":  "sell",
                                                      "closedCount":  9,
                                                      "winRatePct":  66.7,
-                                                     "avgReturnPct":  0.54
+                                                     "avgReturnPct":  0.54,
+                                                     "mtmCount":  34,
+                                                     "mtmAlphaPct":  -0.3
                                                  },
                                                  {
                                                      "value":  "bearish",
                                                      "direction":  "buy",
                                                      "closedCount":  7,
                                                      "winRatePct":  14.3,
-                                                     "avgReturnPct":  -2.74
+                                                     "avgReturnPct":  -2.74,
+                                                     "mtmCount":  16,
+                                                     "mtmAlphaPct":  -0.43
                                                  },
                                                  {
                                                      "value":  "bearish",
                                                      "direction":  "sell",
                                                      "closedCount":  2,
                                                      "winRatePct":  50,
-                                                     "avgReturnPct":  4.33
+                                                     "avgReturnPct":  4.33,
+                                                     "mtmCount":  9,
+                                                     "mtmAlphaPct":  0.53
                                                  }
                                              ],
                      "sectorTierAtEntry":  [
@@ -222,35 +284,45 @@
                                                    "direction":  "buy",
                                                    "closedCount":  24,
                                                    "winRatePct":  8.3,
-                                                   "avgReturnPct":  -5.17
+                                                   "avgReturnPct":  -5.17,
+                                                   "mtmCount":  46,
+                                                   "mtmAlphaPct":  -0.28
                                                },
                                                {
                                                    "value":  null,
                                                    "direction":  "sell",
                                                    "closedCount":  8,
                                                    "winRatePct":  62.5,
-                                                   "avgReturnPct":  0.56
+                                                   "avgReturnPct":  0.56,
+                                                   "mtmCount":  32,
+                                                   "mtmAlphaPct":  -0.24
                                                },
                                                {
                                                    "value":  "yeu",
                                                    "direction":  "buy",
                                                    "closedCount":  6,
                                                    "winRatePct":  0,
-                                                   "avgReturnPct":  -4.25
+                                                   "avgReturnPct":  -4.25,
+                                                   "mtmCount":  14,
+                                                   "mtmAlphaPct":  -2.16
                                                },
                                                {
                                                    "value":  "yeu",
                                                    "direction":  "sell",
                                                    "closedCount":  3,
                                                    "winRatePct":  66.7,
-                                                   "avgReturnPct":  3
+                                                   "avgReturnPct":  3,
+                                                   "mtmCount":  8,
+                                                   "mtmAlphaPct":  1.65
                                                },
                                                {
                                                    "value":  "trung_binh",
                                                    "direction":  "buy",
                                                    "closedCount":  1,
                                                    "winRatePct":  100,
-                                                   "avgReturnPct":  6.32
+                                                   "avgReturnPct":  6.32,
+                                                   "mtmCount":  4,
+                                                   "mtmAlphaPct":  4.43
                                                }
                                            ]
                  },
@@ -759,7 +831,7 @@
                               "sector":  "Khác",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-10-02",
                               "entryDate":  "2026-10-07",
@@ -885,7 +957,7 @@
                               "sector":  "Khác",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-22",
                               "entryDate":  "2026-10-05",
@@ -957,7 +1029,7 @@
                               "sector":  "Chứng khoán",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-10-02",
                               "entryDate":  "2026-10-02",
@@ -1011,7 +1083,7 @@
                               "sector":  "Chứng khoán",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "watch_range",
                               "triggerDate":  "2026-09-10",
                               "entryDate":  "2026-10-01",
@@ -1119,7 +1191,7 @@
                               "sector":  "Nhựa - Bao bì",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-23",
                               "entryDate":  "2026-09-30",
@@ -1425,7 +1497,7 @@
                               "sector":  "Bán lẻ công nghệ",
                               "direction":  "buy",
                               "signalAtEntry":  "buy_watch",
-                              "counterTrend":  false,
+                              "counterTrend":  true,
                               "phase":  "accumulation_setup",
                               "triggerDate":  "2026-09-18",
                               "entryDate":  "2026-09-25",
