@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-10-15T09:00:35.0512545Z",
+    "generatedAt":  "2026-10-16T09:00:27.1975139Z",
     "startedTracking":  "2026-09-28",
     "overall":  {
                     "buy":  {
@@ -15,46 +15,46 @@
                                 "avgWinPct":  8.66,
                                 "avgLossPct":  -6.6,
                                 "mtmCount":  20,
-                                "mtmAvgReturnPct":  -0.5,
-                                "mtmProfitablePct":  45,
-                                "mtmBenchmarkPct":  -2.92,
-                                "mtmAlphaPct":  2.42
+                                "mtmAvgReturnPct":  -0.39,
+                                "mtmProfitablePct":  40,
+                                "mtmBenchmarkPct":  -2.77,
+                                "mtmAlphaPct":  2.38
                             },
                     "sell":  {
                                  "openCount":  36,
-                                 "closedCount":  21,
+                                 "closedCount":  23,
                                  "wins":  5,
-                                 "losses":  6,
+                                 "losses":  8,
                                  "expired":  0,
                                  "reversed":  10,
                                  "profitable":  10,
-                                 "winRatePct":  47.6,
-                                 "avgReturnPct":  0.57,
+                                 "winRatePct":  43.5,
+                                 "avgReturnPct":  -0.07,
                                  "avgWinPct":  10.21,
-                                 "avgLossPct":  -5.99,
-                                 "mtmCount":  57,
-                                 "mtmAvgReturnPct":  1.25,
-                                 "mtmProfitablePct":  52.6,
-                                 "mtmBenchmarkPct":  2.42,
-                                 "mtmAlphaPct":  -1.17
+                                 "avgLossPct":  -6.2,
+                                 "mtmCount":  59,
+                                 "mtmAvgReturnPct":  0.8,
+                                 "mtmProfitablePct":  50.8,
+                                 "mtmBenchmarkPct":  2.07,
+                                 "mtmAlphaPct":  -1.27
                              },
                     "buyCounterTrend":  {
-                                            "openCount":  21,
-                                            "closedCount":  36,
+                                            "openCount":  23,
+                                            "closedCount":  37,
                                             "wins":  0,
                                             "losses":  29,
                                             "expired":  0,
-                                            "reversed":  7,
+                                            "reversed":  8,
                                             "profitable":  3,
-                                            "winRatePct":  8.3,
-                                            "avgReturnPct":  -4.42,
+                                            "winRatePct":  8.1,
+                                            "avgReturnPct":  -4.35,
                                             "avgWinPct":  null,
                                             "avgLossPct":  -5.48,
-                                            "mtmCount":  57,
-                                            "mtmAvgReturnPct":  -2.4,
-                                            "mtmProfitablePct":  22.8,
-                                            "mtmBenchmarkPct":  -1.98,
-                                            "mtmAlphaPct":  -0.42
+                                            "mtmCount":  60,
+                                            "mtmAvgReturnPct":  -2.3,
+                                            "mtmProfitablePct":  23.3,
+                                            "mtmBenchmarkPct":  -1.73,
+                                            "mtmAlphaPct":  -0.57
                                         },
                     "buyEarly":  {
                                      "openCount":  0,
@@ -88,16 +88,16 @@
                         "winRatePct":  30.8,
                         "avgReturnPct":  -1.9,
                         "mtmCount":  20,
-                        "mtmAlphaPct":  2.42
+                        "mtmAlphaPct":  2.38
                     },
                     {
                         "phase":  "accumulation_setup",
                         "direction":  "buy",
-                        "closedCount":  33,
-                        "winRatePct":  9.1,
-                        "avgReturnPct":  -4.2,
-                        "mtmCount":  49,
-                        "mtmAlphaPct":  -0.64
+                        "closedCount":  34,
+                        "winRatePct":  8.8,
+                        "avgReturnPct":  -4.13,
+                        "mtmCount":  50,
+                        "mtmAlphaPct":  -0.83
                     },
                     {
                         "phase":  "watch_range",
@@ -105,17 +105,17 @@
                         "closedCount":  3,
                         "winRatePct":  0,
                         "avgReturnPct":  -6.88,
-                        "mtmCount":  8,
-                        "mtmAlphaPct":  1
+                        "mtmCount":  10,
+                        "mtmAlphaPct":  0.74
                     },
                     {
                         "phase":  "markdown_confirmed",
                         "direction":  "sell",
-                        "closedCount":  13,
-                        "winRatePct":  53.8,
-                        "avgReturnPct":  0.36,
-                        "mtmCount":  35,
-                        "mtmAlphaPct":  -1.55
+                        "closedCount":  15,
+                        "winRatePct":  46.7,
+                        "avgReturnPct":  -0.6,
+                        "mtmCount":  36,
+                        "mtmAlphaPct":  -1.53
                     },
                     {
                         "phase":  "distribution_setup",
@@ -124,7 +124,7 @@
                         "winRatePct":  33.3,
                         "avgReturnPct":  1.77,
                         "mtmCount":  15,
-                        "mtmAlphaPct":  -0.34
+                        "mtmAlphaPct":  -0.36
                     },
                     {
                         "phase":  "watch_top",
@@ -132,8 +132,8 @@
                         "closedCount":  2,
                         "winRatePct":  50,
                         "avgReturnPct":  -1.6,
-                        "mtmCount":  7,
-                        "mtmAlphaPct":  -1.09
+                        "mtmCount":  8,
+                        "mtmAlphaPct":  -1.76
                     }
                 ],
     "byFactor":  {
@@ -145,7 +145,7 @@
                                                "winRatePct":  30.8,
                                                "avgReturnPct":  -1.9,
                                                "mtmCount":  20,
-                                               "mtmAlphaPct":  2.42
+                                               "mtmAlphaPct":  2.38
                                            },
                                            {
                                                "value":  "buy_watch",
@@ -154,16 +154,16 @@
                                                "winRatePct":  10,
                                                "avgReturnPct":  -4.77,
                                                "mtmCount":  38,
-                                               "mtmAlphaPct":  -1.14
+                                               "mtmAlphaPct":  -1.24
                                            },
                                            {
                                                "value":  "sell_confirmed",
                                                "direction":  "sell",
-                                               "closedCount":  13,
-                                               "winRatePct":  53.8,
-                                               "avgReturnPct":  0.36,
-                                               "mtmCount":  35,
-                                               "mtmAlphaPct":  -1.55
+                                               "closedCount":  15,
+                                               "winRatePct":  46.7,
+                                               "avgReturnPct":  -0.6,
+                                               "mtmCount":  36,
+                                               "mtmAlphaPct":  -1.53
                                            },
                                            {
                                                "value":  "sell_watch",
@@ -171,17 +171,17 @@
                                                "closedCount":  8,
                                                "winRatePct":  37.5,
                                                "avgReturnPct":  0.92,
-                                               "mtmCount":  22,
-                                               "mtmAlphaPct":  -0.58
+                                               "mtmCount":  23,
+                                               "mtmAlphaPct":  -0.84
                                            },
                                            {
                                                "value":  "buy_counter_trend",
                                                "direction":  "buy",
-                                               "closedCount":  6,
+                                               "closedCount":  7,
                                                "winRatePct":  0,
-                                               "avgReturnPct":  -2.67,
-                                               "mtmCount":  19,
-                                               "mtmAlphaPct":  1.05
+                                               "avgReturnPct":  -2.55,
+                                               "mtmCount":  22,
+                                               "mtmAlphaPct":  0.59
                                            }
                                        ],
                      "stageAtEntry":  [
@@ -192,16 +192,16 @@
                                               "winRatePct":  33.3,
                                               "avgReturnPct":  -2.42,
                                               "mtmCount":  14,
-                                              "mtmAlphaPct":  2.9
+                                              "mtmAlphaPct":  2.78
                                           },
                                           {
                                               "value":  "neutral",
                                               "direction":  "buy",
-                                              "closedCount":  9,
-                                              "winRatePct":  33.3,
-                                              "avgReturnPct":  -1.71,
+                                              "closedCount":  10,
+                                              "winRatePct":  30,
+                                              "avgReturnPct":  -1.72,
                                               "mtmCount":  15,
-                                              "mtmAlphaPct":  1.66
+                                              "mtmAlphaPct":  1.38
                                           },
                                           {
                                               "value":  "stage4",
@@ -209,17 +209,17 @@
                                               "closedCount":  31,
                                               "winRatePct":  3.2,
                                               "avgReturnPct":  -4.73,
-                                              "mtmCount":  48,
-                                              "mtmAlphaPct":  -0.86
+                                              "mtmCount":  51,
+                                              "mtmAlphaPct":  -0.91
                                           },
                                           {
                                               "value":  "stage4",
                                               "direction":  "sell",
-                                              "closedCount":  12,
-                                              "winRatePct":  50,
-                                              "avgReturnPct":  -0.71,
-                                              "mtmCount":  37,
-                                              "mtmAlphaPct":  -1.96
+                                              "closedCount":  14,
+                                              "winRatePct":  42.9,
+                                              "avgReturnPct":  -1.58,
+                                              "mtmCount":  38,
+                                              "mtmAlphaPct":  -2.05
                                           },
                                           {
                                               "value":  "stage2",
@@ -228,7 +228,7 @@
                                               "winRatePct":  40,
                                               "avgReturnPct":  3.43,
                                               "mtmCount":  10,
-                                              "mtmAlphaPct":  0.48
+                                              "mtmAlphaPct":  -0.12
                                           },
                                           {
                                               "value":  "neutral",
@@ -236,27 +236,27 @@
                                               "closedCount":  4,
                                               "winRatePct":  50,
                                               "avgReturnPct":  0.84,
-                                              "mtmCount":  10,
-                                              "mtmAlphaPct":  0.09
+                                              "mtmCount":  11,
+                                              "mtmAlphaPct":  0.4
                                           }
                                       ],
                      "marketRegimeAtEntry":  [
                                                  {
                                                      "value":  "neutral",
                                                      "direction":  "buy",
-                                                     "closedCount":  38,
-                                                     "winRatePct":  10.5,
-                                                     "avgReturnPct":  -4.63,
-                                                     "mtmCount":  61,
-                                                     "mtmAlphaPct":  0.04
+                                                     "closedCount":  39,
+                                                     "winRatePct":  10.3,
+                                                     "avgReturnPct":  -4.56,
+                                                     "mtmCount":  64,
+                                                     "mtmAlphaPct":  -0.08
                                                  },
                                                  {
                                                      "value":  "neutral",
                                                      "direction":  "sell",
-                                                     "closedCount":  17,
-                                                     "winRatePct":  52.9,
-                                                     "avgReturnPct":  0.95,
-                                                     "mtmCount":  48,
+                                                     "closedCount":  19,
+                                                     "winRatePct":  47.4,
+                                                     "avgReturnPct":  0.13,
+                                                     "mtmCount":  50,
                                                      "mtmAlphaPct":  -1.02
                                                  },
                                                  {
@@ -266,7 +266,7 @@
                                                      "winRatePct":  27.3,
                                                      "avgReturnPct":  -0.73,
                                                      "mtmCount":  16,
-                                                     "mtmAlphaPct":  1.39
+                                                     "mtmAlphaPct":  1.16
                                                  },
                                                  {
                                                      "value":  "bearish",
@@ -275,7 +275,7 @@
                                                      "winRatePct":  25,
                                                      "avgReturnPct":  -1.03,
                                                      "mtmCount":  9,
-                                                     "mtmAlphaPct":  -1.94
+                                                     "mtmAlphaPct":  -2.7
                                                  }
                                              ],
                      "sectorTierAtEntry":  [
@@ -286,16 +286,16 @@
                                                    "winRatePct":  11.4,
                                                    "avgReturnPct":  -4.68,
                                                    "mtmCount":  47,
-                                                   "mtmAlphaPct":  -0.4
+                                                   "mtmAlphaPct":  -0.44
                                                },
                                                {
                                                    "value":  null,
                                                    "direction":  "sell",
-                                                   "closedCount":  13,
-                                                   "winRatePct":  53.8,
-                                                   "avgReturnPct":  1.6,
+                                                   "closedCount":  14,
+                                                   "winRatePct":  50,
+                                                   "avgReturnPct":  0.93,
                                                    "mtmCount":  32,
-                                                   "mtmAlphaPct":  -1.4
+                                                   "mtmAlphaPct":  -1.39
                                                },
                                                {
                                                    "value":  "manh",
@@ -304,25 +304,25 @@
                                                    "winRatePct":  0,
                                                    "avgReturnPct":  -5.7,
                                                    "mtmCount":  2,
-                                                   "mtmAlphaPct":  5.25
+                                                   "mtmAlphaPct":  4.49
                                                },
                                                {
                                                    "value":  "yeu",
                                                    "direction":  "buy",
-                                                   "closedCount":  11,
-                                                   "winRatePct":  9.1,
-                                                   "avgReturnPct":  -3.27,
-                                                   "mtmCount":  22,
-                                                   "mtmAlphaPct":  0.09
+                                                   "closedCount":  12,
+                                                   "winRatePct":  8.3,
+                                                   "avgReturnPct":  -3.15,
+                                                   "mtmCount":  25,
+                                                   "mtmAlphaPct":  -0.21
                                                },
                                                {
                                                    "value":  "yeu",
                                                    "direction":  "sell",
-                                                   "closedCount":  7,
-                                                   "winRatePct":  42.9,
-                                                   "avgReturnPct":  -0.38,
-                                                   "mtmCount":  20,
-                                                   "mtmAlphaPct":  -0.67
+                                                   "closedCount":  8,
+                                                   "winRatePct":  37.5,
+                                                   "avgReturnPct":  -1.07,
+                                                   "mtmCount":  21,
+                                                   "mtmAlphaPct":  -0.73
                                                },
                                                {
                                                    "value":  "trung_binh",
@@ -331,7 +331,7 @@
                                                    "winRatePct":  100,
                                                    "avgReturnPct":  10.7,
                                                    "mtmCount":  6,
-                                                   "mtmAlphaPct":  5.16
+                                                   "mtmAlphaPct":  5.02
                                                },
                                                {
                                                    "value":  "trung_binh",
@@ -339,34 +339,114 @@
                                                    "closedCount":  1,
                                                    "winRatePct":  0,
                                                    "avgReturnPct":  -6.12,
-                                                   "mtmCount":  1,
-                                                   "mtmAlphaPct":  -6.71
+                                                   "mtmCount":  2,
+                                                   "mtmAlphaPct":  -3.36
                                                }
                                            ]
                  },
     "recentClosed":  [
                          {
-                             "id":  "VRE_2026-09-04_watch_range",
-                             "symbol":  "VRE",
-                             "name":  "Vincom Retail",
-                             "sector":  "BĐS",
-                             "direction":  "buy",
-                             "signalAtEntry":  "buy_watch",
-                             "phase":  "watch_range",
-                             "triggerDate":  "2026-09-04",
-                             "entryDate":  "2026-09-25",
-                             "entryPrice":  24.5,
-                             "badLevel":  22.31,
-                             "goodLevel":  31,
-                             "scoreAtEntry":  25,
+                             "id":  "CTS_2026-10-09_markdown_confirmed",
+                             "symbol":  "CTS",
+                             "name":  "Chứng Khoán VietinBank",
+                             "sector":  "Chứng khoán",
+                             "direction":  "sell",
+                             "signalAtEntry":  "sell_confirmed",
+                             "phase":  "markdown_confirmed",
+                             "triggerDate":  "2026-10-09",
+                             "entryDate":  "2026-10-12",
+                             "entryPrice":  19.5,
+                             "badLevel":  20.65,
+                             "goodLevel":  16.10,
+                             "scoreAtEntry":  100,
                              "marketRegimeAtEntry":  "neutral",
                              "stageAtEntry":  "stage4",
-                             "rsAtEntry":  -2.43,
+                             "rsAtEntry":  -5.33,
+                             "rawScoreAtEntry":  95,
+                             "volRatioAtEntry":  0.61,
+                             "supportAtEntry":  20.05,
+                             "resistanceAtEntry":  24,
+                             "rewardPctAtEntry":  17.4,
+                             "riskRewardAtEntry":  null,
+                             "extensionPctAtEntry":  null,
+                             "chaseWarningAtEntry":  false,
+                             "sessionsSinceTrigger":  1,
+                             "sectorTierAtEntry":  "yeu",
+                             "sectorScoreAtEntry":  -49.3,
+                             "sectorAvgRsAtEntry":  -4.34,
+                             "breadthStage2Pct":  18.3,
+                             "breadthStage4Pct":  66.7,
+                             "vnCloseAtEntry":  1720.98,
+                             "vnMa50AtEntry":  1780.14,
                              "status":  "hit_stop",
-                             "resolvedDate":  "2026-10-15",
-                             "resolvedPrice":  22.31,
-                             "actualReturnPct":  -8.94,
-                             "sessionsToResolve":  14
+                             "resolvedDate":  "2026-10-16",
+                             "resolvedPrice":  20.65,
+                             "actualReturnPct":  -5.90,
+                             "sessionsToResolve":  4
+                         },
+                         {
+                             "id":  "VCG_2026-09-14_markdown_confirmed",
+                             "symbol":  "VCG",
+                             "name":  "XNK \u0026 Xây dựng VN",
+                             "sector":  "Đầu tư công",
+                             "direction":  "sell",
+                             "signalAtEntry":  "sell_confirmed",
+                             "phase":  "markdown_confirmed",
+                             "triggerDate":  "2026-09-14",
+                             "entryDate":  "2026-09-25",
+                             "entryPrice":  14.05,
+                             "badLevel":  15.14,
+                             "goodLevel":  12.05,
+                             "scoreAtEntry":  100,
+                             "marketRegimeAtEntry":  "neutral",
+                             "stageAtEntry":  "stage4",
+                             "rsAtEntry":  -12.65,
+                             "status":  "hit_stop",
+                             "resolvedDate":  "2026-10-16",
+                             "resolvedPrice":  15.14,
+                             "actualReturnPct":  -7.76,
+                             "sessionsToResolve":  15
+                         },
+                         {
+                             "id":  "VIC_2026-10-05_accumulation_setup",
+                             "symbol":  "VIC",
+                             "name":  "Tập đoàn VINGROUP",
+                             "sector":  "BĐS",
+                             "direction":  "buy",
+                             "signalAtEntry":  "buy_counter_trend",
+                             "phase":  "accumulation_setup",
+                             "triggerDate":  "2026-10-05",
+                             "entryDate":  "2026-10-12",
+                             "entryPrice":  219,
+                             "badLevel":  208.05,
+                             "goodLevel":  304,
+                             "scoreAtEntry":  52,
+                             "marketRegimeAtEntry":  "neutral",
+                             "stageAtEntry":  "neutral",
+                             "rsAtEntry":  -5.52,
+                             "rawScoreAtEntry":  60,
+                             "volRatioAtEntry":  0.77,
+                             "supportAtEntry":  226,
+                             "resistanceAtEntry":  265,
+                             "rewardPctAtEntry":  38.8,
+                             "riskRewardAtEntry":  7.8,
+                             "extensionPctAtEntry":  null,
+                             "chaseWarningAtEntry":  false,
+                             "sessionsSinceTrigger":  5,
+                             "sectorTierAtEntry":  "yeu",
+                             "sectorScoreAtEntry":  -50.5,
+                             "sectorAvgRsAtEntry":  -4,
+                             "breadthStage2Pct":  18.3,
+                             "breadthStage4Pct":  66.7,
+                             "vnCloseAtEntry":  1720.98,
+                             "vnMa50AtEntry":  1780.14,
+                             "status":  "reversed",
+                             "resolvedDate":  "2026-10-16",
+                             "resolvedPrice":  215,
+                             "actualReturnPct":  -1.83,
+                             "sessionsToResolve":  4,
+                             "reversedOn":  "2026-10-16",
+                             "reversedPrice":  215
                          },
                          {
                              "id":  "GAS_2026-09-15_markup_confirmed",
@@ -431,6 +511,29 @@
                              "sessionsToResolve":  6,
                              "reversedOn":  "2026-10-15",
                              "reversedPrice":  79.3
+                         },
+                         {
+                             "id":  "VRE_2026-09-04_watch_range",
+                             "symbol":  "VRE",
+                             "name":  "Vincom Retail",
+                             "sector":  "BĐS",
+                             "direction":  "buy",
+                             "signalAtEntry":  "buy_watch",
+                             "phase":  "watch_range",
+                             "triggerDate":  "2026-09-04",
+                             "entryDate":  "2026-09-25",
+                             "entryPrice":  24.5,
+                             "badLevel":  22.31,
+                             "goodLevel":  31,
+                             "scoreAtEntry":  25,
+                             "marketRegimeAtEntry":  "neutral",
+                             "stageAtEntry":  "stage4",
+                             "rsAtEntry":  -2.43,
+                             "status":  "hit_stop",
+                             "resolvedDate":  "2026-10-15",
+                             "resolvedPrice":  22.31,
+                             "actualReturnPct":  -8.94,
+                             "sessionsToResolve":  14
                          },
                          {
                              "id":  "CII_2026-09-28_markdown_confirmed",
@@ -511,45 +614,6 @@
                              "sessionsToResolve":  5
                          },
                          {
-                             "id":  "KDH_2026-09-28_markdown_confirmed",
-                             "symbol":  "KDH",
-                             "name":  "Nhà Khang Điền",
-                             "sector":  "BĐS",
-                             "direction":  "sell",
-                             "signalAtEntry":  "sell_confirmed",
-                             "phase":  "markdown_confirmed",
-                             "triggerDate":  "2026-09-28",
-                             "entryDate":  "2026-10-12",
-                             "entryPrice":  13.7,
-                             "badLevel":  16.69,
-                             "goodLevel":  13.3,
-                             "scoreAtEntry":  100,
-                             "marketRegimeAtEntry":  "neutral",
-                             "stageAtEntry":  "stage4",
-                             "rsAtEntry":  -8.98,
-                             "rawScoreAtEntry":  90,
-                             "volRatioAtEntry":  0.69,
-                             "supportAtEntry":  16.2,
-                             "resistanceAtEntry":  19.1,
-                             "rewardPctAtEntry":  2.9,
-                             "riskRewardAtEntry":  null,
-                             "extensionPctAtEntry":  null,
-                             "chaseWarningAtEntry":  false,
-                             "sessionsSinceTrigger":  10,
-                             "sectorTierAtEntry":  "yeu",
-                             "sectorScoreAtEntry":  -50.5,
-                             "sectorAvgRsAtEntry":  -4,
-                             "breadthStage2Pct":  18.3,
-                             "breadthStage4Pct":  66.7,
-                             "vnCloseAtEntry":  1720.98,
-                             "vnMa50AtEntry":  1780.14,
-                             "status":  "hit_target",
-                             "resolvedDate":  "2026-10-14",
-                             "resolvedPrice":  13.3,
-                             "actualReturnPct":  2.92,
-                             "sessionsToResolve":  2
-                         },
-                         {
                              "id":  "VCI_2026-09-28_accumulation_setup",
                              "symbol":  "VCI",
                              "name":  "Chứng khoán Vietcap",
@@ -614,6 +678,45 @@
                              "sessionsToResolve":  13
                          },
                          {
+                             "id":  "KDH_2026-09-28_markdown_confirmed",
+                             "symbol":  "KDH",
+                             "name":  "Nhà Khang Điền",
+                             "sector":  "BĐS",
+                             "direction":  "sell",
+                             "signalAtEntry":  "sell_confirmed",
+                             "phase":  "markdown_confirmed",
+                             "triggerDate":  "2026-09-28",
+                             "entryDate":  "2026-10-12",
+                             "entryPrice":  13.7,
+                             "badLevel":  16.69,
+                             "goodLevel":  13.3,
+                             "scoreAtEntry":  100,
+                             "marketRegimeAtEntry":  "neutral",
+                             "stageAtEntry":  "stage4",
+                             "rsAtEntry":  -8.98,
+                             "rawScoreAtEntry":  90,
+                             "volRatioAtEntry":  0.69,
+                             "supportAtEntry":  16.2,
+                             "resistanceAtEntry":  19.1,
+                             "rewardPctAtEntry":  2.9,
+                             "riskRewardAtEntry":  null,
+                             "extensionPctAtEntry":  null,
+                             "chaseWarningAtEntry":  false,
+                             "sessionsSinceTrigger":  10,
+                             "sectorTierAtEntry":  "yeu",
+                             "sectorScoreAtEntry":  -50.5,
+                             "sectorAvgRsAtEntry":  -4,
+                             "breadthStage2Pct":  18.3,
+                             "breadthStage4Pct":  66.7,
+                             "vnCloseAtEntry":  1720.98,
+                             "vnMa50AtEntry":  1780.14,
+                             "status":  "hit_target",
+                             "resolvedDate":  "2026-10-14",
+                             "resolvedPrice":  13.3,
+                             "actualReturnPct":  2.92,
+                             "sessionsToResolve":  2
+                         },
+                         {
                              "id":  "LPB_2026-09-29_markdown_confirmed",
                              "symbol":  "LPB",
                              "name":  "Ngân hàng Lộc Phát",
@@ -635,6 +738,52 @@
                              "resolvedPrice":  39.8,
                              "actualReturnPct":  8.51,
                              "sessionsToResolve":  10
+                         },
+                         {
+                             "id":  "HAH_2026-09-25_markup_confirmed",
+                             "symbol":  "HAH",
+                             "name":  "Vận tải Hải An",
+                             "sector":  "Vận tải biển - Logistics",
+                             "direction":  "buy",
+                             "signalAtEntry":  "buy_confirmed",
+                             "phase":  "markup_confirmed",
+                             "triggerDate":  "2026-09-25",
+                             "entryDate":  "2026-09-25",
+                             "entryPrice":  51.7,
+                             "badLevel":  49.12,
+                             "goodLevel":  59.35,
+                             "scoreAtEntry":  98,
+                             "marketRegimeAtEntry":  "neutral",
+                             "stageAtEntry":  "neutral",
+                             "rsAtEntry":  8.97,
+                             "status":  "hit_stop",
+                             "resolvedDate":  "2026-10-12",
+                             "resolvedPrice":  49.12,
+                             "actualReturnPct":  -4.99,
+                             "sessionsToResolve":  11
+                         },
+                         {
+                             "id":  "DHC_2026-09-23_markup_confirmed",
+                             "symbol":  "DHC",
+                             "name":  "Đông Hải Bến Tre",
+                             "sector":  "Nhựa - Bao bì",
+                             "direction":  "buy",
+                             "signalAtEntry":  "buy_confirmed",
+                             "phase":  "markup_confirmed",
+                             "triggerDate":  "2026-09-23",
+                             "entryDate":  "2026-09-25",
+                             "entryPrice":  39,
+                             "badLevel":  35.99,
+                             "goodLevel":  41.75,
+                             "scoreAtEntry":  100,
+                             "marketRegimeAtEntry":  "neutral",
+                             "stageAtEntry":  "stage2",
+                             "rsAtEntry":  9.14,
+                             "status":  "hit_stop",
+                             "resolvedDate":  "2026-10-12",
+                             "resolvedPrice":  35.99,
+                             "actualReturnPct":  -7.72,
+                             "sessionsToResolve":  11
                          },
                          {
                              "id":  "NT2_2026-10-09_distribution_setup",
@@ -676,159 +825,99 @@
                              "sessionsToResolve":  1,
                              "reversedOn":  "2026-10-12",
                              "reversedPrice":  23.3
-                         },
-                         {
-                             "id":  "DHC_2026-09-23_markup_confirmed",
-                             "symbol":  "DHC",
-                             "name":  "Đông Hải Bến Tre",
-                             "sector":  "Nhựa - Bao bì",
-                             "direction":  "buy",
-                             "signalAtEntry":  "buy_confirmed",
-                             "phase":  "markup_confirmed",
-                             "triggerDate":  "2026-09-23",
-                             "entryDate":  "2026-09-25",
-                             "entryPrice":  39,
-                             "badLevel":  35.99,
-                             "goodLevel":  41.75,
-                             "scoreAtEntry":  100,
-                             "marketRegimeAtEntry":  "neutral",
-                             "stageAtEntry":  "stage2",
-                             "rsAtEntry":  9.14,
-                             "status":  "hit_stop",
-                             "resolvedDate":  "2026-10-12",
-                             "resolvedPrice":  35.99,
-                             "actualReturnPct":  -7.72,
-                             "sessionsToResolve":  11
-                         },
-                         {
-                             "id":  "HAH_2026-09-25_markup_confirmed",
-                             "symbol":  "HAH",
-                             "name":  "Vận tải Hải An",
-                             "sector":  "Vận tải biển - Logistics",
-                             "direction":  "buy",
-                             "signalAtEntry":  "buy_confirmed",
-                             "phase":  "markup_confirmed",
-                             "triggerDate":  "2026-09-25",
-                             "entryDate":  "2026-09-25",
-                             "entryPrice":  51.7,
-                             "badLevel":  49.12,
-                             "goodLevel":  59.35,
-                             "scoreAtEntry":  98,
-                             "marketRegimeAtEntry":  "neutral",
-                             "stageAtEntry":  "neutral",
-                             "rsAtEntry":  8.97,
-                             "status":  "hit_stop",
-                             "resolvedDate":  "2026-10-12",
-                             "resolvedPrice":  49.12,
-                             "actualReturnPct":  -4.99,
-                             "sessionsToResolve":  11
-                         },
-                         {
-                             "id":  "TCH_2026-09-25_accumulation_setup",
-                             "symbol":  "TCH",
-                             "name":  "T.chính Hoàng Huy",
-                             "sector":  "BĐS",
-                             "direction":  "buy",
-                             "signalAtEntry":  "buy_counter_trend",
-                             "phase":  "accumulation_setup",
-                             "triggerDate":  "2026-09-25",
-                             "entryDate":  "2026-10-07",
-                             "entryPrice":  10.85,
-                             "badLevel":  10.31,
-                             "goodLevel":  13.98,
-                             "scoreAtEntry":  32,
-                             "marketRegimeAtEntry":  "neutral",
-                             "stageAtEntry":  "stage4",
-                             "rsAtEntry":  -7.03,
-                             "rawScoreAtEntry":  55,
-                             "volRatioAtEntry":  0.7,
-                             "supportAtEntry":  11.2,
-                             "resistanceAtEntry":  12.59,
-                             "rewardPctAtEntry":  28.8,
-                             "riskRewardAtEntry":  5.8,
-                             "extensionPctAtEntry":  null,
-                             "chaseWarningAtEntry":  false,
-                             "sessionsSinceTrigger":  8,
-                             "sectorTierAtEntry":  "yeu",
-                             "sectorScoreAtEntry":  -44.6,
-                             "sectorAvgRsAtEntry":  -6.64,
-                             "breadthStage2Pct":  21.7,
-                             "breadthStage4Pct":  65.8,
-                             "vnCloseAtEntry":  1753.39,
-                             "vnMa50AtEntry":  1777.33,
-                             "status":  "hit_stop",
-                             "resolvedDate":  "2026-10-12",
-                             "resolvedPrice":  10.8,
-                             "actualReturnPct":  -0.46,
-                             "sessionsToResolve":  3,
-                             "exitRule":  "stop_breached_in_lock"
-                         },
-                         {
-                             "id":  "VHM_2026-09-25_accumulation_setup",
-                             "symbol":  "VHM",
-                             "name":  "VINHOMES",
-                             "sector":  "BĐS",
-                             "direction":  "buy",
-                             "signalAtEntry":  "buy_watch",
-                             "phase":  "accumulation_setup",
-                             "triggerDate":  "2026-09-25",
-                             "entryDate":  "2026-09-25",
-                             "entryPrice":  69.1,
-                             "badLevel":  64.6,
-                             "goodLevel":  87.4,
-                             "scoreAtEntry":  36,
-                             "marketRegimeAtEntry":  "neutral",
-                             "stageAtEntry":  "stage4",
-                             "rsAtEntry":  -5.76,
-                             "status":  "hit_stop",
-                             "resolvedDate":  "2026-10-09",
-                             "resolvedPrice":  64.6,
-                             "actualReturnPct":  -6.51,
-                             "sessionsToResolve":  10,
-                             "reversedOn":  "2026-10-09",
-                             "reversedPrice":  66
-                         },
-                         {
-                             "id":  "DIG_2026-09-28_markdown_confirmed",
-                             "symbol":  "DIG",
-                             "name":  "TCT ĐTPT Xây dựng",
-                             "sector":  "BĐS",
-                             "direction":  "sell",
-                             "signalAtEntry":  "sell_confirmed",
-                             "phase":  "markdown_confirmed",
-                             "triggerDate":  "2026-09-28",
-                             "entryDate":  "2026-10-05",
-                             "entryPrice":  9.02,
-                             "badLevel":  9.62,
-                             "goodLevel":  7.74,
-                             "scoreAtEntry":  100,
-                             "marketRegimeAtEntry":  "bearish",
-                             "stageAtEntry":  "stage4",
-                             "rsAtEntry":  -10.09,
-                             "rawScoreAtEntry":  95,
-                             "volRatioAtEntry":  0.87,
-                             "supportAtEntry":  9.34,
-                             "resistanceAtEntry":  10.94,
-                             "rewardPctAtEntry":  14.2,
-                             "riskRewardAtEntry":  null,
-                             "extensionPctAtEntry":  null,
-                             "chaseWarningAtEntry":  false,
-                             "sessionsSinceTrigger":  5,
-                             "sectorTierAtEntry":  "yeu",
-                             "sectorScoreAtEntry":  -53.3,
-                             "sectorAvgRsAtEntry":  -8.55,
-                             "breadthStage2Pct":  21.7,
-                             "breadthStage4Pct":  66.7,
-                             "vnCloseAtEntry":  1753.2,
-                             "vnMa50AtEntry":  1774.79,
-                             "status":  "hit_stop",
-                             "resolvedDate":  "2026-10-09",
-                             "resolvedPrice":  9.62,
-                             "actualReturnPct":  -6.65,
-                             "sessionsToResolve":  4
                          }
                      ],
     "openPositions":  [
+                          {
+                              "symbol":  "NKG",
+                              "name":  "Thép Nam Kim",
+                              "sector":  "Thép",
+                              "direction":  "buy",
+                              "signalAtEntry":  "buy_counter_trend",
+                              "counterTrend":  true,
+                              "phase":  "watch_range",
+                              "triggerDate":  "2026-09-25",
+                              "entryDate":  "2026-10-16",
+                              "entryPrice":  10.4,
+                              "badLevel":  9.34,
+                              "goodLevel":  13.17,
+                              "latestPrice":  10.4,
+                              "unrealizedPct":  0,
+                              "pctToBad":  10.19,
+                              "pctToGood":  26.63
+                          },
+                          {
+                              "symbol":  "DXG",
+                              "name":  "CTCP Bluemarq Group",
+                              "sector":  "BĐS",
+                              "direction":  "buy",
+                              "signalAtEntry":  "buy_counter_trend",
+                              "counterTrend":  true,
+                              "phase":  "accumulation_setup",
+                              "triggerDate":  "2026-10-16",
+                              "entryDate":  "2026-10-16",
+                              "entryPrice":  10.15,
+                              "badLevel":  9.64,
+                              "goodLevel":  13.85,
+                              "latestPrice":  10.15,
+                              "unrealizedPct":  0,
+                              "pctToBad":  5.02,
+                              "pctToGood":  36.45
+                          },
+                          {
+                              "symbol":  "BCM",
+                              "name":  "Tập đoàn Đầu tư và Phát triển Công nghiệp Becamex",
+                              "sector":  "BĐS KCN",
+                              "direction":  "buy",
+                              "signalAtEntry":  "buy_counter_trend",
+                              "counterTrend":  true,
+                              "phase":  "watch_range",
+                              "triggerDate":  "2026-09-25",
+                              "entryDate":  "2026-10-16",
+                              "entryPrice":  38.55,
+                              "badLevel":  36.62,
+                              "goodLevel":  52.4,
+                              "latestPrice":  38.55,
+                              "unrealizedPct":  0,
+                              "pctToBad":  5.01,
+                              "pctToGood":  35.93
+                          },
+                          {
+                              "symbol":  "BMP",
+                              "name":  "Nhựa Bình Minh",
+                              "sector":  "Nhựa - Bao bì",
+                              "direction":  "sell",
+                              "signalAtEntry":  "sell_watch",
+                              "counterTrend":  false,
+                              "phase":  "watch_top",
+                              "triggerDate":  "2026-09-25",
+                              "entryDate":  "2026-10-16",
+                              "entryPrice":  140.5,
+                              "badLevel":  160.68,
+                              "goodLevel":  120,
+                              "latestPrice":  140.5,
+                              "unrealizedPct":  0,
+                              "pctToBad":  14.36,
+                              "pctToGood":  14.59
+                          },
+                          {
+                              "symbol":  "VIC",
+                              "name":  "Tập đoàn VINGROUP",
+                              "sector":  "BĐS",
+                              "direction":  "sell",
+                              "signalAtEntry":  "sell_confirmed",
+                              "counterTrend":  false,
+                              "phase":  "markdown_confirmed",
+                              "triggerDate":  "2026-10-15",
+                              "entryDate":  "2026-10-16",
+                              "entryPrice":  215,
+                              "badLevel":  232.78,
+                              "goodLevel":  187,
+                              "latestPrice":  215,
+                              "unrealizedPct":  0,
+                              "pctToBad":  8.27,
+                              "pctToGood":  13.02
+                          },
                           {
                               "symbol":  "VVS",
                               "name":  "Đầu tư phát triển máy Việt Nam",
@@ -842,10 +931,10 @@
                               "entryPrice":  79.3,
                               "badLevel":  83.26,
                               "goodLevel":  65.5,
-                              "latestPrice":  79.3,
-                              "unrealizedPct":  0,
-                              "pctToBad":  4.99,
-                              "pctToGood":  17.40
+                              "latestPrice":  79.4,
+                              "unrealizedPct":  -0.13,
+                              "pctToBad":  4.86,
+                              "pctToGood":  17.51
                           },
                           {
                               "symbol":  "STB",
@@ -878,10 +967,10 @@
                               "entryPrice":  17.2,
                               "badLevel":  18.13,
                               "goodLevel":  11.90,
-                              "latestPrice":  17.2,
-                              "unrealizedPct":  0,
-                              "pctToBad":  5.41,
-                              "pctToGood":  30.81
+                              "latestPrice":  17.25,
+                              "unrealizedPct":  -0.29,
+                              "pctToBad":  5.10,
+                              "pctToGood":  31.01
                           },
                           {
                               "symbol":  "HAH",
@@ -896,10 +985,10 @@
                               "entryPrice":  48.2,
                               "badLevel":  52.14,
                               "goodLevel":  35.18,
-                              "latestPrice":  48.2,
-                              "unrealizedPct":  0,
-                              "pctToBad":  8.17,
-                              "pctToGood":  27.01
+                              "latestPrice":  48.9,
+                              "unrealizedPct":  -1.45,
+                              "pctToBad":  6.63,
+                              "pctToGood":  28.06
                           },
                           {
                               "symbol":  "VIX",
@@ -914,10 +1003,10 @@
                               "entryPrice":  11.5,
                               "badLevel":  10.92,
                               "goodLevel":  17.01,
-                              "latestPrice":  11.75,
-                              "unrealizedPct":  2.17,
-                              "pctToBad":  7.06,
-                              "pctToGood":  44.77
+                              "latestPrice":  11.85,
+                              "unrealizedPct":  3.04,
+                              "pctToBad":  7.85,
+                              "pctToGood":  43.54
                           },
                           {
                               "symbol":  "EIB",
@@ -932,10 +1021,10 @@
                               "entryPrice":  16.3,
                               "badLevel":  15.33,
                               "goodLevel":  21.50,
-                              "latestPrice":  16.45,
-                              "unrealizedPct":  0.92,
-                              "pctToBad":  6.81,
-                              "pctToGood":  30.70
+                              "latestPrice":  16.35,
+                              "unrealizedPct":  0.31,
+                              "pctToBad":  6.24,
+                              "pctToGood":  31.50
                           },
                           {
                               "symbol":  "VCI",
@@ -950,10 +1039,10 @@
                               "entryPrice":  18.6,
                               "badLevel":  23.54,
                               "goodLevel":  15.45,
-                              "latestPrice":  18.85,
-                              "unrealizedPct":  -1.34,
-                              "pctToBad":  24.88,
-                              "pctToGood":  18.04
+                              "latestPrice":  18.95,
+                              "unrealizedPct":  -1.88,
+                              "pctToBad":  24.22,
+                              "pctToGood":  18.47
                           },
                           {
                               "symbol":  "VPI",
@@ -968,10 +1057,10 @@
                               "entryPrice":  50.6,
                               "badLevel":  54.78,
                               "goodLevel":  42.96,
-                              "latestPrice":  49.4,
-                              "unrealizedPct":  2.37,
-                              "pctToBad":  10.89,
-                              "pctToGood":  13.04
+                              "latestPrice":  48.1,
+                              "unrealizedPct":  4.94,
+                              "pctToBad":  13.89,
+                              "pctToGood":  10.69
                           },
                           {
                               "symbol":  "VHC",
@@ -986,10 +1075,10 @@
                               "entryPrice":  51,
                               "badLevel":  47.92,
                               "goodLevel":  67.6,
-                              "latestPrice":  50.7,
-                              "unrealizedPct":  -0.59,
-                              "pctToBad":  5.48,
-                              "pctToGood":  33.33
+                              "latestPrice":  50.6,
+                              "unrealizedPct":  -0.78,
+                              "pctToBad":  5.30,
+                              "pctToGood":  33.60
                           },
                           {
                               "symbol":  "DIG",
@@ -1004,28 +1093,10 @@
                               "entryPrice":  9.5,
                               "badLevel":  9.02,
                               "goodLevel":  12.54,
-                              "latestPrice":  9.6,
-                              "unrealizedPct":  1.05,
-                              "pctToBad":  6.04,
-                              "pctToGood":  30.62
-                          },
-                          {
-                              "symbol":  "VIC",
-                              "name":  "Tập đoàn VINGROUP",
-                              "sector":  "BĐS",
-                              "direction":  "buy",
-                              "signalAtEntry":  "buy_counter_trend",
-                              "counterTrend":  true,
-                              "phase":  "accumulation_setup",
-                              "triggerDate":  "2026-10-05",
-                              "entryDate":  "2026-10-12",
-                              "entryPrice":  219,
-                              "badLevel":  208.05,
-                              "goodLevel":  304,
-                              "latestPrice":  218,
-                              "unrealizedPct":  -0.46,
-                              "pctToBad":  4.56,
-                              "pctToGood":  39.45
+                              "latestPrice":  9.53,
+                              "unrealizedPct":  0.32,
+                              "pctToBad":  5.35,
+                              "pctToGood":  31.58
                           },
                           {
                               "symbol":  "NT2",
@@ -1058,28 +1129,10 @@
                               "entryPrice":  4.96,
                               "badLevel":  4.71,
                               "goodLevel":  7.07,
-                              "latestPrice":  4.92,
-                              "unrealizedPct":  -0.81,
-                              "pctToBad":  4.27,
-                              "pctToGood":  43.70
-                          },
-                          {
-                              "symbol":  "CTS",
-                              "name":  "Chứng Khoán VietinBank",
-                              "sector":  "Chứng khoán",
-                              "direction":  "sell",
-                              "signalAtEntry":  "sell_confirmed",
-                              "counterTrend":  false,
-                              "phase":  "markdown_confirmed",
-                              "triggerDate":  "2026-10-09",
-                              "entryDate":  "2026-10-12",
-                              "entryPrice":  19.5,
-                              "badLevel":  20.65,
-                              "goodLevel":  16.10,
-                              "latestPrice":  20.45,
-                              "unrealizedPct":  -4.87,
-                              "pctToBad":  0.98,
-                              "pctToGood":  21.27
+                              "latestPrice":  4.96,
+                              "unrealizedPct":  0,
+                              "pctToBad":  5.04,
+                              "pctToGood":  42.54
                           },
                           {
                               "symbol":  "HDG",
@@ -1094,10 +1147,10 @@
                               "entryPrice":  14.6,
                               "badLevel":  15.66,
                               "goodLevel":  12.6,
-                              "latestPrice":  14.8,
-                              "unrealizedPct":  -1.37,
-                              "pctToBad":  5.81,
-                              "pctToGood":  14.86
+                              "latestPrice":  15,
+                              "unrealizedPct":  -2.74,
+                              "pctToBad":  4.40,
+                              "pctToGood":  16.00
                           },
                           {
                               "symbol":  "DGC",
@@ -1112,10 +1165,10 @@
                               "entryPrice":  33.8,
                               "badLevel":  32.11,
                               "goodLevel":  45.80,
-                              "latestPrice":  32.75,
-                              "unrealizedPct":  -3.11,
-                              "pctToBad":  1.95,
-                              "pctToGood":  39.85
+                              "latestPrice":  32.8,
+                              "unrealizedPct":  -2.96,
+                              "pctToBad":  2.10,
+                              "pctToGood":  39.63
                           },
                           {
                               "symbol":  "HPG",
@@ -1130,10 +1183,10 @@
                               "entryPrice":  20.1,
                               "badLevel":  19.10,
                               "goodLevel":  27.3,
-                              "latestPrice":  20.75,
-                              "unrealizedPct":  3.23,
-                              "pctToBad":  7.95,
-                              "pctToGood":  31.57
+                              "latestPrice":  20.9,
+                              "unrealizedPct":  3.98,
+                              "pctToBad":  8.61,
+                              "pctToGood":  30.62
                           },
                           {
                               "symbol":  "PDR",
@@ -1148,10 +1201,10 @@
                               "entryPrice":  11.3,
                               "badLevel":  10.74,
                               "goodLevel":  14.60,
-                              "latestPrice":  11.3,
-                              "unrealizedPct":  0,
-                              "pctToBad":  4.96,
-                              "pctToGood":  29.20
+                              "latestPrice":  11.2,
+                              "unrealizedPct":  -0.88,
+                              "pctToBad":  4.11,
+                              "pctToGood":  30.36
                           },
                           {
                               "symbol":  "TLG",
@@ -1166,10 +1219,10 @@
                               "entryPrice":  54,
                               "badLevel":  56.7,
                               "goodLevel":  37.4,
-                              "latestPrice":  54.8,
-                              "unrealizedPct":  -1.48,
-                              "pctToBad":  3.47,
-                              "pctToGood":  31.75
+                              "latestPrice":  54.9,
+                              "unrealizedPct":  -1.67,
+                              "pctToBad":  3.28,
+                              "pctToGood":  31.88
                           },
                           {
                               "symbol":  "VHM",
@@ -1184,10 +1237,10 @@
                               "entryPrice":  66,
                               "badLevel":  69.3,
                               "goodLevel":  53.7,
-                              "latestPrice":  58.9,
-                              "unrealizedPct":  10.76,
-                              "pctToBad":  17.66,
-                              "pctToGood":  8.83
+                              "latestPrice":  61,
+                              "unrealizedPct":  7.58,
+                              "pctToBad":  13.61,
+                              "pctToGood":  11.97
                           },
                           {
                               "symbol":  "KHG",
@@ -1220,10 +1273,10 @@
                               "entryPrice":  28,
                               "badLevel":  30.80,
                               "goodLevel":  21.3,
-                              "latestPrice":  27.3,
-                              "unrealizedPct":  2.50,
-                              "pctToBad":  12.82,
-                              "pctToGood":  21.98
+                              "latestPrice":  27.5,
+                              "unrealizedPct":  1.79,
+                              "pctToBad":  12.00,
+                              "pctToGood":  22.55
                           },
                           {
                               "symbol":  "DPG",
@@ -1256,10 +1309,10 @@
                               "entryPrice":  14.8,
                               "badLevel":  15.66,
                               "goodLevel":  12.5,
-                              "latestPrice":  14.85,
-                              "unrealizedPct":  -0.34,
-                              "pctToBad":  5.45,
-                              "pctToGood":  15.82
+                              "latestPrice":  14.7,
+                              "unrealizedPct":  0.68,
+                              "pctToBad":  6.53,
+                              "pctToGood":  14.97
                           },
                           {
                               "symbol":  "BSR",
@@ -1274,10 +1327,10 @@
                               "entryPrice":  31.1,
                               "badLevel":  32.66,
                               "goodLevel":  21.95,
-                              "latestPrice":  28.2,
-                              "unrealizedPct":  9.32,
-                              "pctToBad":  15.82,
-                              "pctToGood":  22.16
+                              "latestPrice":  28.35,
+                              "unrealizedPct":  8.84,
+                              "pctToBad":  15.20,
+                              "pctToGood":  22.57
                           },
                           {
                               "symbol":  "HII",
@@ -1292,10 +1345,10 @@
                               "entryPrice":  8.78,
                               "badLevel":  10.04,
                               "goodLevel":  6.83,
-                              "latestPrice":  8.89,
-                              "unrealizedPct":  -1.25,
-                              "pctToBad":  12.94,
-                              "pctToGood":  23.17
+                              "latestPrice":  9.51,
+                              "unrealizedPct":  -8.31,
+                              "pctToBad":  5.57,
+                              "pctToGood":  28.18
                           },
                           {
                               "symbol":  "NLG",
@@ -1310,10 +1363,10 @@
                               "entryPrice":  21.9,
                               "badLevel":  20.80,
                               "goodLevel":  30.00,
-                              "latestPrice":  21.4,
-                              "unrealizedPct":  -2.28,
-                              "pctToBad":  2.80,
-                              "pctToGood":  40.19
+                              "latestPrice":  21.5,
+                              "unrealizedPct":  -1.83,
+                              "pctToBad":  3.26,
+                              "pctToGood":  39.53
                           },
                           {
                               "symbol":  "HCM",
@@ -1328,10 +1381,10 @@
                               "entryPrice":  23.5,
                               "badLevel":  22.25,
                               "goodLevel":  31.76,
-                              "latestPrice":  24,
-                              "unrealizedPct":  2.13,
-                              "pctToBad":  7.29,
-                              "pctToGood":  32.33
+                              "latestPrice":  23.75,
+                              "unrealizedPct":  1.06,
+                              "pctToBad":  6.32,
+                              "pctToGood":  33.73
                           },
                           {
                               "symbol":  "PC1",
@@ -1364,10 +1417,10 @@
                               "entryPrice":  11.9,
                               "badLevel":  14.16,
                               "goodLevel":  11.05,
-                              "latestPrice":  11.75,
-                              "unrealizedPct":  1.26,
-                              "pctToBad":  20.51,
-                              "pctToGood":  5.96
+                              "latestPrice":  12,
+                              "unrealizedPct":  -0.84,
+                              "pctToBad":  18.00,
+                              "pctToGood":  7.92
                           },
                           {
                               "symbol":  "VSC",
@@ -1382,10 +1435,10 @@
                               "entryPrice":  13.15,
                               "badLevel":  12.49,
                               "goodLevel":  18.25,
-                              "latestPrice":  12.9,
-                              "unrealizedPct":  -1.90,
-                              "pctToBad":  3.18,
-                              "pctToGood":  41.47
+                              "latestPrice":  13,
+                              "unrealizedPct":  -1.14,
+                              "pctToBad":  3.92,
+                              "pctToGood":  40.38
                           },
                           {
                               "symbol":  "DBC",
@@ -1400,10 +1453,10 @@
                               "entryPrice":  15,
                               "badLevel":  15.91,
                               "goodLevel":  12.7,
-                              "latestPrice":  15.65,
-                              "unrealizedPct":  -4.33,
-                              "pctToBad":  1.66,
-                              "pctToGood":  18.85
+                              "latestPrice":  15.7,
+                              "unrealizedPct":  -4.67,
+                              "pctToBad":  1.34,
+                              "pctToGood":  19.11
                           },
                           {
                               "symbol":  "TDP",
@@ -1418,10 +1471,10 @@
                               "entryPrice":  27.5,
                               "badLevel":  25.57,
                               "goodLevel":  36.56,
-                              "latestPrice":  30.1,
-                              "unrealizedPct":  9.45,
-                              "pctToBad":  15.05,
-                              "pctToGood":  21.46
+                              "latestPrice":  29.8,
+                              "unrealizedPct":  8.36,
+                              "pctToBad":  14.19,
+                              "pctToGood":  22.68
                           },
                           {
                               "symbol":  "NVL",
@@ -1436,10 +1489,10 @@
                               "entryPrice":  10.2,
                               "badLevel":  9.69,
                               "goodLevel":  16.35,
-                              "latestPrice":  10.7,
-                              "unrealizedPct":  4.90,
-                              "pctToBad":  9.44,
-                              "pctToGood":  52.80
+                              "latestPrice":  10.65,
+                              "unrealizedPct":  4.41,
+                              "pctToBad":  9.01,
+                              "pctToGood":  53.52
                           },
                           {
                               "symbol":  "FTS",
@@ -1454,10 +1507,10 @@
                               "entryPrice":  19.15,
                               "badLevel":  20.29,
                               "goodLevel":  15.9,
-                              "latestPrice":  18.7,
-                              "unrealizedPct":  2.35,
-                              "pctToBad":  8.50,
-                              "pctToGood":  14.97
+                              "latestPrice":  18.6,
+                              "unrealizedPct":  2.87,
+                              "pctToBad":  9.09,
+                              "pctToGood":  14.52
                           },
                           {
                               "symbol":  "GVR",
@@ -1472,10 +1525,10 @@
                               "entryPrice":  33.3,
                               "badLevel":  34.96,
                               "goodLevel":  27.55,
-                              "latestPrice":  30.9,
-                              "unrealizedPct":  7.21,
-                              "pctToBad":  13.14,
-                              "pctToGood":  10.84
+                              "latestPrice":  31.25,
+                              "unrealizedPct":  6.16,
+                              "pctToBad":  11.87,
+                              "pctToGood":  11.84
                           },
                           {
                               "symbol":  "NTL",
@@ -1490,10 +1543,10 @@
                               "entryPrice":  11.7,
                               "badLevel":  12.36,
                               "goodLevel":  9.65,
-                              "latestPrice":  11.85,
-                              "unrealizedPct":  -1.28,
-                              "pctToBad":  4.30,
-                              "pctToGood":  18.57
+                              "latestPrice":  12,
+                              "unrealizedPct":  -2.56,
+                              "pctToBad":  3.00,
+                              "pctToGood":  19.58
                           },
                           {
                               "symbol":  "AAA",
@@ -1508,10 +1561,10 @@
                               "entryPrice":  7.17,
                               "badLevel":  6.81,
                               "goodLevel":  8.46,
-                              "latestPrice":  7,
-                              "unrealizedPct":  -2.37,
-                              "pctToBad":  2.71,
-                              "pctToGood":  20.86
+                              "latestPrice":  7.1,
+                              "unrealizedPct":  -0.98,
+                              "pctToBad":  4.08,
+                              "pctToGood":  19.15
                           },
                           {
                               "symbol":  "HDC",
@@ -1544,10 +1597,10 @@
                               "entryPrice":  10.1,
                               "badLevel":  11.95,
                               "goodLevel":  8.2,
-                              "latestPrice":  10,
-                              "unrealizedPct":  0.99,
-                              "pctToBad":  19.50,
-                              "pctToGood":  18.00
+                              "latestPrice":  10.05,
+                              "unrealizedPct":  0.50,
+                              "pctToBad":  18.91,
+                              "pctToGood":  18.41
                           },
                           {
                               "symbol":  "TCX",
@@ -1562,10 +1615,10 @@
                               "entryPrice":  29.15,
                               "badLevel":  31.33,
                               "goodLevel":  24.47,
-                              "latestPrice":  27.65,
-                              "unrealizedPct":  5.15,
-                              "pctToBad":  13.31,
-                              "pctToGood":  11.50
+                              "latestPrice":  27.6,
+                              "unrealizedPct":  5.32,
+                              "pctToBad":  13.51,
+                              "pctToGood":  11.34
                           },
                           {
                               "symbol":  "POW",
@@ -1598,10 +1651,10 @@
                               "entryPrice":  18.4,
                               "badLevel":  17.48,
                               "goodLevel":  25.95,
-                              "latestPrice":  18.05,
-                              "unrealizedPct":  -1.90,
-                              "pctToBad":  3.16,
-                              "pctToGood":  43.77
+                              "latestPrice":  18.2,
+                              "unrealizedPct":  -1.09,
+                              "pctToBad":  3.96,
+                              "pctToGood":  42.58
                           },
                           {
                               "symbol":  "MWG",
@@ -1616,10 +1669,10 @@
                               "entryPrice":  73.4,
                               "badLevel":  62.66,
                               "goodLevel":  87.2,
-                              "latestPrice":  72.8,
-                              "unrealizedPct":  -0.82,
-                              "pctToBad":  13.93,
-                              "pctToGood":  19.78
+                              "latestPrice":  73.9,
+                              "unrealizedPct":  0.68,
+                              "pctToBad":  15.21,
+                              "pctToGood":  18.00
                           },
                           {
                               "symbol":  "HHV",
@@ -1634,10 +1687,10 @@
                               "entryPrice":  9.11,
                               "badLevel":  9.78,
                               "goodLevel":  7.76,
-                              "latestPrice":  9.52,
-                              "unrealizedPct":  -4.50,
-                              "pctToBad":  2.73,
-                              "pctToGood":  18.49
+                              "latestPrice":  9.5,
+                              "unrealizedPct":  -4.28,
+                              "pctToBad":  2.95,
+                              "pctToGood":  18.32
                           },
                           {
                               "symbol":  "CTD",
@@ -1652,10 +1705,10 @@
                               "entryPrice":  58.2,
                               "badLevel":  53.06,
                               "goodLevel":  75.3,
-                              "latestPrice":  63,
-                              "unrealizedPct":  8.25,
-                              "pctToBad":  15.78,
-                              "pctToGood":  19.52
+                              "latestPrice":  62.4,
+                              "unrealizedPct":  7.22,
+                              "pctToBad":  14.97,
+                              "pctToGood":  20.67
                           },
                           {
                               "symbol":  "FRT",
@@ -1688,10 +1741,10 @@
                               "entryPrice":  14.05,
                               "badLevel":  13.3,
                               "goodLevel":  15.42,
-                              "latestPrice":  14.65,
-                              "unrealizedPct":  4.27,
-                              "pctToBad":  9.22,
-                              "pctToGood":  5.26
+                              "latestPrice":  14.8,
+                              "unrealizedPct":  5.34,
+                              "pctToBad":  10.14,
+                              "pctToGood":  4.19
                           },
                           {
                               "symbol":  "DGW",
@@ -1706,10 +1759,10 @@
                               "entryPrice":  44.5,
                               "badLevel":  42.28,
                               "goodLevel":  50.85,
-                              "latestPrice":  45.05,
-                              "unrealizedPct":  1.24,
-                              "pctToBad":  6.15,
-                              "pctToGood":  12.87
+                              "latestPrice":  44.5,
+                              "unrealizedPct":  0,
+                              "pctToBad":  4.99,
+                              "pctToGood":  14.27
                           },
                           {
                               "symbol":  "VPB",
@@ -1724,10 +1777,10 @@
                               "entryPrice":  23,
                               "badLevel":  21.63,
                               "goodLevel":  25.6,
-                              "latestPrice":  24.45,
-                              "unrealizedPct":  6.30,
-                              "pctToBad":  11.53,
-                              "pctToGood":  4.70
+                              "latestPrice":  24.5,
+                              "unrealizedPct":  6.52,
+                              "pctToBad":  11.71,
+                              "pctToGood":  4.49
                           },
                           {
                               "symbol":  "VGC",
@@ -1742,10 +1795,10 @@
                               "entryPrice":  42.75,
                               "badLevel":  40.59,
                               "goodLevel":  48.2,
-                              "latestPrice":  43.4,
-                              "unrealizedPct":  1.52,
-                              "pctToBad":  6.47,
-                              "pctToGood":  11.06
+                              "latestPrice":  43.35,
+                              "unrealizedPct":  1.40,
+                              "pctToBad":  6.37,
+                              "pctToGood":  11.19
                           },
                           {
                               "symbol":  "BVH",
@@ -1760,28 +1813,10 @@
                               "entryPrice":  68.8,
                               "badLevel":  65.36,
                               "goodLevel":  79.6,
-                              "latestPrice":  71.4,
-                              "unrealizedPct":  3.78,
-                              "pctToBad":  8.46,
-                              "pctToGood":  11.48
-                          },
-                          {
-                              "symbol":  "VCG",
-                              "name":  "XNK \u0026 Xây dựng VN",
-                              "sector":  "Đầu tư công",
-                              "direction":  "sell",
-                              "signalAtEntry":  "sell_confirmed",
-                              "counterTrend":  false,
-                              "phase":  "markdown_confirmed",
-                              "triggerDate":  "2026-09-14",
-                              "entryDate":  "2026-09-25",
-                              "entryPrice":  14.05,
-                              "badLevel":  15.14,
-                              "goodLevel":  12.05,
-                              "latestPrice":  15,
-                              "unrealizedPct":  -6.76,
-                              "pctToBad":  0.93,
-                              "pctToGood":  19.67
+                              "latestPrice":  72,
+                              "unrealizedPct":  4.65,
+                              "pctToBad":  9.22,
+                              "pctToGood":  10.56
                           },
                           {
                               "symbol":  "FPT",
@@ -1796,10 +1831,10 @@
                               "entryPrice":  64.7,
                               "badLevel":  69.29,
                               "goodLevel":  46.37,
-                              "latestPrice":  58,
-                              "unrealizedPct":  10.36,
-                              "pctToBad":  19.47,
-                              "pctToGood":  20.05
+                              "latestPrice":  58.2,
+                              "unrealizedPct":  10.05,
+                              "pctToBad":  19.05,
+                              "pctToGood":  20.33
                           },
                           {
                               "symbol":  "VPL",
@@ -1814,10 +1849,10 @@
                               "entryPrice":  79.7,
                               "badLevel":  86.52,
                               "goodLevel":  59,
-                              "latestPrice":  77,
-                              "unrealizedPct":  3.39,
-                              "pctToBad":  12.36,
-                              "pctToGood":  23.38
+                              "latestPrice":  79,
+                              "unrealizedPct":  0.88,
+                              "pctToBad":  9.52,
+                              "pctToGood":  25.32
                           },
                           {
                               "symbol":  "DPM",
@@ -1868,10 +1903,10 @@
                               "entryPrice":  141,
                               "badLevel":  148.05,
                               "goodLevel":  105.02,
-                              "latestPrice":  139.8,
-                              "unrealizedPct":  0.85,
-                              "pctToBad":  5.90,
-                              "pctToGood":  24.88
+                              "latestPrice":  140,
+                              "unrealizedPct":  0.71,
+                              "pctToBad":  5.75,
+                              "pctToGood":  24.99
                           },
                           {
                               "symbol":  "PLX",
@@ -1886,10 +1921,10 @@
                               "entryPrice":  35,
                               "badLevel":  40.22,
                               "goodLevel":  26.31,
-                              "latestPrice":  35.55,
-                              "unrealizedPct":  -1.57,
-                              "pctToBad":  13.14,
-                              "pctToGood":  25.99
+                              "latestPrice":  35.05,
+                              "unrealizedPct":  -0.14,
+                              "pctToBad":  14.75,
+                              "pctToGood":  24.94
                           },
                           {
                               "symbol":  "BVB",
@@ -1904,10 +1939,10 @@
                               "entryPrice":  10.5,
                               "badLevel":  11.24,
                               "goodLevel":  8.82,
-                              "latestPrice":  10.3,
-                              "unrealizedPct":  1.90,
-                              "pctToBad":  9.13,
-                              "pctToGood":  14.37
+                              "latestPrice":  10.45,
+                              "unrealizedPct":  0.48,
+                              "pctToBad":  7.56,
+                              "pctToGood":  15.60
                           },
                           {
                               "symbol":  "IJC",
@@ -1922,10 +1957,10 @@
                               "entryPrice":  6.72,
                               "badLevel":  7.15,
                               "goodLevel":  5.69,
-                              "latestPrice":  6.79,
-                              "unrealizedPct":  -1.04,
-                              "pctToBad":  5.30,
-                              "pctToGood":  16.20
+                              "latestPrice":  6.89,
+                              "unrealizedPct":  -2.53,
+                              "pctToBad":  3.77,
+                              "pctToGood":  17.42
                           },
                           {
                               "symbol":  "KBC",
@@ -1940,10 +1975,10 @@
                               "entryPrice":  25.95,
                               "badLevel":  27.25,
                               "goodLevel":  21.2,
-                              "latestPrice":  25.75,
-                              "unrealizedPct":  0.77,
-                              "pctToBad":  5.83,
-                              "pctToGood":  17.67
+                              "latestPrice":  25.9,
+                              "unrealizedPct":  0.19,
+                              "pctToBad":  5.21,
+                              "pctToGood":  18.15
                           },
                           {
                               "symbol":  "GEX",
@@ -1958,10 +1993,10 @@
                               "entryPrice":  24,
                               "badLevel":  25.2,
                               "goodLevel":  18.3,
-                              "latestPrice":  22.4,
-                              "unrealizedPct":  6.67,
-                              "pctToBad":  12.50,
-                              "pctToGood":  18.30
+                              "latestPrice":  22.5,
+                              "unrealizedPct":  6.25,
+                              "pctToBad":  12.00,
+                              "pctToGood":  18.67
                           },
                           {
                               "symbol":  "VND",
