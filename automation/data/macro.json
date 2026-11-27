@@ -1,14 +1,87 @@
 {
-  "_comment": "Toa dam vi mo - cap nhat THU CONG dinh ky (KHONG phai tu dong hang ngay, vi pipeline PowerShell khong duoc goi LLM/agent - xem ghi chu dau automation/lib/wyckoff_engine.ps1). Noi dung nay duoc Claude nghien cuu qua WebSearch ngay 26/09/2026, co nguon trich dan trong tung indicator. Sua lai hoac nho Claude cap nhat khi co bien dong lon (VD: FTSE ra tin moi, Fed hop tiep, ty gia bien dong manh).",
-  "asOf": "2026-09-26",
-  "summary": "Thị trường đang ở giai đoạn bước ngoặt: Việt Nam vừa chính thức được FTSE Russell nâng hạng lên Mới nổi Thứ cấp từ 21/9/2026, mở đường cho dòng vốn ngoại quy mô lớn trong trung hạn, và VN-Index đã tăng mạnh trong tháng 8 nhờ kỳ vọng này. Tuy nhiên ngay sau mốc nâng hạng, khối ngoại lại bán ròng khá mạnh trên HOSE nhiều phiên liên tiếp - dấu hiệu \"tin ra là bán\" cần thận trọng trong ngắn hạn. Ở chiều vĩ mô, lạm phát trong nước đang nhích lên (CPI 8 tháng +4,45%) chủ yếu do giá xăng dầu, trong khi Fed bất ngờ tăng lãi suất trở lại lên 3,75-4% vì lo ngại lạm phát toàn cầu, khiến đồng USD mạnh lên và tạo áp lực nhẹ lên tỷ giá VND. Tăng trưởng GDP vẫn là điểm sáng lớn, với các dự báo quý 3/2026 tiếp tục ở mức cao 8,7-10%. Tổng thể, bối cảnh vĩ mô vẫn ủng hộ xu hướng tăng trung hạn của thị trường nhờ câu chuyện nâng hạng và tăng trưởng kinh tế, nhưng nhà đầu tư nên thận trọng với biến động ngắn hạn từ áp lực chốt lời sau tin nâng hạng và rủi ro tỷ giá/lãi suất toàn cầu tăng.",
+  "_comment": "Toa dam vi mo - cap nhat THU CONG dinh ky (KHONG phai tu dong hang ngay, vi pipeline PowerShell khong duoc goi LLM/agent). Cap nhat lan 2 ngay 27/11/2026 qua WebSearch, co nguon trich dan trong tung indicator. Nho Claude cap nhat khi co bien dong lon (thoa thuan thue My, Fed 9/12, CPI thang 11...).",
+  "asOf": "2026-11-27",
+  "summary": "Bối cảnh cuối tháng 11/2026 nghiêng hẳn về PHÒNG THỦ. Nền kinh tế vẫn rất mạnh (GDP quý III +9,95%, 9 tháng +9,01%), nhưng chứng khoán chịu ba áp lực bên ngoài cùng lúc: (1) ngày 25/11 Mỹ đề xuất thuế tới 35% lên hàng Việt Nam vì 'dư thừa công suất' (20% nếu ký thỏa thuận, Chính phủ nói sắp ký); (2) Fed giữ 3,75–4% nhưng thị trường định giá ~83% khả năng tăng tiếp ngày 9/12, DXY ~104,5 đẩy tỷ giá trung tâm lên kỷ lục 25.687; (3) khối ngoại bán ròng kỷ lục ~127.000 tỷ trên HOSE từ đầu năm dù đã được FTSE nâng hạng. VN-Index mất mốc 1.700, rơi 3,4% về 1.629,68 ngày 26/11 - thấp nhất 8 tháng, khớp lệnh HOSE dưới 10.000 tỷ/phiên. Trong nước, CPI đã vượt mục tiêu (+5,09% YoY tháng 10) và lãi liên ngân hàng tăng lại ~9% nên dư địa nới tiền tệ gần như không còn. Hành động gợi ý: giữ tỷ trọng cổ phiếu thấp, không bắt đáy cho tới khi có (a) tin ký thỏa thuận thuế với Mỹ và (b) kết quả họp Fed 9/12; vùng hỗ trợ được nhắc nhiều là 1.580–1.600.",
   "indicators": [
-    { "label": "FTSE nâng hạng VN", "value": "Chính thức lên Mới nổi Thứ cấp từ 21/9/2026", "tone": "thuan", "note": "Chất xúc tác lớn nhất hiện tại - kỳ vọng dòng vốn ngoại tỷ USD trung hạn, ngân hàng hưởng lợi rõ nhất", "asOf": "2026-09-23", "source": "VnEconomy, SGGP" },
-    { "label": "Khối ngoại HOSE (tháng 9)", "value": "Bán ròng nhiều phiên liên tiếp (~250-1.050 tỷ/phiên 17-25/9)", "tone": "nguoc", "note": "Trùng thời điểm nâng hạng có hiệu lực - nghi vấn \"tin ra là bán\", cần theo dõi thêm có đảo chiều không", "asOf": "2026-09-25", "source": "Vietstock, CafeF" },
-    { "label": "Tăng trưởng GDP", "value": "Q1 +7,83%, Q2 +8,39%, dự báo Q3 8,7-10%", "tone": "thuan", "note": "Điểm sáng vĩ mô lớn nhất, dẫn đầu ASEAN-6", "asOf": "2026-08-21", "source": "Báo Chính phủ, CafeF" },
-    { "label": "CPI (lạm phát)", "value": "Lũy kế 8 tháng +4,45% YoY", "tone": "nguoc", "note": "Áp lực chủ yếu từ giá xăng dầu (+9,5% MoM tháng 8)", "asOf": "2026-09-01", "source": "Thời báo Tài chính VN, VietnamPlus" },
-    { "label": "Fed funds rate", "value": "Tăng bất ngờ 25bp lên 3,75-4% (16/9)", "tone": "nguoc", "note": "Đảo chiều so với xu hướng cắt giảm trước đó vì lo lạm phát toàn cầu; thị trường định giá ~64% khả năng tăng tiếp tháng 10", "asOf": "2026-09-16", "source": "CNBC, Federal Reserve" },
-    { "label": "USD/VND", "value": "Tỷ giá trung tâm 25.641, bán ra ~26.170", "tone": "nguoc", "note": "VND mất giá nhẹ do USD toàn cầu mạnh lên (DXY ~101, đỉnh 2 tháng)", "asOf": "2026-09-26", "source": "SBV, baohatinh.vn" },
-    { "label": "Lãi suất điều hành SBV", "value": "Giữ nguyên quanh 4,5%", "tone": "trung_tinh", "note": "Chưa có thay đổi chính thức trong tháng 9", "asOf": "2026-09-25", "source": "CafeF, LuatVietnam" }
+    {
+      "label": "Thuế quan Mỹ",
+      "value": "USTR đề xuất tới 35% (20% nếu ký thỏa thuận); đang áp 12,5% Section 301",
+      "tone": "nguoc",
+      "note": "Công bố 25/11, cao nhất trong 14 nền kinh tế bị cáo buộc dư thừa công suất; dệt may, da giày, điện tử chịu nhiều nhất. Thủ tướng nói thỏa thuận sắp ký với mức 'thấp hơn nhiều' 35% - đây là chất xúc tác lớn nhất ngắn hạn (cả 2 chiều)",
+      "asOf": "2026-11-27",
+      "source": "bne IntelliNews, TNGlobal, Korea Times"
+    },
+    {
+      "label": "VN-Index",
+      "value": "1.629,68 (−3,42% phiên 26/11), thấp nhất 8 tháng",
+      "tone": "nguoc",
+      "note": "291 mã giảm/47 tăng, 18 mã giảm sàn; riêng VIC −6,28% lấy đi ~24,7 điểm. Khớp lệnh HOSE dưới 10.000 tỷ/phiên, thấp nhất từ đầu năm. Hỗ trợ được nhắc: 1.580–1.600",
+      "asOf": "2026-11-26",
+      "source": "Tin nhanh Chứng khoán, Znews, Vietstock"
+    },
+    {
+      "label": "Khối ngoại HOSE",
+      "value": "Bán ròng ~127.000 tỷ từ đầu năm (kỷ lục); tháng 10 ~24.000 tỷ, tháng 11 ~5.000 tỷ",
+      "tone": "nguoc",
+      "note": "Vượt cả năm 2025. Phiên 25/11 có thỏa thuận VIC ~4.800 tỷ (số tháng 11 có thể chưa gồm). Lý do chính: lãi suất quốc tế tăng; dòng vốn FTSE chưa đủ đảo chiều",
+      "asOf": "2026-11-25",
+      "source": "CafeF, VnExpress, Người Quan Sát"
+    },
+    {
+      "label": "FTSE / MSCI",
+      "value": "FTSE: Mới nổi Thứ cấp từ 21/9/2026, giải ngân theo lộ trình tới 2027; MSCI: vẫn trong watchlist",
+      "tone": "trung_tinh",
+      "note": "Maybank ước dòng vốn thụ động 0,8–1 tỷ USD - nhỏ so với 127.000 tỷ (~5 tỷ USD) khối ngoại đã bán. MSCI chờ cơ chế bù trừ trung tâm (CCP) dự kiến 2027",
+      "asOf": "2026-09-21",
+      "source": "The Vietnam Yield, DataCore"
+    },
+    {
+      "label": "Tăng trưởng GDP",
+      "value": "Q3/2026 +9,95%; 9 tháng +9,01%",
+      "tone": "thuan",
+      "note": "Công nghiệp - xây dựng +11%, đóng góp gần 50%; tiêu dùng +8,96%; xuất nhập khẩu 10 tháng vượt 1.000 tỷ USD (rủi ro thuế Mỹ với quý IV/2027)",
+      "asOf": "2026-10-03",
+      "source": "Cục Thống kê, VOV, VietnamPlus"
+    },
+    {
+      "label": "CPI (lạm phát)",
+      "value": "Tháng 10 +5,09% YoY; bình quân 10 tháng +4,57%; lạm phát cơ bản 4,24%",
+      "tone": "nguoc",
+      "note": "Đã vượt mục tiêu ~4,5%, chủ yếu do giá xăng dầu - khóa dư địa hạ lãi suất. CPI tháng 11 công bố đầu tháng 12",
+      "asOf": "2026-11-03",
+      "source": "Nhân Dân, VTV, VietnamPlus"
+    },
+    {
+      "label": "Fed funds rate",
+      "value": "Giữ 3,75–4% (28/10, 2 phiếu muốn tăng); CME ~83% khả năng +25bp ngày 9/12",
+      "tone": "nguoc",
+      "note": "Tháng 9 tăng lần đầu kể từ 07/2023. Nếu Fed tăng tiếp, USD mạnh thêm và áp lực bán ròng ngoại có thể kéo dài",
+      "asOf": "2026-10-28",
+      "source": "CNBC, Fox Business, Morningstar"
+    },
+    {
+      "label": "USD/VND",
+      "value": "Tỷ giá trung tâm 25.687 (kỷ lục); NHTM quanh 26.000; DXY từng lên 104,5",
+      "tone": "nguoc",
+      "note": "Tỷ giá trung tâm +~2% từ đầu năm; NHNN mua USD giao ngay ở 25.500 hằng tuần từ giữa tháng 11 cho thấy nguồn cung ngoại tệ có cải thiện",
+      "asOf": "2026-11-27",
+      "source": "Thanh Niên, Thị trường Tài chính Tiền tệ"
+    },
+    {
+      "label": "Lãi suất SBV / liên ngân hàng",
+      "value": "Điều hành chưa đổi (~4,5%); liên ngân hàng tăng lại, kỳ hạn 6 tháng ~9,1%",
+      "tone": "nguoc",
+      "note": "Ngân hàng đua huy động cuối năm; lãi huy động online 12 tháng ~7%. Chỉ tiêu tín dụng 2026 ~15%, NHNN để ngỏ khả năng hạ - bất lợi cho BĐS, chứng khoán",
+      "asOf": "2026-11-26",
+      "source": "Vietnam.vn, Thanh Niên, VnEconomy"
+    },
+    {
+      "label": "Giá dầu Brent",
+      "value": "~96,5 USD/thùng (26/11); đỉnh bình quân tháng 10 ~125 USD",
+      "tone": "trung_tinh",
+      "note": "Rủi ro eo Hormuz còn; OPEC+ họp 29/11 về hạn ngạch 2027. Tốt cho dầu khí thượng nguồn, xấu cho CPI và hàng không",
+      "asOf": "2026-11-26",
+      "source": "The Nation, OilPriceAPI"
+    }
   ]
 }

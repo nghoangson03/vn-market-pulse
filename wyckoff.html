@@ -257,6 +257,13 @@
   .macro-chip .m-note{ color:var(--muted); display:block; font-size:10.5px; }
 
   .tr-card{ margin-bottom:22px; }
+  .rv-card{ margin-bottom:22px; }
+  .rv-alloc{ border:1px solid var(--line, rgba(127,127,127,.25)); border-radius:8px; padding:10px 12px; margin:10px 0 12px; font-size:13px; }
+  .rv-alloc b{ font-variant-numeric:tabular-nums; }
+  .rv-list{ display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+  .rv-list .macro-chip{ font-size:12.5px; }
+  .rv-list .macro-chip .m-note{ font-size:11.5px; }
+  .rv-sub{ font-size:13px; font-weight:600; margin:14px 0 4px; }
   .tr-blocks{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px; margin-top:2px; }
   @media (max-width:720px){ .tr-blocks{ grid-template-columns:1fr; } }
   .tr-block h4{ font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); margin:0 0 8px; font-weight:600; }
@@ -455,6 +462,8 @@
     </div>
   </details>
 
+  <div id="reviewWrap" hidden></div>
+
   <div id="trackRecordWrap" hidden></div>
 
   <div class="overview-grid" id="overviewGrid" hidden></div>
@@ -509,6 +518,7 @@
   var screener = null;
   var chartsData = null;
   var trackRecord = null;
+  var review = null;
   var filterText = "";
   var openSymbol = null;
 
@@ -767,6 +777,36 @@
     }
 
     html += '</div>';
+    wrap.innerHTML = html;
+  }
+
+  // Ty trong goi y theo trang thai thi truong chung (quy tac quan tri rui ro tu recommendation_review.json,
+  // KHONG phai ket qua backtest).
+  var REGIME_ALLOC = {
+    bearish: {label:"NGƯỢC", total:30, perStock:10, extra:"vào 1/2 vị thế, ưu tiên giữ tiền"},
+    neutral: {label:"TRUNG TÍNH", total:60, perStock:15, extra:"giải ngân từng phần khi có SOS mới"},
+    bullish: {label:"THUẬN", total:90, perStock:20, extra:"có thể giải ngân đủ theo tín hiệu"}
+  };
+
+  function renderReview(){
+    var wrap = document.getElementById("reviewWrap");
+    var rv = review;
+    if(!rv || !rv.findings){ wrap.hidden = true; return; }
+    wrap.hidden = false;
+    var st = screener && screener.marketRegime ? screener.marketRegime.status : null;
+    var a = REGIME_ALLOC[st];
+    var allocHtml = a ? '<div class="rv-alloc">Thị trường chung hôm nay: <b>'+a.label+'</b>'+
+      (screener.marketRegime.vnClose ? ' (VN-Index '+fmtNum(screener.marketRegime.vnClose)+' so với MA50 '+fmtNum(screener.marketRegime.ma50)+')' : '')+
+      ' → tỷ trọng cổ phiếu tối đa <b>'+a.total+'% vốn</b>, mỗi mã tối đa <b>'+a.perStock+'%</b>, '+a.extra+'.</div>' : '';
+    var chip = function(tone, t, d){ return '<div class="macro-chip '+tone+'"><span class="dot"></span><div><span class="m-label">'+t+'</span><span class="m-note">'+d+'</span></div></div>'; };
+    var html = '<div class="overview-card rv-card">'+
+      '<h3>🧭 Rà soát khuyến nghị & cách dùng tín hiệu <span class="asof">'+rv.period+' · cập nhật '+fmtDateFull(rv.asOf)+'</span></h3>'+
+      '<p>'+rv.verdict+'</p>'+ allocHtml +
+      '<div class="rv-sub">Cách khuyến nghị từ nay</div><div class="rv-list">'+
+        rv.rules.map(function(r){ return chip("thuan", r.title, r.detail); }).join("")+'</div>'+
+      '<details class="tr-recent"><summary>Xem số liệu rà soát ('+rv.sample+')</summary><div class="rv-list">'+
+        rv.findings.map(function(f){ return chip(f.tone, f.title, f.detail); }).join("")+'</div></details>'+
+    '</div>';
     wrap.innerHTML = html;
   }
 
@@ -1029,6 +1069,11 @@
         var res3 = await fetch("track_record.json?_=" + Date.now());
         if(res3.ok){ trackRecord = await res3.json(); renderTrackRecord(); }
       }catch(e){ /* doi chieu khuyen nghi la tinh nang phu, khong chan trang chinh */ }
+
+      try{
+        var res4 = await fetch("recommendation_review.json?_=" + Date.now());
+        if(res4.ok){ review = await res4.json(); renderReview(); }
+      }catch(e){ /* ra soat khuyen nghi la tinh nang phu, khong chan trang chinh */ }
     }catch(e){
       showEmpty("Có lỗi khi tải dữ liệu: "+(e&&e.message?e.message:"không rõ"));
     }

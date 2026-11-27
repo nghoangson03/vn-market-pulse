@@ -1,27 +1,158 @@
 {
-  "_comment": "Vi mo/tin tuc DAC THU THEO TUNG NGANH (khac voi macro.json la vi mo chung toan thi truong) - cap nhat THU CONG dinh ky qua WebSearch (nghien cuu ngay 28/09/2026, 3 nhom song song), gan vao sectorStrength trong compute_screener.ps1 theo dung ten 'sector' trong sector_map.json. Sua lai hoac nho Claude cap nhat khi co tin moi quan trong (gia dau/thep/heo bien dong manh, chinh sach thue/lai suat thay doi...).",
-  "asOf": "2026-09-28",
+  "_comment": "Vi mo/tin tuc DAC THU THEO TUNG NGANH (khac voi macro.json la vi mo chung toan thi truong) - cap nhat THU CONG dinh ky qua WebSearch (cap nhat lan 2 ngay 27/11/2026, tin thang 10-11/2026 chu yeu la KQKD quy III), gan vao sectorStrength trong compute_screener.ps1 theo dung ten 'sector' trong sector_map.json. Sua lai hoac nho Claude cap nhat khi co tin moi quan trong.",
+  "asOf": "2026-11-27",
   "items": [
-    { "sector": "Bank", "tone": "thuan", "headline": "8 mã lọt rổ FTSE All-Cap (21/9), ước hút ~308 triệu USD", "note": "Ngân hàng là nhóm hưởng lợi trực tiếp nhất từ đợt nâng hạng (VCB, BID, VPB, HDB, SHB, STB, SSB, MSB nằm trong 27 mã vào rổ FTSE All-Cap), cộng thêm lộ trình gỡ dần room tín dụng từ 2026 giúp dư địa tăng trưởng nới ra - dù NIM toàn ngành vẫn dự báo thấp quanh 2,1%.", "asOf": "2026-09-21", "source": "CafeF, MBS" },
-    { "sector": "Chứng khoán", "tone": "trung_tinh", "headline": "Thanh khoản Q2/2026 hạ còn ~24.083 tỷ/phiên, dư nợ margin lại lập kỷ lục ~412.600 tỷ", "note": "Thanh khoản bình quân đã chững lại so với mức ~35.000 tỷ/phiên đầu năm khiến nguồn thu phí môi giới chịu áp lực, trong khi dư nợ cho vay ký quỹ toàn thị trường vẫn lập kỷ lục mới; dòng vốn FTSE mới giải ngân 10% đợt đầu (9/2026), phần lớn (65%) còn ở phía trước 2027 nên tác động tới thanh khoản CTCK còn ở phía trước.", "asOf": "2026-09-20", "source": "Thời báo Tài chính Việt Nam, CafeF" },
-    { "sector": "BĐS", "tone": "nguoc", "headline": "Lãi vay mua nhà thực tế 13-16%/năm sau ưu đãi, tồn kho nhích lên ~39.284 căn/nền", "note": "Lãi suất ưu đãi 8,2-10,5%/năm chỉ áp dụng 6-24 tháng đầu rồi thả nổi cộng biên độ ~3,3-3,5 điểm%, đẩy lãi thực lên 13-16%/năm - cản trở nhu cầu vay mua nhà, trong khi tồn kho tại 25/34 địa phương báo cáo vẫn tăng nhẹ so với quý trước.", "asOf": "2026-09-03", "source": "Dân trí, Vietstock" },
-    { "sector": "BĐS KCN", "tone": "nguoc", "headline": "Thuế tối thiểu toàn cầu (Pillar Two 15%) đã hiệu lực, thu hẹp lợi thế ưu đãi thuế của KCN Việt Nam", "note": "Nghị định 236/2025/NĐ-CP hướng dẫn thuế bổ sung tối thiểu toàn cầu (hiệu lực 15/10/2025) khiến ưu đãi thuế suất thấp tại các KCN/khu công nghệ cao gần như mất tác dụng với tập đoàn đa quốc gia lớn, cộng với giá đất KCN, logistics và nhân công vẫn tăng - làm giảm lợi thế cạnh tranh thu hút FDI mới so với khu vực trong năm 2026.", "asOf": "2025-10-15", "source": "TPM Tax Agency, LSVN, Bộ Tài chính" },
-    { "sector": "Xây dựng - VLXD", "tone": "trung_tinh", "headline": "Giải ngân đầu tư công tăng tốc (~43% kế hoạch đến 6/8/2026), nhưng xi măng vẫn dư cung dù đã tăng giá 3 đợt", "note": "Giải ngân đầu tư công nhanh hơn tạo thêm khối lượng việc cho nhà thầu hạ tầng, nhưng ngành xi măng vẫn dư cung (nguồn dư miền Bắc tràn vào miền Nam) gây áp lực cạnh tranh dù HT1 đã tăng giá bán 3 đợt từ đầu năm (+12-15%); giá thép xây dựng tương đối ổn định quanh 13.900-14.300đ/kg.", "asOf": "2026-09-11", "source": "Nhân Dân, Vietcap, khothepxaydung.com" },
-    { "sector": "Đầu tư công", "tone": "thuan", "headline": "Giải ngân đạt ~43% kế hoạch năm đến 6/8/2026, cao tốc Bắc-Nam Lạng Sơn-Cà Mau cơ bản nối liền", "note": "Giải ngân hơn 433 nghìn tỷ đồng (kế hoạch cả năm hơn 1 triệu tỷ) đang được siết bằng bộ KPI tiến độ, cùng cột mốc cao tốc xuyên suốt Lạng Sơn-Cà Mau cơ bản nối liền giúp giảm chi phí logistics - dù vẫn còn khó khăn về khan hiếm vật liệu và giải phóng mặt bằng ở một số dự án trọng điểm.", "asOf": "2026-08-06", "source": "Nhân Dân, Mekong ASEAN" },
-
-    { "sector": "Điện - Năng lượng", "tone": "trung_tinh", "headline": "El Nino có nguy cơ quay lại cuối 2026 đe dọa thủy điện; áp lực chi phí đầu vào có thể buộc EVN tăng giá bán lẻ", "note": "Mực nước hồ thủy điện cải thiện đầu mùa lũ 2026 nhưng El Nino dự báo quay lại nửa cuối năm có thể làm thiếu hụt mưa 25-50% mùa khô tới; ngược lại, chi phí mua điện đầu vào tăng đang tạo áp lực để EVN cân nhắc tăng giá bán lẻ điện, có lợi cho nhóm nhiệt điện/IPP (POW, NT2, PC1).", "asOf": "2026-07-09", "source": "Tạp chí Năng lượng Việt Nam, VnEconomy" },
-    { "sector": "Dầu khí", "tone": "thuan", "headline": "Brent vọt lên ~104 USD/thùng (cao nhất từ tháng 5) vì căng thẳng Trung Đông; Lô B - Ô Môn vào giai đoạn thi công cao điểm", "note": "Giá dầu thế giới tăng khoảng 21% trong 1 tháng do xung đột Trung Đông leo thang thường kéo cổ phiếu dầu khí thượng nguồn tăng theo; đồng thời siêu dự án khí Lô B - Ô Môn (11 tỷ USD) đang thi công cao điểm để có dòng khí đầu tiên cuối 2026, tạo khối lượng công việc lớn cho PVD/PVS.", "asOf": "2026-09-26", "source": "Investing.com, VnExpress, Tạp chí Năng lượng Việt Nam" },
-    { "sector": "Thép", "tone": "trung_tinh", "headline": "Giá thép HRC Âu-Mỹ neo cao nhưng Trung Quốc vẫn yếu; thuế chống bán phá giá thép mạ TQ/Hàn (tới 37,13%) tiếp tục bảo hộ nội địa", "note": "Hiệp hội Thép Trung Quốc dự báo nhu cầu thép nội địa nước này sẽ giảm dần trong 10 năm tới nên khó kỳ vọng lực cầu bùng nổ, trong khi thuế chống bán phá giá với thép mạ Trung Quốc/Hàn Quốc (hiệu lực từ 4/2025) vẫn đang bảo vệ thị phần nội địa cho HSG/NKG.", "asOf": "2026-09-23", "source": "Doanh nghiệp Hội nhập, Thư viện Pháp luật" },
-    { "sector": "Nhựa - Bao bì", "tone": "nguoc", "headline": "Giá dầu tăng mạnh vì căng thẳng Trung Đông kéo giá hạt nhựa PP/HDPE nguyên liệu đi lên", "note": "Giá hạt nhựa nguyên sinh phụ thuộc trực tiếp vào giá dầu thế giới; đà tăng của Brent lên vùng cao nhất từ tháng 5/2026 làm chi phí đầu vào nhóm nhựa - bao bì (AAA, HII, HHP...) nhích lên, có thể ăn mòn biên lợi nhuận nếu không chuyển hết được vào giá bán.", "asOf": "2026-09-21", "source": "Kanetora, ChemOrbis" },
-    { "sector": "Phân bón - Hóa chất", "tone": "thuan", "headline": "Giá urê/DAP/ammonia thế giới đồng loạt tăng trong tháng 9/2026", "note": "Giá khí tự nhiên đầu vào tăng cùng xung đột Trung Đông và nhu cầu nông nghiệp cao đang đẩy giá phân bón thế giới đi lên, thuận lợi cho biên lợi nhuận nhóm sản xuất đạm (DPM, DCM) khi giá bán tăng nhanh hơn chi phí.", "asOf": "2026-09-12", "source": "Vietstock, DaSSHu" },
-    { "sector": "Vận tải biển - Logistics", "tone": "thuan", "headline": "Xuất nhập khẩu 8 tháng 2026 lập kỷ lục 770 tỷ USD (+28,7%), dù cước tàu quốc tế dự báo hạ nhiệt vì dư cung", "note": "Sản lượng hàng hóa qua cảng tăng mạnh theo đà xuất nhập khẩu kỷ lục là động lực trực tiếp cho nhóm cảng biển/logistics (GMD, HAH...), dù giá cước vận tải container quốc tế được dự báo tiếp tục hạ nhiệt trong 2026 do dư cung đội tàu toàn cầu.", "asOf": "2026-09-01", "source": "Tổng cục Thống kê (GSO), Interlogistics" },
-
-    { "sector": "Thực phẩm - Đồ uống", "tone": "nguoc", "headline": "Thuế TTĐB rượu bia tăng 15% từ 1/1/2026, giá bán lẻ dự kiến +20%", "note": "Luật Thuế TTĐB 2025 nâng thuế suất theo lộ trình tới 2031, ảnh hưởng trực tiếp biên lợi nhuận/sản lượng tiêu thụ của SAB (bia) - trong khi VNM/MSN/KDC ít bị tác động hơn vì không thuộc nhóm đồ uống có cồn.", "asOf": "2026-01-01", "source": "LuatVietnam, VnEconomy" },
-    { "sector": "Bán lẻ công nghệ", "tone": "thuan", "headline": "MBS dự báo MWG lãi ròng quý 3/2026 tăng ~95% YoY, FRT doanh thu +13%", "note": "Chu kỳ đổi mới thiết bị điện tử cùng mùa tựu trường kéo dài giúp nhóm bán lẻ công nghệ tăng tốc rõ rệt trong quý 3/2026, theo báo cáo ngành MBS Research ngày 25/9.", "asOf": "2026-09-25", "source": "MBS Research, CafeF" },
-    { "sector": "Cao su", "tone": "thuan", "headline": "Giá cao su thế giới neo cao, nguồn cung 2026 dự báo thiếu hụt ~280.000 tấn", "note": "Cung (15,32 triệu tấn) không theo kịp cầu (15,6 triệu tấn) toàn cầu năm 2026, giữ giá cao su thiên nhiên ở vùng cao nhiều năm - hỗ trợ biên lợi nhuận mảng khai thác mủ của GVR/PHR/DPR.", "asOf": "2026-09-23", "source": "Doanh nghiệp Kinh tế Xanh, Vietstock" },
-    { "sector": "Nông nghiệp", "tone": "trung_tinh", "headline": "Gạo xuất khẩu giảm cả lượng lẫn giá trị, cà phê hạ nhiệt nhẹ sau vùng đỉnh", "note": "8 tháng 2026 xuất khẩu gạo Việt Nam giảm 6,3% khối lượng và 11,9% giá trị so cùng kỳ; ngược lại cà phê vẫn giao dịch quanh 92.000-95.000đ/kg (dù đang điều chỉnh giảm) và hồ tiêu đi ngang ở vùng giá cao - bức tranh trái chiều giữa các mặt hàng trong nhóm.", "asOf": "2026-09-26", "source": "Hiệp hội Lương thực VN (VFA), giacaphe.com" },
-    { "sector": "Hàng tiêu dùng", "tone": "thuan", "headline": "Tổng mức bán lẻ hàng hóa và dịch vụ tiêu dùng 8 tháng +13,3% YoY, sức mua thực +7,6%", "note": "Sức mua nội địa phục hồi rõ nét dù người tiêu dùng vẫn chọn lọc/nhạy cảm giá hơn trước - nền tảng thuận lợi cho nhóm hàng tiêu dùng thiết yếu.", "asOf": "2026-09-04", "source": "Bộ Công Thương, VTV" },
-    { "sector": "Hàng không", "tone": "nguoc", "headline": "Giá Jet A1 vọt lên 184-188 USD/thùng giữa tháng 9 do xung đột Trung Đông leo thang", "note": "Chi phí nhiên liệu đã khiến Vietnam Airlines lỗ 606 tỷ quý 2 dù doanh thu tăng 36,7%; khách quốc tế vẫn tăng mạnh (HVN +18,8% H1, VJC lãi ròng +58%) nhưng áp lực chi phí nhiên liệu đang là rủi ro ngắn hạn chính.", "asOf": "2026-09-19", "source": "Dân trí, VietnamPlus" },
-    { "sector": "Thịt heo", "tone": "nguoc", "headline": "Giá heo hơi quay đầu giảm diện rộng cuối tháng 9, dịch tả châu Phi tái bùng phát nhiều tỉnh", "note": "Giá heo hơi từ đỉnh 59-60.000đ/kg giữa tháng đã giảm lan rộng ngày 26/9, trong khi ASF với chủng tái tổ hợp khó nhận biết đang lây lan ở nhiều địa phương (Cần Thơ, Đồng Tháp...) - rủi ro kép cho biên lợi nhuận chăn nuôi.", "asOf": "2026-09-26", "source": "Doanh nghiệp Kinh tế Xanh, VOV" }
+    {
+      "sector": "Bank",
+      "tone": "thuan",
+      "headline": "29 ngân hàng lãi trước thuế 312.998 tỷ sau 9 tháng (+20%), tín dụng 26 ngân hàng niêm yết +12,7% so với đầu năm",
+      "note": "Lợi nhuận phân hóa mạnh (TCB +25,8%, BVBank −19%), NIM dự phóng giảm về ~3,18% vì huy động tăng nhanh hơn cho vay. Nhiều ngân hàng đã gần cạn room tín dụng - chất xúc tác quý IV là hạn mức bổ sung NHNN dự kiến cấp; lãi liên ngân hàng tăng lại ~9% là áp lực chi phí vốn.",
+      "asOf": "2026-11-05",
+      "source": "VietnamPlus, VnBusiness, Báo Pháp luật"
+    },
+    {
+      "sector": "Chứng khoán",
+      "tone": "nguoc",
+      "headline": "Thanh khoản HOSE+HNX tụt còn ~18.100 tỷ/phiên (quý II ~23.300 tỷ) trong khi margin lập đỉnh ~448.000 tỷ",
+      "note": "Lãi quý III của nhiều CTCK giảm (SSI −27%, MBS −5%; TCBS +6%), doanh thu cho vay chỉ +1,2% so với quý trước. Dư nợ margin tương đương ~30 phiên thanh khoản (cùng kỳ 2025 ~9 phiên) - đòn bẩy rất cao so với dòng tiền, dễ khuếch đại nhịp giảm khi bị call margin.",
+      "asOf": "2026-11-02",
+      "source": "CafeF, VnBusiness, Thời báo Tài chính VN"
+    },
+    {
+      "sector": "BĐS",
+      "tone": "nguoc",
+      "headline": "Hà Nội quý III chỉ bán ~3.900 căn hộ (−66% so với cùng kỳ) dù nguồn cung 9 tháng +21%",
+      "note": "Lãi vay ưu đãi 9,8–11,5% chỉ áp 12 tháng đầu rồi thả nổi 13–16%/năm khiến người mua thận trọng, tồn kho gần gấp đôi cùng kỳ. Kịch bản xấu quý IV của DXS-FERI: tỷ lệ hấp thụ dưới 20%, giá giảm nhẹ.",
+      "asOf": "2026-11-09",
+      "source": "CafeF, 24hMoney, DXS-FERI"
+    },
+    {
+      "sector": "BĐS KCN",
+      "tone": "trung_tinh",
+      "headline": "FDI đăng ký mới 8 tháng 12,2 tỷ USD (+86%), lãi ròng 25 doanh nghiệp KCN niêm yết quý III +23% - nhưng Mỹ vừa đề xuất thuế tới 35%",
+      "note": "Dòng vốn bán dẫn/AI đẩy tỷ lệ lấp đầy lên ~92% miền Nam, ~85% miền Bắc; KBC doanh thu quý III +136,6% nhưng IDC lãi quý III ước −49%. Đề xuất thuế 'dư thừa công suất' của USTR (25/11) là rủi ro trực tiếp với làn sóng FDI xuất khẩu sang Mỹ cho tới khi thỏa thuận được ký.",
+      "asOf": "2026-11-27",
+      "source": "VCCI, MBS, Thời báo Tài chính VN, bne IntelliNews"
+    },
+    {
+      "sector": "Xây dựng - VLXD",
+      "tone": "thuan",
+      "headline": "Vicem tiêu thụ 7,32 triệu tấn xi măng quý III (+19,2%), sản xuất xi măng tháng 9 ~11 triệu tấn (+27%)",
+      "note": "Cầu xi măng phục hồi rõ nhờ đầu tư công và nhà ở (Vicem Hà Tiên doanh thu quý III +21,5%). Rủi ro: cát đá neo cao do siết khai thác khoáng sản, tạo áp lực chi phí lên nhà thầu trong quý IV.",
+      "asOf": "2026-10-28",
+      "source": "Báo Đấu thầu, Global Cement, Thời báo Tài chính VN"
+    },
+    {
+      "sector": "Đầu tư công",
+      "tone": "thuan",
+      "headline": "10 tháng giải ngân 708.567 tỷ, đạt 74,1% kế hoạch (cao hơn cùng kỳ 2025 tới 19,7 điểm %)",
+      "note": "Mức giải ngân cao nhất nhiều năm, khối lượng việc dồn vào cao điểm cuối năm cho nhà thầu hạ tầng. Lưu ý: tạm ứng chưa thu hồi ~240.000 tỷ (34% số đã giải ngân) nên một phần chưa thành khối lượng thực.",
+      "asOf": "2026-11-04",
+      "source": "Bộ Tài chính qua VietnamPlus, Báo Đấu thầu"
+    },
+    {
+      "sector": "Điện - Năng lượng",
+      "tone": "thuan",
+      "headline": "Thủy điện trở lại mạnh: PGV lãi ròng quý III ~1.200 tỷ (cùng kỳ 166 tỷ), EVN lãi ~12.220 tỷ sau 8 tháng",
+      "note": "Nước về tốt giúp EVN giảm huy động nguồn đắt và có lãi, giảm rủi ro nợ đọng tiền điện với các IPP. EVN dự báo sản lượng quý IV +11,3%; giá điện bán lẻ chưa điều chỉnh thêm từ 10/5/2026.",
+      "asOf": "2026-11-10",
+      "source": "24hMoney, VIR, Tiền Phong"
+    },
+    {
+      "sector": "Dầu khí",
+      "tone": "trung_tinh",
+      "headline": "Brent rơi từ bình quân ~125 USD (tháng 10) về ~92 USD (11/11) rồi hồi lên ~96,5 USD (26/11); PVD lãi quý III giảm ~70% vì lãi vay",
+      "note": "Giá dầu hạ từ đỉnh tháng 10 làm yếu câu chuyện hưởng lợi giá dầu (EIA dự báo bình quân 2027 ~85,8 USD), dù rủi ro eo Hormuz vẫn còn và OPEC+ họp 29/11. Biên gộp thượng nguồn PVD 12,8%, thấp nhất 8 quý; lãi 9 tháng PVS có 462 tỷ bồi thường một lần. Đỡ trung hạn là Lô B - Ô Môn.",
+      "asOf": "2026-11-26",
+      "source": "Vietstock, Báo Pháp luật, EIA, The Nation"
+    },
+    {
+      "sector": "Thép",
+      "tone": "thuan",
+      "headline": "HPG lãi quý III ~8.265 tỷ (+106%), doanh thu 62.669 tỷ (+70%), 9 tháng đã vượt kế hoạch lãi cả năm",
+      "note": "Dung Quất 2 kéo sản lượng (HPG bán 10,3 triệu tấn 9 tháng, +39%), HPG tăng giá thép xây dựng 100–300 đ/kg ngày 19/10. Ngành phân hóa - lợi thế tập trung ở HPG; nhóm thép xuất khẩu (tôn mạ) chịu rủi ro thuế 'dư thừa công suất' của Mỹ.",
+      "asOf": "2026-11-05",
+      "source": "SteelOrbis, Tạp chí Công Thương, VnBusiness"
+    },
+    {
+      "sector": "Nhựa - Bao bì",
+      "tone": "nguoc",
+      "headline": "BMP lãi quý III 319 tỷ (−8,9%), gãy chuỗi tăng trưởng; biên gộp giảm từ 47,9% xuống 40,3%",
+      "note": "Giá vốn tăng do lô PVC mua đỉnh quý II đi vào sổ, giá ống nhựa miền Bắc −20% so với quý trước vì cạnh tranh. Lãi chỉ giữ được nhờ cắt ~126 tỷ chiết khấu - dư địa gần hết, PVC lại hồi từ đầu quý IV.",
+      "asOf": "2026-10-22",
+      "source": "CafeF, Báo Pháp luật, BSC"
+    },
+    {
+      "sector": "Phân bón - Hóa chất",
+      "tone": "trung_tinh",
+      "headline": "Lãi quý III phân hóa: DCM ~432 tỷ (+31,8%), DPM chỉ 40–45 tỷ (−80%), DGC 478 tỷ (−36%)",
+      "note": "Giá urê Trung Đông quý III ~399 USD/tấn (−42% so với quý II), giá khí đầu vào tăng làm hẹp biên DPM; DGC phải mua quặng ngoài khi khai trường 25 dừng. Đề xuất đưa thuế xuất khẩu urê về 0% có thể nâng lãi 10–20%, DCM hưởng lợi nhiều hơn.",
+      "asOf": "2026-11-24",
+      "source": "Người Quan Sát, Elibook (ACBS), Tin nhanh Chứng khoán"
+    },
+    {
+      "sector": "Vận tải biển - Logistics",
+      "tone": "trung_tinh",
+      "headline": "Cảng biển lãi tốt (dự báo GMD quý III +86%, VSC +82%) nhưng chủ tàu HAH chỉ +8%, biên gộp mảng tàu tụt từ 45% xuống 40,3%",
+      "note": "Sản lượng hàng qua cảng tăng nhờ xuất nhập khẩu và xu hướng 'Trung Quốc +1' - tốt cho nhóm cảng, nhưng thuế Mỹ đề xuất tới 35% là rủi ro trực tiếp với sản lượng hàng xuất. Chủ tàu chịu giá nhiên liệu cao và rủi ro hợp đồng thuê tàu giá cao đáo hạn 2027.",
+      "asOf": "2026-11-24",
+      "source": "VietnamBiz (MBS), Elibook, VNDirect"
+    },
+    {
+      "sector": "Thực phẩm - Đồ uống",
+      "tone": "trung_tinh",
+      "headline": "VNM quý III lãi 2.964 tỷ (+17,3%), doanh thu +8,9%; SAB được dự báo lãi giảm 4–6,4%",
+      "note": "Sữa phục hồi nhưng biên gộp VNM giảm 0,4 điểm % còn 41,4% vì chi phí đầu vào; bia vẫn yếu. Ngành phân hóa theo từng mã, không đi cùng nhịp.",
+      "asOf": "2026-11-05",
+      "source": "TCBS, VCBS, VDSC"
+    },
+    {
+      "sector": "Bán lẻ công nghệ",
+      "tone": "thuan",
+      "headline": "MWG quý III lãi ròng 3.094 tỷ (+74,7%), FRT lãi 559 tỷ (+110%) nhờ Long Châu",
+      "note": "Doanh thu MWG 52.614 tỷ (+32%), Bách Hóa Xanh +48,9%, điện máy lãi +105%; FRT vượt xa dự phóng. Cần theo dõi: dòng tiền kinh doanh quý III của MWG âm 531 tỷ và lo ngại tăng trưởng 2027.",
+      "asOf": "2026-10-30",
+      "source": "Người Quan Sát, MoneyF, Elibook"
+    },
+    {
+      "sector": "Cao su",
+      "tone": "thuan",
+      "headline": "Giá mủ trong nước vượt 72 triệu đồng/tấn (cao nhất từ 2021), DPR ước giá bán quý III ~64 triệu/tấn (+30%)",
+      "note": "Giá mủ cao có lợi trực tiếp nhất cho DPR, TRC. Lãi quý III của GVR/PHR chủ yếu nhờ đền bù đất và thanh lý cây (sản lượng mủ GVR −8%) - câu chuyện đất KCN vẫn là điểm tựa riêng.",
+      "asOf": "2026-10-11",
+      "source": "Elibook (TCBS), Kinh tế Chứng khoán, Báo Mới"
+    },
+    {
+      "sector": "Nông nghiệp",
+      "tone": "trung_tinh",
+      "headline": "Gạo 5% tấm lên 490–495 USD/tấn (16/11, cao nhất từ 12/2024) rồi về ~470 USD (24/11); cà phê nội địa giảm từ 87.000 về ~83.000 đ/kg",
+      "note": "Philippines mua gạo trở lại có lợi cho LTG, PAN; cà phê giảm vì áp lực vụ mới và xuất khẩu robusta toàn cầu tăng. Hai mặt hàng chính đi ngược chiều nhau nên ngành không có hướng chung.",
+      "asOf": "2026-11-24",
+      "source": "VTV, Báo Quốc tế, Bnews"
+    },
+    {
+      "sector": "Hàng tiêu dùng",
+      "tone": "thuan",
+      "headline": "Masan quý III lãi trước lợi ích thiểu số 4.552 tỷ (×2,4), WinCommerce lãi +86%, đề xuất nâng kế hoạch năm lên tối đa 11.500 tỷ",
+      "note": "Kết quả vượt dự báo MBS (3.984 tỷ) và VCBS (4.117 tỷ); chuỗi bán lẻ WinCommerce tăng tốc mạnh - tín hiệu sức mua tiêu dùng nội địa đang phục hồi, ít chịu tác động thuế Mỹ.",
+      "asOf": "2026-11-05",
+      "source": "Thời báo Ngân hàng, Báo Pháp luật"
+    },
+    {
+      "sector": "Hàng không",
+      "tone": "nguoc",
+      "headline": "Hãng bay quý III lãi mỏng: VJC lãi ~341–348 tỷ (+7–9%), HVN lãi giảm 56–77% vì chi phí nhiên liệu +61%",
+      "note": "Lượng khách tăng mạnh (doanh thu HVN +29%, VJC +35%) nhưng nhiên liệu bay neo cao, biên gộp HVN co từ 12,5% về ~7,3%; VJC chịu nợ vay ~73.600 tỷ. Brent hồi lại ~96 USD cuối tháng 11 chưa giúp được quý IV.",
+      "asOf": "2026-11-04",
+      "source": "Vietstock, Thương Trường, Kinh tế Môi trường"
+    },
+    {
+      "sector": "Thịt heo",
+      "tone": "trung_tinh",
+      "headline": "Giá heo hơi bật từ 43–46 nghìn (4/11) lên 51–56 nghìn đ/kg (27/11), nhưng dịch tả heo châu Phi lan ở Lai Châu, Điện Biên",
+      "note": "Lãi 9 tháng đã giảm (DBC 863 tỷ −36%, BAF 329 tỷ −9%); giá hồi cuối tháng 11 hỗ trợ quý IV. VCBS cảnh báo dịch và mưa lũ có thể khiến người nuôi bán tháo, gây dư cung kéo giá giảm lại.",
+      "asOf": "2026-11-27",
+      "source": "Vietstock, Doanh nghiệp Hội nhập, Doanh nghiệp Kinh tế Xanh"
+    }
   ]
 }

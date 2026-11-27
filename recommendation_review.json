@@ -1,0 +1,21 @@
+{
+  "_comment": "Ra soat track record + quy tac khuyen nghi - viet THU CONG boi Claude ngay 27/11/2026 tu automation/data/signal_log.json + cache gia (khong tu dong cap nhat). So T5/T10/T20 = lai/lo giu co dinh 5/10/20 phien tu ngay vao lenh, chua tru phi.",
+  "asOf": "2026-11-27",
+  "period": "04/09 – 26/11/2026",
+  "sample": "895 lượt ghi tín hiệu, 272 lệnh đã có kết quả; VN-Index 1.853 → 1.630 (−12%), nằm dưới MA50 gần như suốt giai đoạn",
+  "verdict": "Trong 2,5 tháng thị trường giảm, các tín hiệu MUA đều thua lỗ dù vẫn nhỉnh hơn VN-Index một chút. Nguyên nhân chính là vào lệnh khi thị trường chung đang NGƯỢC, chứ không phải chọn sai mã. Tín hiệu có giá trị nhất là Upthrust (cảnh báo phân phối): 20 phiên sau, giá giảm trung bình 6,2% và 78% trường hợp giảm thật. Ngược lại, bán theo SOW khi giá đã giảm sâu thì sai: 20 phiên sau giá hồi lại 2,3%.",
+  "findings": [
+    { "tone": "nguoc", "title": "MUA (SOS): đúng 6/32 lệnh, TB −3,29%/lệnh", "detail": "Theo giá giữ cố định 10 phiên: −1,26%, tốt hơn VN-Index 1,1 điểm. Mã chọn tương đối khỏe hơn thị trường nhưng vẫn lỗ vì cả thị trường giảm. Cắt lỗ 5% là đúng: nếu không cắt lỗ, TB còn −3,84%; nới cắt lỗ lên 7–10% thì lỗ tệ hơn (−3,3% đến −4,1%)." },
+    { "tone": "thuan", "title": "Upthrust (cảnh báo phân phối): giá giảm 6,2% sau 20 phiên, 78% trường hợp giảm", "detail": "Giảm sâu hơn VN-Index 4,3 điểm. Mạnh nhất khi mã đang ở Stage 2 (n=46: giảm 7,7%, 79% trường hợp) và khi ngành đang Mạnh/Trung bình (n=26: 94–100% trường hợp giảm). Đây là tín hiệu CHỐT LỜI đáng tin nhất của hệ thống." },
+    { "tone": "nguoc", "title": "SOW (đã thủng hỗ trợ, Stage 4): bán theo là bán đáy", "detail": "Sau 20 phiên, giá trung bình HỒI lại 2,3% (n=42); chỉ 40% trường hợp giảm tiếp. Cổ phiếu đã giảm sâu thường được bắt đáy, nên bán lúc này là quá muộn." },
+    { "tone": "trung_tinh", "title": "Spring / tích lũy: phụ thuộc hoàn toàn vào thị trường chung", "detail": "Khi thị trường NGƯỢC (n=172): −1,5% sau 20 phiên, chỉ 30% có lãi sau 5 phiên. Khi TRUNG TÍNH (n=45): +6,8% sau 20 phiên, 71% có lãi. Mẫu tập trung vào vài nhịp hồi nên chưa đủ để chuyển thành tín hiệu mua; chỉ dùng làm danh sách chờ khi thị trường không còn NGƯỢC." },
+    { "tone": "nguoc", "title": "Mua SOS khi thị trường TRUNG TÍNH còn tệ hơn khi NGƯỢC (−3,2% vs +1,3% sau 5 phiên)", "detail": "n chỉ 19 và 18 nên chưa kết luận được. Tuy vậy, điểm số cao (≥90) cũng không giúp gì: 32% có lãi sau 5 phiên, so với 44% ở nhóm dưới 90. Điểm Wyckoff hiện chưa phân biệt được lệnh tốt và lệnh xấu." }
+  ],
+  "rules": [
+    { "title": "Tỷ trọng cổ phiếu theo thị trường chung", "detail": "NGƯỢC: tối đa 30% vốn, mỗi mã ≤10%, vào 1/2 vị thế. TRUNG TÍNH: tối đa 60%, mỗi mã ≤15%. THUẬN: tối đa 90%, mỗi mã ≤20%. Các ngưỡng này là quy tắc quản trị rủi ro, chưa được kiểm chứng bằng backtest." },
+    { "title": "Mua SOS: giữ cắt lỗ 5%, không nới", "detail": "Dữ liệu cho thấy nới cắt lỗ chỉ làm lỗ thêm. Chỉ mua khi target cách giá ≥5% và tín hiệu ≤2 phiên tuổi (đã áp dụng trong engine)." },
+    { "title": "Upthrust = ưu tiên chốt lời/hạ tỷ trọng", "detail": "Mã đang cầm hiện Upthrust: bán 1/2–toàn bộ trong 1–3 phiên, nhất là khi mã ở Stage 2. Đây là cách dùng có lợi nhất của phía BÁN." },
+    { "title": "SOW: không bán đuổi", "detail": "Mã đã thủng hỗ trợ và giảm sâu: nếu còn cầm, chờ nhịp hồi về gần vùng hỗ trợ cũ (nay là kháng cự) rồi mới bán. Không mở vị thế bán mới theo SOW." },
+    { "title": "Spring: chỉ theo dõi khi thị trường không còn NGƯỢC", "detail": "Khi VN-Index lấy lại MA50, danh sách Spring/tích lũy là nơi tìm mã đầu tiên. Vẫn chờ phiên SOS xác nhận rồi mới mua." }
+  ]
+}
